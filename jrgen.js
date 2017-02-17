@@ -2,7 +2,7 @@
 
 var program = require('commander');
 program
-    .version('1.0.0')
+    .version('1.0.1')
     .command('docs', 'Generate docs').alias('d')
     .command('test', 'Generate tests').alias('t')
     .command('client', 'Generate client').alias('c')
