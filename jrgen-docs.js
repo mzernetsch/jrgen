@@ -39,7 +39,7 @@ program.args.forEach((schemaPath, index) => {
 	if(!path.isAbsolute(schemaPath)){
 		schemaPath = path.join(process.cwd(), schemaPath);
 	}
-	
+
 	//Load schema
 	var schema = require(path.normalize(schemaPath));
 	if(!schema){
@@ -49,6 +49,12 @@ program.args.forEach((schemaPath, index) => {
 
 	apiSchema = merge(apiSchema, schema);
 });
+
+//Check for at least one schema
+if(Object.keys(apiSchema).length === 0){
+	console.log("No schema specified.");
+	return;
+}
 
 //Generate docs
 generator.generate(apiSchema, outdir);

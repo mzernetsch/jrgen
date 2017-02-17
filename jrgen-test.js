@@ -50,5 +50,11 @@ program.args.forEach((schemaPath, index) => {
 	apiSchema = merge(apiSchema, schema);
 });
 
+//Check for at least one schema
+if(Object.keys(apiSchema).length === 0){
+	console.log("No schema specified.");
+	return;
+}
+
 //Generate docs
 generator.generate(apiSchema, outdir);
