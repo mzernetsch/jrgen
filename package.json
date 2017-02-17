@@ -1,0 +1,19 @@
+{
+  "name": "jrgen",
+  "version": "1.0.0",
+  "description": "Generates docs, tests, clients and servers for json-rpc apis.",
+  "keywords": ["generator", "json-rpc", "api", "doc", "test", "client", "server"],
+  "author": "Marco Zernetsch <m.zernetsch@gmail.com>",
+  "license": "MIT",
+  "bin": "./jrgen.js",
+  "bugs":"https://github.com/mzernetsch/jrgen/issues",
+  "repository" :{
+    "type" : "git",
+    "url" : "https://github.com/mzernetsch/jrgen.git"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "deepmerge": "^1.3.2",
+    "jsonschema": "^1.1.1"
+  }
+}

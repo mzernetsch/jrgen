@@ -1,0 +1,35 @@
+<div class="method" id="{{ID}}">
+	<div class="card">
+		<div class="card-header" data-toggle="collapse" href="#{{ID}}-content">
+			<h3>{{METHOD}}</h3>
+			<div class="float-right">
+				{{TAGS}}
+			</div>
+		</div>
+		<div class="card-block collapse" id="{{ID}}-content">
+
+			<div class="summary-container">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("{{EXAMPLE_REQUEST}}", "{{EXAMPLE_RESPONSE}}")'>
+						Show Example
+					</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("{{EXAMPLE_REQUEST}}")'>
+						Send Request
+					</button>
+				</div>
+				<p>{{SUMMARY}}</p>
+			</div>
+
+			<br>
+
+			{{DESCRIPTION}}
+
+			{{PARAMETERS}}
+
+			{{RESULT}}
+
+			{{ERRORS}}
+		</div>
+	</div>
+</div>
+<br>

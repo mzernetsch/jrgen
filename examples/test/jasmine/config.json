@@ -1,0 +1,42 @@
+{
+	"log":{
+		"verbose":false
+	},
+	"api":{
+		"host":"127.0.0.1",
+		"port":"8080",
+		"path":"/"
+	},
+	"methods":{
+    "Session.Login": {
+        "params": {
+            "name": "admin",
+            "password": "123456"
+        },
+        "expectError": false
+    },
+    "Session.Logout": {
+        "expectError": false
+    },
+    "Session.KeepAlive": {
+        "expectError": false
+    },
+    "User.Add": {
+        "params": {
+            "name": "user",
+            "email": "user@example.org",
+            "password": "1234567890"
+        },
+        "expectError": false
+    },
+    "User.Delete": {
+        "params": {
+            "name": "user"
+        },
+        "expectError": false
+    },
+    "User.GetAll": {
+        "expectError": false
+    }
+}
+}

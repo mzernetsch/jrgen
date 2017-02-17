@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ExampleAPI</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+	<style>
+		.summary-container {
+			word-wrap: break-word;
+		}
+
+		.description-container {
+			word-wrap: break-word;
+		}
+
+		.container {
+			margin: 25px;
+		}
+
+		.card-header>h3 {
+			display: inline;
+		}
+
+		.card-header[data-toggle] {
+			cursor: pointer;
+		}
+
+		.card-header .badge {
+			margin-top: .35rem;
+		}
+
+		textarea {
+			word-wrap: normal !important;
+			white-space: nowrap;
+			height: 200px;
+		}
+
+		.textarea-success {
+			background-color: #dff0d8 !important;
+			border-color: #d0e9c6 !important;
+			color: #3c763d !important;
+		}
+
+		.textarea-danger {
+			background-color: #f2dede !important;
+			border-color: #ebcccc !important;
+			color: #a94442 !important;
+		}
+
+		#toc {
+			position: fixed;
+			top: 25px;
+			bottom: 25px;
+			left: 25px;
+			right: 25px;
+			height: 100vh;
+			overflow: auto;
+			font-size: 0.75em;
+			width: 260px;
+		}
+
+		.main-col {
+			border-left: 1px solid rgba(0, 0, 0, .1)
+		}
+
+		.nav-link {
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		h3 {
+			font-size: 1.5rem;
+		}
+
+		h4 {
+			font-size: 1.25rem;
+		}
+
+		.schema-preview {
+			max-height: 500px;
+			margin-bottom: 0px;
+		}
+	</style>
+
+	<script>
+		var methodsCollapsed = true;
+		var toggleMethods = function() {
+			methodsCollapsed = !methodsCollapsed;
+			if (methodsCollapsed) {
+				$('.collapse').collapse('hide')
+			} else {
+				$('.collapse').collapse('show')
+			}
+		}
+
+		var showSendRequestModal = function(request) {
+			$('#send-request-request').val(JSON.stringify(JSON.parse(decodeURIComponent(request)), null, 4));
+			$('#send-request-response').val('');
+			$("#send-request-response").removeClass("textarea-danger textarea-success");
+			$('#send-request-modal').modal('show')
+		}
+
+		var showExampleModal = function(request, response) {
+			$('#show-example-request').val(JSON.stringify(JSON.parse(decodeURIComponent(request)), null, 4));
+			$('#show-example-response').val(JSON.stringify(JSON.parse(decodeURIComponent(response)), null, 4));
+			$('#show-example-modal').modal('show')
+		}
+
+		var sendRequest = function() {
+			var url = $('#send-request-url').val();
+			var request = $('#send-request-request').val();
+			fetch(url, {
+				method: 'post',
+				body: request,
+			}).then(function(response) {
+				if (response.ok) {
+					response.json().then((rpcResponse) => {
+						$("#send-request-response").val(JSON.stringify(rpcResponse, null, 4));
+						$("#send-request-response").removeClass("textarea-danger").addClass("textarea-success");
+					});
+				} else {
+					$("#send-request-response").val(response.status + ' - ' + response.statusText);
+					$("#send-request-response").removeClass("textarea-success").addClass("textarea-danger");
+				}
+			}).catch(function(error) {
+				$("#send-request-response").val(error);
+				$("#send-request-response").removeClass("textarea-success").addClass("textarea-danger");
+			});
+		}
+
+		$(function() {
+			$('[data-toggle="popover"]').popover();
+			$('#send-request-url').val('http://127.0.0.1:8080');
+		})
+	</script>
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<nav id="toc" data-spy="affix" class="affix" data-toggle="toc">
+					<ul class="nav nav-pills flex-column">
+	<li class="nav-item">
+	<a class="nav-link" href="#Session_Login">Session.Login</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="#Session_Logout">Session.Logout</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="#Session_KeepAlive">Session.KeepAlive</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="#User_Add">User.Add</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="#User_Delete">User.Delete</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="#User_GetAll">User.GetAll</a>
+</li>
+
+</ul>
+
+				</nav>
+			</div>
+			<div class="col-sm-9 main-col">
+
+				<h1>ExampleAPI</h1>
+				<div class="introduction">
+					<p>This api handles various rpc requests.</p>
+					<strong>Version: 1.0</strong>
+				</div>
+				<hr>
+				<button type="button" class="btn btn-primary btn-sm" onclick="toggleMethods()">
+					Toggle all
+				</button>
+				<br>
+				<hr> <div class="method" id="Session_Login">
+	<div class="card">
+		<div class="card-header" data-toggle="collapse" href="#Session_Login-content">
+			<h3>Session.Login</h3>
+			<div class="float-right">
+				<span class="badge badge-primary">Session</span>
+
+			</div>
+		</div>
+		<div class="card-block collapse" id="Session_Login-content">
+
+			<div class="summary-container">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2294a0521e6408f%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2212ba384713346%22%2C%0A%20%20%20%20%22result%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22session_token%22%3A%20%22123456890%22%0A%20%20%20%20%7D%0A%7D")'>
+						Show Example
+					</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2294a0521e6408f%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D")'>
+						Send Request
+					</button>
+				</div>
+				<p>Creates a new session.</p>
+			</div>
+
+			<br>
+
+			<h4>Description</h4>
+<p class="description-container">Authenticates the user using the provided credentials and creates a new session.</p>
+
+
+			<br>
+<h4>Parameters</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'type': 'object',
+  'properties': {
+    'name': {
+      'description': 'Name of the user to create a session for.',
+      'example': 'admin',
+      'type': 'string',
+      'minLength': 1
+    },
+    'password': {
+      'description': 'Password of the user to create a session for.',
+      'example': '123456',
+      'type': 'string',
+      'minLength': 1
+    }
+  },
+  'required': [
+    'name',
+    'password'
+  ]
+}</pre>" data-html="true">
+	<td>params</td>
+	<td>object</td>
+	<td></td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Name of the user to create a session for.',
+  'example': 'admin',
+  'type': 'string',
+  'minLength': 1
+}</pre>" data-html="true">
+	<td>params.name</td>
+	<td>string</td>
+	<td>Name of the user to create a session for.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Password of the user to create a session for.',
+  'example': '123456',
+  'type': 'string',
+  'minLength': 1
+}</pre>" data-html="true">
+	<td>params.password</td>
+	<td>string</td>
+	<td>Password of the user to create a session for.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Result</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'type': 'object',
+    'properties': {
+        'session_token': {
+            'description': 'Bearer token of the created session.',
+            'example': '123456890',
+            'type': 'string',
+            'minLength': 1
+        }
+    },
+    'required': [
+        'session_token'
+    ]
+}</pre>" data-html="true">
+	<td>result</td>
+	<td>object</td>
+	<td></td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Bearer token of the created session.',
+    'example': '123456890',
+    'type': 'string',
+    'minLength': 1
+}</pre>" data-html="true">
+	<td>result.session_token</td>
+	<td>string</td>
+	<td>Bearer token of the created session.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Errors</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Code</th>
+		<th>Message</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre>{
+    'description': 'The provided credentials are invalid.',
+    'code': 1,
+    'message': 'InvalidCredentials'
+}</pre>" data-html="true">
+	<td>1</td>
+	<td>InvalidCredentials</td>
+	<td>The provided credentials are invalid.</td>
+</tr>
+
+</table>
+
+		</div>
+	</div>
+</div>
+<br>
+<div class="method" id="Session_Logout">
+	<div class="card">
+		<div class="card-header" data-toggle="collapse" href="#Session_Logout-content">
+			<h3>Session.Logout</h3>
+			<div class="float-right">
+				<span class="badge badge-primary">Session</span>
+
+			</div>
+		</div>
+		<div class="card-block collapse" id="Session_Logout-content">
+
+			<div class="summary-container">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22738a31cc92802%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Logout%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2265e311f8140ce%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+						Show Example
+					</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22738a31cc92802%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Logout%22%0A%7D")'>
+						Send Request
+					</button>
+				</div>
+				<p>Destroys an existing session.</p>
+			</div>
+
+			<br>
+
+			<h4>Description</h4>
+<p class="description-container">Logs the user out and destroys his active session.</p>
+
+
+			
+
+			<br>
+<h4>Result</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Always 0.',
+    'example': 0,
+    'type': 'number',
+    'minimum': 0,
+    'maximum': 0
+}</pre>" data-html="true">
+	<td>result</td>
+	<td>number</td>
+	<td>Always 0.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Errors</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Code</th>
+		<th>Message</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre>{
+    'description': 'Session could not be found.',
+    'code': 2,
+    'message': 'NotFound'
+}</pre>" data-html="true">
+	<td>2</td>
+	<td>NotFound</td>
+	<td>Session could not be found.</td>
+</tr>
+
+</table>
+
+		</div>
+	</div>
+</div>
+<br>
+<div class="method" id="Session_KeepAlive">
+	<div class="card">
+		<div class="card-header" data-toggle="collapse" href="#Session_KeepAlive-content">
+			<h3>Session.KeepAlive</h3>
+			<div class="float-right">
+				<span class="badge badge-primary">Session</span>
+
+			</div>
+		</div>
+		<div class="card-block collapse" id="Session_KeepAlive-content">
+
+			<div class="summary-container">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2241b6f8e65d1c8%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.KeepAlive%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22ad10195b872cb%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+						Show Example
+					</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2241b6f8e65d1c8%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.KeepAlive%22%0A%7D")'>
+						Send Request
+					</button>
+				</div>
+				<p>Refreshs an existing session.</p>
+			</div>
+
+			<br>
+
+			<h4>Description</h4>
+<p class="description-container">Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.</p>
+
+
+			
+
+			<br>
+<h4>Result</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Always 0.',
+    'example': 0,
+    'type': 'number',
+    'minimum': 0,
+    'maximum': 0
+}</pre>" data-html="true">
+	<td>result</td>
+	<td>number</td>
+	<td>Always 0.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Errors</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Code</th>
+		<th>Message</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre>{
+    'description': 'Session could not be found.',
+    'code': 2,
+    'message': 'NotFound'
+}</pre>" data-html="true">
+	<td>2</td>
+	<td>NotFound</td>
+	<td>Session could not be found.</td>
+</tr>
+
+</table>
+
+		</div>
+	</div>
+</div>
+<br>
+<div class="method" id="User_Add">
+	<div class="card">
+		<div class="card-header" data-toggle="collapse" href="#User_Add-content">
+			<h3>User.Add</h3>
+			<div class="float-right">
+				<span class="badge badge-primary">User</span>
+
+			</div>
+		</div>
+		<div class="card-block collapse" id="User_Add-content">
+
+			<div class="summary-container">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22a5f3b9d41a415%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22d16e5fb4db51%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+						Show Example
+					</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22a5f3b9d41a415%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D")'>
+						Send Request
+					</button>
+				</div>
+				<p>Adds a new user.</p>
+			</div>
+
+			<br>
+
+			
+
+			<br>
+<h4>Parameters</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'type': 'object',
+  'properties': {
+    'name': {
+      'description': 'Name of the user to add.',
+      'example': 'user',
+      'type': 'string',
+      'minLength': 1
+    },
+    'email': {
+      'description': 'Email of the user to add.',
+      'example': 'user@example.org',
+      'type': 'string',
+      'format': 'email'
+    },
+    'password': {
+      'description': 'Password of the user to add.',
+      'example': '1234567890',
+      'type': 'string',
+      'minLength': 1
+    }
+  },
+  'required': [
+    'name',
+    'email',
+    'password'
+  ]
+}</pre>" data-html="true">
+	<td>params</td>
+	<td>object</td>
+	<td></td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Name of the user to add.',
+  'example': 'user',
+  'type': 'string',
+  'minLength': 1
+}</pre>" data-html="true">
+	<td>params.name</td>
+	<td>string</td>
+	<td>Name of the user to add.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Email of the user to add.',
+  'example': 'user@example.org',
+  'type': 'string',
+  'format': 'email'
+}</pre>" data-html="true">
+	<td>params.email</td>
+	<td>string</td>
+	<td>Email of the user to add.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Password of the user to add.',
+  'example': '1234567890',
+  'type': 'string',
+  'minLength': 1
+}</pre>" data-html="true">
+	<td>params.password</td>
+	<td>string</td>
+	<td>Password of the user to add.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Result</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Always 0.',
+    'example': 0,
+    'type': 'number',
+    'minimum': 0,
+    'maximum': 0
+}</pre>" data-html="true">
+	<td>result</td>
+	<td>number</td>
+	<td>Always 0.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Errors</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Code</th>
+		<th>Message</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre>{
+    'description': 'A user with that name already exists.',
+    'code': 3,
+    'message': 'Already exists'
+}</pre>" data-html="true">
+	<td>3</td>
+	<td>Already exists</td>
+	<td>A user with that name already exists.</td>
+</tr>
+
+</table>
+
+		</div>
+	</div>
+</div>
+<br>
+<div class="method" id="User_Delete">
+	<div class="card">
+		<div class="card-header" data-toggle="collapse" href="#User_Delete-content">
+			<h3>User.Delete</h3>
+			<div class="float-right">
+				<span class="badge badge-primary">User</span>
+
+			</div>
+		</div>
+		<div class="card-block collapse" id="User_Delete-content">
+
+			<div class="summary-container">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2284b604454ac9f%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Delete%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22610226e186749%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+						Show Example
+					</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2284b604454ac9f%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Delete%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%0A%20%20%20%20%7D%0A%7D")'>
+						Send Request
+					</button>
+				</div>
+				<p>Deletes an existing user.</p>
+			</div>
+
+			<br>
+
+			
+
+			<br>
+<h4>Parameters</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'type': 'object',
+  'properties': {
+    'name': {
+      'description': 'Name of the user to add.',
+      'example': 'user',
+      'type': 'string',
+      'minLength': 1
+    }
+  },
+  'required': [
+    'name'
+  ]
+}</pre>" data-html="true">
+	<td>params</td>
+	<td>object</td>
+	<td></td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Name of the user to add.',
+  'example': 'user',
+  'type': 'string',
+  'minLength': 1
+}</pre>" data-html="true">
+	<td>params.name</td>
+	<td>string</td>
+	<td>Name of the user to add.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Result</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Always 0.',
+    'example': 0,
+    'type': 'number',
+    'minimum': 0,
+    'maximum': 0
+}</pre>" data-html="true">
+	<td>result</td>
+	<td>number</td>
+	<td>Always 0.</td>
+</tr>
+
+</table>
+
+
+			<br>
+<h4>Errors</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Code</th>
+		<th>Message</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre>{
+    'description': 'A user with that name could not be found.',
+    'code': 2,
+    'message': 'Not found'
+}</pre>" data-html="true">
+	<td>2</td>
+	<td>Not found</td>
+	<td>A user with that name could not be found.</td>
+</tr>
+
+</table>
+
+		</div>
+	</div>
+</div>
+<br>
+<div class="method" id="User_GetAll">
+	<div class="card">
+		<div class="card-header" data-toggle="collapse" href="#User_GetAll-content">
+			<h3>User.GetAll</h3>
+			<div class="float-right">
+				<span class="badge badge-primary">User</span>
+
+			</div>
+		</div>
+		<div class="card-block collapse" id="User_GetAll-content">
+
+			<div class="summary-container">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%222872729428365%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%223a5fe6f46022d%22%2C%0A%20%20%20%20%22result%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%5D%0A%7D")'>
+						Show Example
+					</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%222872729428365%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D")'>
+						Send Request
+					</button>
+				</div>
+				<p>Returns all users.</p>
+			</div>
+
+			<br>
+
+			<h4>Description</h4>
+<p class="description-container">This method returns an array with information about all existing users.</p>
+
+
+			
+
+			<br>
+<h4>Result</h4>
+<table class="table table-striped table-hover table-sm">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'List of all existing users.',
+    'type': 'array',
+    'items': {
+        'description': 'Information about a user.',
+        'type': 'object',
+        'properties': {
+            'name': {
+                'description': 'Name of the user.',
+                'example': 'user',
+                'type': 'string',
+                'minLength': 1
+            },
+            'email': {
+                'description': 'Email of the user.',
+                'example': 'user@example.org',
+                'type': 'string',
+                'format': 'email'
+            }
+        }
+    }
+}</pre>" data-html="true">
+	<td>result</td>
+	<td>array</td>
+	<td>List of all existing users.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Information about a user.',
+    'type': 'object',
+    'properties': {
+        'name': {
+            'description': 'Name of the user.',
+            'example': 'user',
+            'type': 'string',
+            'minLength': 1
+        },
+        'email': {
+            'description': 'Email of the user.',
+            'example': 'user@example.org',
+            'type': 'string',
+            'format': 'email'
+        }
+    }
+}</pre>" data-html="true">
+	<td>result.[#]</td>
+	<td>object</td>
+	<td>Information about a user.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Name of the user.',
+    'example': 'user',
+    'type': 'string',
+    'minLength': 1
+}</pre>" data-html="true">
+	<td>result.[#].name</td>
+	<td>string</td>
+	<td>Name of the user.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Email of the user.',
+    'example': 'user@example.org',
+    'type': 'string',
+    'format': 'email'
+}</pre>" data-html="true">
+	<td>result.[#].email</td>
+	<td>string</td>
+	<td>Email of the user.</td>
+</tr>
+
+</table>
+
+
+			
+		</div>
+	</div>
+</div>
+<br>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="send-request-modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Send request</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+	        			</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="form-group row">
+							<label for="send-request-url" class="col-2 col-form-label">URL</label>
+							<div class="col-10">
+								<input type="text" class="form-control" id="send-request-url">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="send-request-request" class="col-2 col-form-label">Request</label>
+							<div class="col-10">
+								<textarea class="form-control" id="send-request-request" wrap="soft"></textarea>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="url" class="col-2 col-form-label"></label>
+							<div class="col-10">
+								<button type="button" class="btn btn-primary btn-block" onclick="sendRequest()">Send</button>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="send-request-response" class="col-2 col-form-label">Response</label>
+							<div class="col-10">
+								<textarea class="form-control" id="send-request-response"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="show-example-modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Show example</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+	        			</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="form-group row">
+							<label for="show-example-request" class="col-2 col-form-label">Request</label>
+							<div class="col-10">
+								<textarea class="form-control" id="show-example-request"></textarea>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="show-example-response" class="col-2 col-form-label">Response</label>
+							<div class="col-10">
+								<textarea class="form-control" id="show-example-response"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
