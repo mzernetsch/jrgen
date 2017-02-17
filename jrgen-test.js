@@ -35,8 +35,13 @@ if(!generator){
 var apiSchema = {};
 program.args.forEach((schemaPath, index) => {
 
+	//Normalize relative paths
+	if(!path.isAbsolute(schemaPath)){
+		schemaPath = path.join(process.cwd(), schemaPath);
+	}
+
 	//Load schema
-	var schema = require(schemaPath);
+	var schema = require(path.normalize(schemaPath));
 	if(!schema){
 		console.log("Specified schema '%s' does not exist. Skipping.");
 		return;
