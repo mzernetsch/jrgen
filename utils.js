@@ -1,3 +1,5 @@
+var $RefParser = require('json-schema-ref-parser');
+
 exports.populateTemplate = (template, values) => {
 	var text = new String(template);
 
@@ -61,4 +63,22 @@ exports.generateExample = (schema) => {
 	}
 
 	return example;
+}
+
+exports.resolveSchemaRefs = (schema) => {
+
+	var data;
+	var done = false;
+
+    $RefParser.dereference(schema, function(err, schema) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        data = schema;
+        done = true;
+    });
+    require('deasync').loopWhile(function(){return !done;});
+
+	return data;
 }

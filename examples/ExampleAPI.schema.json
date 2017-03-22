@@ -8,6 +8,23 @@
 		"version":"1.0"
 	},
 
+	"definitions":{
+		"session":{
+			"type":"object",
+			"properties":{
+				"session_token":{
+					"description":"Bearer token of the created session.",
+					"example":"123456890",
+
+					"type":"string",
+					"minLength":1
+				}
+			},
+
+			"required":["session_token"]
+		}
+	},
+
 	"methods":{
 		"Session.Login":{
 			"summary":"Creates a new session.",
@@ -38,18 +55,7 @@
 			},
 
 			"result":{
-				"type":"object",
-				"properties":{
-					"session_token":{
-						"description":"Bearer token of the created session.",
-						"example":"123456890",
-
-						"type":"string",
-						"minLength":1
-					}
-				},
-
-				"required":["session_token"]
+				"$ref":"#/definitions/session"
 			},
 
 			"errors":[

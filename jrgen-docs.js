@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var program = require('commander');
 var merge = require('deepmerge');
+var utils = require(path.join(__dirname, 'utils.js'));
 
 //Parse args
 program
@@ -46,8 +47,16 @@ program.args.forEach((schemaPath, index) => {
 		console.log("Specified schema '%s' does not exist. Skipping.");
 		return;
 	}
+	
+	//Resolve schema refs
+	var resolvedSchema = utils.resolveSchemaRefs(schema);
+	if (!resolvedSchema){
+		console.log("Error occured during resolving schema $refs.");
+		return;
+	}
 
-	apiSchema = merge(apiSchema, schema);
+	//Merge schema
+    apiSchema = merge(apiSchema, resolvedSchema);
 });
 
 //Check for at least one schema

@@ -56,6 +56,23 @@ A schema is a specification of a json-rpc api. It describes all available method
 		"version":"1.0"	//Current version of your api
 	},
 
+	"definitions":{	//You can define global types and reference them from anywhere using a "$ref" property
+		"session":{
+			"type":"object",
+			"properties":{
+				"session_token":{
+					"description":"Bearer token of the created session.",
+					"example":"123456890",
+
+					"type":"string",
+					"minLength":1
+				}
+			},
+
+			"required":["session_token"]
+		}
+	},
+
 	"methods":{	//All methods of the api are specified within this object.
 		"Session.Login":{	//The key of the property equals to the name of the method.
 			"summary":"Creates a new session.",	//Short summary of what the method does.
@@ -86,18 +103,7 @@ A schema is a specification of a json-rpc api. It describes all available method
 			},
 
 			"result":{	//json-schema of the result object within a json-rpc response. Can be omitted if not used.
-				"type":"object",
-				"properties":{
-					"session_token":{
-						"description":"Bearer token of the created session.",
-						"example":"123456890",
-
-						"type":"string",
-						"minLength":1
-					}
-				},
-
-				"required":["session_token"]
+				"$ref":"#/definitions/session" //Reference to a global type
 			},
 
 			"errors":[	//Possible errors in a json-rpc response. Can be omitted if not used.
