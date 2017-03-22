@@ -1,4 +1,7 @@
+var fs = require('fs');
+var path = require('path');
 var $RefParser = require('json-schema-ref-parser');
+var jsonlint = require("jsonlint");
 
 exports.populateTemplate = (template, values) => {
 	var text = new String(template);
@@ -81,4 +84,32 @@ exports.resolveSchemaRefs = (schema) => {
     require('deasync').loopWhile(function(){return !done;});
 
 	return data;
+}
+
+exports.loadSchema = (schemaPath) => {
+
+	//Normalize relative paths
+	if (!path.isAbsolute(schemaPath)) {
+		schemaPath = path.join(process.cwd(), schemaPath);
+	}
+
+	//Load schema
+	var jsonString = fs.readFileSync(schemaPath, { encoding: 'utf8' });
+	if(!jsonString){
+		throw "Error occured during loading schema."
+	}
+
+	//Parse schema
+	var schema = jsonlint.parse(jsonString);
+	if (!schema) {
+		throw "Specified schema does not exist.";
+	}
+
+	//Resolve schema refs
+	var resolvedSchema = exports.resolveSchemaRefs(schema);
+	if (!resolvedSchema){
+		throw "Error occured during resolving schema $refs.";
+	}
+
+	return resolvedSchema;
 }

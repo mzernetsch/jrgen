@@ -36,27 +36,11 @@ if (!generator) {
 var apiSchema = {};
 program.args.forEach((schemaPath, index) => {
 
-    //Normalize relative paths
-    if (!path.isAbsolute(schemaPath)) {
-        schemaPath = path.join(process.cwd(), schemaPath);
-    }
-
-    //Load schema
-    var schema = require(path.normalize(schemaPath));
-    if (!schema) {
-        console.log("Specified schema '%s' does not exist. Skipping.");
-        return;
-    }
-
-	//Resolve schema refs
-	var resolvedSchema = utils.resolveSchemaRefs(schema);
-	if (!resolvedSchema){
-		console.log("Error occured during resolving schema $refs.");
-		return;
-	}
+	//Load schema
+	var schema = utils.loadSchema(schemaPath);
 
 	//Merge schema
-    apiSchema = merge(apiSchema, resolvedSchema);
+    apiSchema = merge(apiSchema, schema);
 });
 
 //Check for at least one schema
