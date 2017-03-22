@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var $RefParser = require('json-schema-ref-parser');
 var jsonlint = require("jsonlint");
+var merge = require('deepmerge');
 
 exports.populateTemplate = (template, values) => {
 	var text = new String(template);
@@ -73,10 +74,9 @@ exports.resolveSchemaRefs = (schema) => {
 	var data;
 	var done = false;
 
-    $RefParser.dereference(schema, function(err, schema) {
-        if (err) {
-            console.error(err);
-            return;
+    $RefParser.dereference(schema, function(error, schema) {
+        if (error) {
+            throw error;
         }
         data = schema;
         done = true;
@@ -112,4 +112,21 @@ exports.loadSchema = (schemaPath) => {
 	}
 
 	return resolvedSchema;
+}
+
+exports.loadSchemas = (schemaPaths) => {
+
+	var apiSchema = {};
+
+	//Go through all schema paths
+	schemaPaths.forEach((schemaPath) => {
+
+		//Load schema
+		var schema = exports.loadSchema(schemaPath);
+
+		//Merge schema
+	    apiSchema = merge(apiSchema, schema);
+	});
+
+	return apiSchema;
 }

@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var program = require('commander');
-var merge = require('deepmerge');
 var utils = require(path.join(__dirname, 'utils.js'));
 
 //Parse args
@@ -32,21 +31,11 @@ if(!generator){
 	return;
 }
 
-//Load all schemas
-var apiSchema = {};
-program.args.forEach((schemaPath, index) => {
-
-	//Load schema
-	var schema = utils.loadSchema(schemaPath);
-
-	//Merge schema
-    apiSchema = merge(apiSchema, schema);
-});
-
-//Check for at least one schema
-if(Object.keys(apiSchema).length === 0){
-	console.log("No schema specified.");
-	return;
+//Load and merge all schemas
+var apiSchema = utils.loadSchemas(program.args);
+if (Object.keys(apiSchema).length === 0) {
+    console.error("No schema specified.");
+    return;
 }
 
 //Generate docs
