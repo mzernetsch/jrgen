@@ -1,4 +1,8 @@
-jrgen (json-rpc-generator) generates docs, tests, clients and servers for json-rpc apis.
+jrgen (json-rpc-generator) generates docs, tests, clients and servers for json-rpc apis.  
+
+Examples
+--------
+Generated example files can be found in the [examples directory](https://github.com/mzernetsch/jrgen/tree/master/examples).
 
 Usage
 -----
@@ -7,22 +11,22 @@ jrgen is divided in 4 sections 'docs', 'test', 'client' and 'server'. Call `jrge
 ### Examples
 Create html documentation from 'API.schema.json'.
 ```bash
-$ jrgen docs ~/API.schema.json
+jrgen docs ~/API.schema.json
 ```
 
 Create jasmine unit tests from 'API.schema.json'.
 ```bash
-$ jrgen test -f jasmine ~/API.schema.json
+jrgen test -f jasmine ~/API.schema.json
 ```
 
 Create a js client from 'API.schema.json' and write all generated files into the ./client subdirectory.
 ```bash
-$ jrgen client -o ./client ~/API.schema.json
+jrgen client -o ./client ~/API.schema.json
 ```
 
 Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema.json'. The generated server will handle the api calls of both schemes. A schema will overwrite all properties of its preceeding schemes.
 ```bash
-$ jrgen server ~/API1.schema.json ~/API2.schema.json
+jrgen server ~/API1.schema.json ~/API2.schema.json
 ```
 
 Available generators
@@ -30,16 +34,16 @@ Available generators
 Generators for following formats are currently available:
 
 ### docs
-- html
+- [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/ExampleAPI.html)
 
 ### test
-- jasmine
+- [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
 
 ### client
-- js
+- [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)
 
 ### server
-- nodejs
+- [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
 
 Schema
 ------
