@@ -4,6 +4,18 @@ Examples
 --------
 Generated example files can be found in the [examples directory](https://github.com/mzernetsch/jrgen/tree/master/examples).
 
+### docs
+- [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/ExampleAPI.html)
+
+### test
+- [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
+
+### client
+- [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)
+
+### server
+- [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
+
 Installation
 ------------
 ```bash
@@ -34,22 +46,6 @@ Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema
 ```bash
 jrgen server ~/API1.schema.json ~/API2.schema.json
 ```
-
-Available generators
---------------------
-Generators for following formats are currently available:
-
-### docs
-- [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/ExampleAPI.html)
-
-### test
-- [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
-
-### client
-- [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)
-
-### server
-- [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
 
 Schema
 ------
