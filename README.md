@@ -4,6 +4,12 @@ Examples
 --------
 Generated example files can be found in the [examples directory](https://github.com/mzernetsch/jrgen/tree/master/examples).
 
+Installation
+------------
+```bash
+npm install -g jrgen
+```
+
 Usage
 -----
 jrgen is divided in 4 sections 'docs', 'test', 'client' and 'server'. Call `jrgen -h` or `jrgen [section] -h` for usage information.
