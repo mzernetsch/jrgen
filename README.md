@@ -6,6 +6,7 @@ Generated example files can be found in the [examples directory](https://github.
 
 ### docs
 - [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/ExampleAPI.html)
+- [md](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/md/ExampleAPI.md)
 
 ### test
 - [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)

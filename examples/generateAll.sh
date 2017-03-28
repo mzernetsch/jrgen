@@ -3,6 +3,7 @@ schema=${1:-"./examples/ExampleAPI.schema.json"}
 
 #docs
 node ./jrgen.js docs -f html -o ./examples/docs/html $schema
+node ./jrgen.js docs -f md -o ./examples/docs/md $schema
 
 #test
 node ./jrgen.js test -f jasmine -o ./examples/test/jasmine $schema
