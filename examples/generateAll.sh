@@ -10,6 +10,7 @@ node ./jrgen.js test -f jasmine -o ./examples/test/jasmine $schema
 
 #client
 node ./jrgen.js client -f es6 -o ./examples/client/es6 $schema
+node ./jrgen.js client -f ts -o ./examples/client/ts $schema
 
 #server
 node ./jrgen.js server -f nodejs -o ./examples/server/nodejs $schema

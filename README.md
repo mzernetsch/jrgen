@@ -13,6 +13,7 @@ Generated example files can be found in the [examples directory](https://github.
 
 ### client
 - [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)
+- [ts](https://github.com/mzernetsch/jrgen/blob/master/examples/client/ts/ExampleAPIClient.ts)
 
 ### server
 - [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
