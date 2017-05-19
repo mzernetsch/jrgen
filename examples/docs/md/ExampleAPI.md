@@ -44,7 +44,7 @@ Authenticates the user using the provided credentials and creates a new session.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "e2e38507b8931",
+    "id": "6a675010aadf8",
     "method": "Session.Login",
     "params": {
         "name": "admin",
@@ -57,7 +57,7 @@ Authenticates the user using the provided credentials and creates a new session.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "84beb90b40cdc",
+    "id": "775608f6acc0a",
     "result": {
         "session_token": "123456890"
     }
@@ -87,7 +87,7 @@ Logs the user out and destroys his active session.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "2e1daf1ad377f",
+    "id": "9cc45ed765d7f",
     "method": "Session.Logout"
 }
 ```
@@ -96,7 +96,7 @@ Logs the user out and destroys his active session.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "26738900026f3",
+    "id": "7c1f8eb4fcca6",
     "result": 0
 }
 ```
@@ -124,7 +124,7 @@ Refreshs an existing session so that it keeps alive and doesn't time out. This m
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "b3e9a0760948d",
+    "id": "36491d5dbc40d",
     "method": "Session.KeepAlive"
 }
 ```
@@ -133,7 +133,7 @@ Refreshs an existing session so that it keeps alive and doesn't time out. This m
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "8dfd640572062",
+    "id": "adf5ff57157be",
     "result": 0
 }
 ```
@@ -166,7 +166,7 @@ Adds a new user.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "2209648abab47",
+    "id": "b0bc436c4601a",
     "method": "User.Add",
     "params": {
         "name": "user",
@@ -180,7 +180,7 @@ Adds a new user.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "b7683a3f539fa",
+    "id": "3f3bfb4f5c4ff",
     "result": 0
 }
 ```
@@ -211,7 +211,7 @@ Deletes an existing user.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "12fb44eec748c",
+    "id": "b86851ac3e115",
     "method": "User.Delete",
     "params": {
         "name": "user"
@@ -223,7 +223,7 @@ Deletes an existing user.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "e1a5caf14f04c",
+    "id": "6e29f7e549e85",
     "result": 0
 }
 ```
@@ -249,7 +249,7 @@ This method returns an array with information about all existing users.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "d9870df829ef1",
+    "id": "9354f63c28f9f",
     "method": "User.GetAll"
 }
 ```
@@ -258,7 +258,7 @@ This method returns an array with information about all existing users.
 ```json
 {
     "jsonrpc": "2.0",
-    "id": "d693a5b14b92f",
+    "id": "e8568f86bcbf5",
     "result": [
         {
             "name": "user",

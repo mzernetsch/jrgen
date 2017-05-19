@@ -1,250 +1,240 @@
 {
-	"jrgen":"1.0",
-	"jsonrpc":"2.0",
+  "jrgen": "1.0",
+  "jsonrpc": "2.0",
 
-	"info":{
-		"title":"ExampleAPI",
-		"description":"This api handles various rpc requests.",
-		"version":"1.0"
-	},
+  "info": {
+    "title": "ExampleAPI",
+    "description": "This api handles various rpc requests.",
+    "version": "1.0"
+  },
 
-	"definitions":{
-		"session":{
-			"type":"object",
-			"properties":{
-				"session_token":{
-					"description":"Bearer token of the created session.",
-					"example":"123456890",
+  "definitions": {
+    "session": {
+      "type": "object",
+      "properties": {
+        "session_token": {
+          "description": "Bearer token of the created session.",
+          "example": "123456890",
 
-					"type":"string",
-					"minLength":1
-				}
-			},
+          "type": "string",
+          "minLength": 1
+        }
+      },
 
-			"required":["session_token"]
-		}
-	},
+      "required": ["session_token"]
+    }
+  },
 
-	"methods":{
-		"Session.Login":{
-			"summary":"Creates a new session.",
-			"description":"Authenticates the user using the provided credentials and creates a new session.",
+  "methods": {
+    "Session.Login": {
+      "summary": "Creates a new session.",
+      "description": "Authenticates the user using the provided credentials and creates a new session.",
 
-			"tags":["Session"],
+      "tags": ["Session"],
 
-			"params":{
-				"type":"object",
-				"properties":{
-					"name":{
-						"description":"Name of the user to create a session for.",
-						"example":"admin",
+      "params": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the user to create a session for.",
+            "example": "admin",
 
-						"type":"string",
-						"minLength":1
-					},
-					"password":{
-						"description":"Password of the user to create a session for.",
-						"example":"123456",
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "description": "Password of the user to create a session for.",
+            "example": "123456",
 
-						"type":"string",
-						"minLength":1
-					}
-				},
+            "type": "string",
+            "minLength": 1
+          }
+        },
 
-				"required":["name", "password"]
-			},
+        "required": ["name", "password"]
+      },
 
-			"result":{
-				"$ref":"#/definitions/session"
-			},
+      "result": {
+        "$ref": "#/definitions/session"
+      },
 
-			"errors":[
-				{
-					"description":"The provided credentials are invalid.",
+      "errors": [{
+        "description": "The provided credentials are invalid.",
 
-					"code":1,
-					"message":"InvalidCredentials"
-				}
-			]
-		},
+        "code": 1,
+        "message": "InvalidCredentials"
+      }]
+    },
 
-		"Session.Logout":{
-			"summary":"Destroys an existing session.",
-			"description":"Logs the user out and destroys his active session.",
+    "Session.Logout": {
+      "summary": "Destroys an existing session.",
+      "description": "Logs the user out and destroys his active session.",
 
-			"tags":["Session"],
+      "tags": ["Session"],
 
-			"result":{
-				"description":"Always 0.",
-				"example":0,
+      "result": {
+        "description": "Always 0.",
+        "example": 0,
 
-				"type":"number",
-				"minimum": 0,
-				"maximum": 0
-			},
+        "type": "number",
+        "minimum": 0,
+        "maximum": 0
+      },
 
-			"errors":[
-				{
-					"description":"Session could not be found.",
+      "errors": [{
+        "description": "Session could not be found.",
 
-					"code":2,
-					"message":"NotFound"
-				}
-			]
-		},
+        "code": 2,
+        "message": "NotFound"
+      }]
+    },
 
-		"Session.KeepAlive":{
-			"summary":"Refreshs an existing session.",
-			"description":"Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.",
+    "Session.KeepAlive": {
+      "summary": "Refreshs an existing session.",
+      "description": "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.",
 
-			"tags":["Session"],
+      "tags": ["Session"],
 
-			"result":{
-				"description":"Always 0.",
-				"example":0,
+      "result": {
+        "description": "Always 0.",
+        "example": 0,
 
-				"type":"number",
-				"minimum": 0,
-				"maximum": 0
-			},
+        "type": "number",
+        "minimum": 0,
+        "maximum": 0
+      },
 
-			"errors":[
-				{
-					"description":"Session could not be found.",
+      "errors": [{
+        "description": "Session could not be found.",
 
-					"code":2,
-					"message":"NotFound"
-				}
-			]
-		},
+        "code": 2,
+        "message": "NotFound"
+      }]
+    },
 
-		"User.Add": {
-			"summary":"Adds a new user.",
+    "User.Add": {
+      "summary": "Adds a new user.",
 
-			"tags":["User"],
+      "tags": ["User"],
 
-			"params":{
-				"type":"object",
+      "params": {
+        "type": "object",
 
-				"properties":{
-					"name":{
-						"description":"Name of the user to add.",
-						"example":"user",
+        "properties": {
+          "name": {
+            "description": "Name of the user to add.",
+            "example": "user",
 
-						"type":"string",
-						"minLength":1
-					},
-					"email":{
-						"description":"Email of the user to add.",
-						"example":"user@example.org",
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "description": "Email of the user to add.",
+            "example": "user@example.org",
 
-						"type":"string",
-						"format":"email"
-					},
-					"password":{
-						"description":"Password of the user to add.",
-						"example":"1234567890",
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "description": "Password of the user to add.",
+            "example": "1234567890",
 
-						"type":"string",
-						"minLength":1
-					}
-				},
+            "type": "string",
+            "minLength": 1
+          }
+        },
 
-				"required":["name", "email", "password"]
-			},
+        "required": ["name", "email", "password"]
+      },
 
-			"result":{
-				"description":"Always 0.",
-				"example":0,
+      "result": {
+        "description": "Always 0.",
+        "example": 0,
 
-				"type":"number",
-				"minimum": 0,
-				"maximum": 0
-			},
+        "type": "number",
+        "minimum": 0,
+        "maximum": 0
+      },
 
-			"errors":[
-				{
-					"description":"A user with that name already exists.",
+      "errors": [{
+        "description": "A user with that name already exists.",
 
-					"code":3,
-					"message":"Already exists"
-				}
-			]
-		},
+        "code": 3,
+        "message": "Already exists"
+      }]
+    },
 
-		"User.Delete": {
-			"summary":"Deletes an existing user.",
+    "User.Delete": {
+      "summary": "Deletes an existing user.",
 
-			"tags":["User"],
+      "tags": ["User"],
 
-			"params":{
-				"type":"object",
+      "params": {
+        "type": "object",
 
-				"properties":{
-					"name":{
-						"description":"Name of the user to add.",
-						"example":"user",
+        "properties": {
+          "name": {
+            "description": "Name of the user to add.",
+            "example": "user",
 
-						"type":"string",
-						"minLength":1
-					}
-				},
+            "type": "string",
+            "minLength": 1
+          }
+        },
 
-				"required":["name"]
-			},
+        "required": ["name"]
+      },
 
-			"result":{
-				"description":"Always 0.",
-				"example":0,
+      "result": {
+        "description": "Always 0.",
+        "example": 0,
 
-				"type":"number",
-				"minimum": 0,
-				"maximum": 0
-			},
+        "type": "number",
+        "minimum": 0,
+        "maximum": 0
+      },
 
-			"errors":[
-				{
-					"description":"A user with that name could not be found.",
+      "errors": [{
+        "description": "A user with that name could not be found.",
 
-					"code":2,
-					"message":"Not found"
-				}
-			]
-		},
+        "code": 2,
+        "message": "Not found"
+      }]
+    },
 
-		"User.GetAll": {
-			"summary":"Returns all users.",
-			"description":"This method returns an array with information about all existing users.",
+    "User.GetAll": {
+      "summary": "Returns all users.",
+      "description": "This method returns an array with information about all existing users.",
 
-			"tags":["User"],
+      "tags": ["User"],
 
-			"result":{
-				"description":"List of all existing users.",
+      "result": {
+        "description": "List of all existing users.",
 
-				"type":"array",
-				"items":{
-					"description":"Information about a user.",
+        "type": "array",
+        "items": {
+          "description": "Information about a user.",
 
-					"type":"object",
+          "type": "object",
 
-					"properties":{
-						"name":{
-							"description":"Name of the user.",
-							"example":"user",
+          "properties": {
+            "name": {
+              "description": "Name of the user.",
+              "example": "user",
 
-							"type":"string",
-							"minLength":1
-						},
-						"email":{
-							"description":"Email of the user.",
-							"example":"user@example.org",
+              "type": "string",
+              "minLength": 1
+            },
+            "email": {
+              "description": "Email of the user.",
+              "example": "user@example.org",
 
-							"type":"string",
-							"format":"email"
-						}
-					}
-				}
-			}
-		}
-	}
+              "type": "string",
+              "format": "email"
+            }
+          }
+        }
+      }
+    }
+  }
 }

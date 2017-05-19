@@ -1,11 +1,11 @@
 {
-	"log":{
-		"verbose":false
-	},
-	"api":{
-		"host":"127.0.0.1",
-		"port":"8080",
-		"path":"/"
-	},
-	"methods":{{METHODS}}
+  "log": {
+    "verbose": false
+  },
+  "api": {
+    "host": "127.0.0.1",
+    "port": "8080",
+    "path": "/"
+  },
+  "methods": {{METHODS}}
 }
