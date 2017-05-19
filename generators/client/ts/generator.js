@@ -29,12 +29,12 @@ var buildClient = (schema) => {
 
         //Build params type
         if(schema.methods[key].params){
-			types += json2ts.compile(schema.methods[key].params, key.replace(/\./g, '') + 'RpcParams.json');
+			types += json2ts.compile(schema.methods[key].params, key.replace(/\./g, '') + 'RpcParams.json') + '\n\n';
 		}
 
         //Build result type
         if(schema.methods[key].result){
-			types += json2ts.compile(schema.methods[key].result, key.replace(/\./g, '') + 'RpcResult.json');
+			types += json2ts.compile(schema.methods[key].result, key.replace(/\./g, '') + 'RpcResult.json') + '\n\n';
 		}
     });
 
