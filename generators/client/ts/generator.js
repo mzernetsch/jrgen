@@ -38,6 +38,11 @@ var buildClient = (schema) => {
 		}
     });
 
+    Object.keys(schema.definitions).forEach(function(key) {
+
+      types += json2ts.compile(schema.definitions[key], key.replace(/\./g, '') + '.json') + '\n\n';
+    });
+
     return utils.populateTemplate(templates.base, {
         'METHODS': methods,
         'TYPES': types
