@@ -11,11 +11,7 @@ it("should handle '{{METHOD}}' requests.", (done) => {
         return;
       }
 
-      expect(result).toConform({
-        {
-          RESULT_SCHEMA
-        }
-      });
+      expect(result).toConform({{RESULT_SCHEMA}});
       done();
     })
     .catch((error) => {
