@@ -12,7 +12,9 @@ const templates = {
   })
 };
 
-exports.generate = (schema, outdir) => {
+exports.generate = (schemas, outdir) => {
+
+  var schema = utils.mergeSchemas(schemas);
 
   fs.writeFileSync(path.join(outdir, schema.info.title + 'Server.js'), buildServer(schema));
 }

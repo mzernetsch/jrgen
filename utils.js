@@ -120,13 +120,24 @@ exports.loadSchema = (schemaPath) => {
 
 exports.loadSchemas = (schemaPaths) => {
 
-  var apiSchema = {};
+  var schemas = [];
 
   //Go through all schema paths
   schemaPaths.forEach((schemaPath) => {
 
     //Load schema
-    var schema = exports.loadSchema(schemaPath);
+    schemas.push(exports.loadSchema(schemaPath));
+  });
+
+  return schemas;
+}
+
+exports.mergeSchemas = (schemas) => {
+
+  var apiSchema = {};
+
+  //Go through all schemas
+  schemas.forEach((schema) => {
 
     //Merge schema
     apiSchema = merge(apiSchema, schema);

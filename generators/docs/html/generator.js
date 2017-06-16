@@ -39,7 +39,9 @@ const templates = {
   })
 };
 
-exports.generate = (schema, outdir) => {
+exports.generate = (schemas, outdir) => {
+
+  var schema = utils.mergeSchemas(schemas);
 
   //Build documentation
   var doc = buildDocumentation(schema);

@@ -31,12 +31,12 @@ if (!generator) {
   return;
 }
 
-//Load and merge all schemas
-var apiSchema = utils.loadSchemas(program.args);
-if (Object.keys(apiSchema).length === 0) {
+//Load all schemas
+var schemas = utils.loadSchemas(program.args);
+if (schemas.length === 0) {
   console.error("No schema specified.");
   return;
 }
 
 //Generate docs
-generator.generate(apiSchema, outdir);
+generator.generate(schemas, outdir);

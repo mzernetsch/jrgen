@@ -24,7 +24,9 @@ const templates = {
   }),
 };
 
-exports.generate = (schema, outdir) => {
+exports.generate = (schemas, outdir) => {
+
+  var schema = utils.mergeSchemas(schemas);
 
   //Create output hierarchy
   var outdirSpec = path.join(outdir, 'spec');
