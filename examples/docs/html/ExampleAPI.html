@@ -197,10 +197,10 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22699ab857ebaaf%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%229cb8bd094548c%22%2C%0A%20%20%20%20%22result%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22session_token%22%3A%20%22123456890%22%0A%20%20%20%20%7D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22ab61191768e67%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%222f59b6a89ab12%22%2C%0A%20%20%20%20%22result%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22session_token%22%3A%20%22123456890%22%0A%20%20%20%20%7D%0A%7D")'>
             Show Example
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22699ab857ebaaf%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22ab61191768e67%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D")'>
             Send Request
           </button>
         </div>
@@ -224,13 +224,13 @@
   'properties': {
     'name': {
       'description': 'Name of the user to create a session for.',
-      'example': 'admin',
+      'default': 'admin',
       'type': 'string',
       'minLength': 1
     },
     'password': {
       'description': 'Password of the user to create a session for.',
-      'example': '123456',
+      'default': '123456',
       'type': 'string',
       'minLength': 1
     }
@@ -246,7 +246,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
   'description': 'Name of the user to create a session for.',
-  'example': 'admin',
+  'default': 'admin',
   'type': 'string',
   'minLength': 1
 }</pre>" data-html="true">
@@ -256,7 +256,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
   'description': 'Password of the user to create a session for.',
-  'example': '123456',
+  'default': '123456',
   'type': 'string',
   'minLength': 1
 }</pre>" data-html="true">
@@ -279,7 +279,7 @@
     'properties': {
         'session_token': {
             'description': 'Bearer token of the created session.',
-            'example': '123456890',
+            'default': '123456890',
             'type': 'string',
             'minLength': 1
         }
@@ -294,7 +294,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
     'description': 'Bearer token of the created session.',
-    'example': '123456890',
+    'default': '123456890',
     'type': 'string',
     'minLength': 1
 }</pre>" data-html="true">
@@ -341,10 +341,10 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%220ce101cc6ed6e%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Logout%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22f9041ca4ed1f6%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2266478fc52ece3%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Logout%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%222f82c9f0eee0a%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
             Show Example
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%220ce101cc6ed6e%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Logout%22%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2266478fc52ece3%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Logout%22%0A%7D")'>
             Send Request
           </button>
         </div>
@@ -365,7 +365,7 @@
   </tr>
   <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
     'description': 'Always 0.',
-    'example': 0,
+    'default': 0,
     'type': 'number',
     'minimum': 0,
     'maximum': 0
@@ -413,10 +413,10 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22796354d669cf4%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.KeepAlive%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2295d857ad37cd6%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22206ba493b1a27%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.KeepAlive%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%224acddacfafa66%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
             Show Example
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22796354d669cf4%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.KeepAlive%22%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22206ba493b1a27%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.KeepAlive%22%0A%7D")'>
             Send Request
           </button>
         </div>
@@ -437,7 +437,7 @@
   </tr>
   <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
     'description': 'Always 0.',
-    'example': 0,
+    'default': 0,
     'type': 'number',
     'minimum': 0,
     'maximum': 0
@@ -485,10 +485,10 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%228a56f716e777b%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%225f309fdedccfe%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22867ede3d862e%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22a5826b55e1754%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
             Show Example
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%228a56f716e777b%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22867ede3d862e%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D")'>
             Send Request
           </button>
         </div>
@@ -510,19 +510,19 @@
   'properties': {
     'name': {
       'description': 'Name of the user to add.',
-      'example': 'user',
+      'default': 'user',
       'type': 'string',
       'minLength': 1
     },
     'email': {
       'description': 'Email of the user to add.',
-      'example': 'user@example.org',
+      'default': 'user@example.org',
       'type': 'string',
       'format': 'email'
     },
     'password': {
       'description': 'Password of the user to add.',
-      'example': '1234567890',
+      'default': '1234567890',
       'type': 'string',
       'minLength': 1
     }
@@ -539,7 +539,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
   'description': 'Name of the user to add.',
-  'example': 'user',
+  'default': 'user',
   'type': 'string',
   'minLength': 1
 }</pre>" data-html="true">
@@ -549,7 +549,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
   'description': 'Email of the user to add.',
-  'example': 'user@example.org',
+  'default': 'user@example.org',
   'type': 'string',
   'format': 'email'
 }</pre>" data-html="true">
@@ -559,7 +559,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
   'description': 'Password of the user to add.',
-  'example': '1234567890',
+  'default': '1234567890',
   'type': 'string',
   'minLength': 1
 }</pre>" data-html="true">
@@ -579,7 +579,7 @@
   </tr>
   <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
     'description': 'Always 0.',
-    'example': 0,
+    'default': 0,
     'type': 'number',
     'minimum': 0,
     'maximum': 0
@@ -627,10 +627,10 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22a82e1ddcd78eb%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Delete%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%223b14f61ce5fcc%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%227ada06f60d32f%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Delete%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2254849efde6d59%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
             Show Example
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22a82e1ddcd78eb%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Delete%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%0A%20%20%20%20%7D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%227ada06f60d32f%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Delete%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%0A%20%20%20%20%7D%0A%7D")'>
             Send Request
           </button>
         </div>
@@ -652,7 +652,7 @@
   'properties': {
     'name': {
       'description': 'Name of the user to add.',
-      'example': 'user',
+      'default': 'user',
       'type': 'string',
       'minLength': 1
     }
@@ -667,7 +667,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
   'description': 'Name of the user to add.',
-  'example': 'user',
+  'default': 'user',
   'type': 'string',
   'minLength': 1
 }</pre>" data-html="true">
@@ -687,7 +687,7 @@
   </tr>
   <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
     'description': 'Always 0.',
-    'example': 0,
+    'default': 0,
     'type': 'number',
     'minimum': 0,
     'maximum': 0
@@ -735,10 +735,10 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22f11d8e3b36b2b%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221731434099329%22%2C%0A%20%20%20%20%22result%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%5D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%229b92f8776342f%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%2283fbeeae3d73a%22%2C%0A%20%20%20%20%22result%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%5D%0A%7D")'>
             Show Example
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%22f11d8e3b36b2b%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%229b92f8776342f%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D")'>
             Send Request
           </button>
         </div>
@@ -766,13 +766,13 @@
         'properties': {
             'name': {
                 'description': 'Name of the user.',
-                'example': 'user',
+                'default': 'user',
                 'type': 'string',
                 'minLength': 1
             },
             'email': {
                 'description': 'Email of the user.',
-                'example': 'user@example.org',
+                'default': 'user@example.org',
                 'type': 'string',
                 'format': 'email'
             }
@@ -789,13 +789,13 @@
     'properties': {
         'name': {
             'description': 'Name of the user.',
-            'example': 'user',
+            'default': 'user',
             'type': 'string',
             'minLength': 1
         },
         'email': {
             'description': 'Email of the user.',
-            'example': 'user@example.org',
+            'default': 'user@example.org',
             'type': 'string',
             'format': 'email'
         }
@@ -807,7 +807,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
     'description': 'Name of the user.',
-    'example': 'user',
+    'default': 'user',
     'type': 'string',
     'minLength': 1
 }</pre>" data-html="true">
@@ -817,7 +817,7 @@
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
     'description': 'Email of the user.',
-    'example': 'user@example.org',
+    'default': 'user@example.org',
     'type': 'string',
     'format': 'email'
 }</pre>" data-html="true">

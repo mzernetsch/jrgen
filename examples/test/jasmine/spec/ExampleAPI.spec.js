@@ -143,7 +143,7 @@ describe("ExampleAPI", () => {
         return;
       }
 
-      expect(result).toConform({"type":"object","properties":{"session_token":{"description":"Bearer token of the created session.","example":"123456890","type":"string","minLength":1}},"required":["session_token"]});
+      expect(result).toConform({"type":"object","properties":{"session_token":{"description":"Bearer token of the created session.","default":"123456890","type":"string","minLength":1}},"required":["session_token"]});
       done();
     })
     .catch((error) => {
@@ -170,7 +170,7 @@ it("should handle 'Session.Logout' requests.", (done) => {
         return;
       }
 
-      expect(result).toConform({"description":"Always 0.","example":0,"type":"number","minimum":0,"maximum":0});
+      expect(result).toConform({"description":"Always 0.","default":0,"type":"number","minimum":0,"maximum":0});
       done();
     })
     .catch((error) => {
@@ -197,7 +197,7 @@ it("should handle 'Session.KeepAlive' requests.", (done) => {
         return;
       }
 
-      expect(result).toConform({"description":"Always 0.","example":0,"type":"number","minimum":0,"maximum":0});
+      expect(result).toConform({"description":"Always 0.","default":0,"type":"number","minimum":0,"maximum":0});
       done();
     })
     .catch((error) => {
@@ -224,7 +224,7 @@ it("should handle 'User.Add' requests.", (done) => {
         return;
       }
 
-      expect(result).toConform({"description":"Always 0.","example":0,"type":"number","minimum":0,"maximum":0});
+      expect(result).toConform({"description":"Always 0.","default":0,"type":"number","minimum":0,"maximum":0});
       done();
     })
     .catch((error) => {
@@ -251,7 +251,7 @@ it("should handle 'User.Delete' requests.", (done) => {
         return;
       }
 
-      expect(result).toConform({"description":"Always 0.","example":0,"type":"number","minimum":0,"maximum":0});
+      expect(result).toConform({"description":"Always 0.","default":0,"type":"number","minimum":0,"maximum":0});
       done();
     })
     .catch((error) => {
@@ -278,7 +278,7 @@ it("should handle 'User.GetAll' requests.", (done) => {
         return;
       }
 
-      expect(result).toConform({"description":"List of all existing users.","type":"array","items":{"description":"Information about a user.","type":"object","properties":{"name":{"description":"Name of the user.","example":"user","type":"string","minLength":1},"email":{"description":"Email of the user.","example":"user@example.org","type":"string","format":"email"}}}});
+      expect(result).toConform({"description":"List of all existing users.","type":"array","items":{"description":"Information about a user.","type":"object","properties":{"name":{"description":"Name of the user.","default":"user","type":"string","minLength":1},"email":{"description":"Email of the user.","default":"user@example.org","type":"string","format":"email"}}}});
       done();
     })
     .catch((error) => {

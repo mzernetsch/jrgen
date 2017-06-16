@@ -61,7 +61,7 @@ exports.generateExample = (schema) => {
     example = [exports.generateExample(schema.items)];
   }
   else {
-    example = schema.example;
+    example = schema.default === undefined ? schema.example : schema.default;
   }
 
   return example;

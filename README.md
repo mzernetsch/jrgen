@@ -70,7 +70,7 @@ A schema is a specification of a json-rpc api. It describes all available method
 			"properties":{
 				"session_token":{
 					"description":"Bearer token of the created session.",
-					"example":"123456890",
+					"default":"123456890",
 
 					"type":"string",
 					"minLength":1
@@ -93,14 +93,14 @@ A schema is a specification of a json-rpc api. It describes all available method
 				"properties":{
 					"name":{
 						"description":"Name of the user to create a session for.",	//You can provide a description for every property.
-						"example":"admin",	//You should provide a valid example value for each non-object and non-array property. These provided example values will be used to generate example requests and responses.
+						"default":"admin",	//You should provide a valid default value for each non-object and non-array property. These provided default values will be used to generate example requests and responses.
 
 						"type":"string",
 						"minLength":1
 					},
 					"password":{
 						"description":"Password of the user to create a session for.",
-						"example":"123456",
+						"default":"123456",
 
 						"type":"string",
 						"minLength":1

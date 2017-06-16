@@ -14,7 +14,7 @@
       "properties": {
         "session_token": {
           "description": "Bearer token of the created session.",
-          "example": "123456890",
+          "default": "123456890",
 
           "type": "string",
           "minLength": 1
@@ -37,14 +37,14 @@
         "properties": {
           "name": {
             "description": "Name of the user to create a session for.",
-            "example": "admin",
+            "default": "admin",
 
             "type": "string",
             "minLength": 1
           },
           "password": {
             "description": "Password of the user to create a session for.",
-            "example": "123456",
+            "default": "123456",
 
             "type": "string",
             "minLength": 1
@@ -74,7 +74,7 @@
 
       "result": {
         "description": "Always 0.",
-        "example": 0,
+        "default": 0,
 
         "type": "number",
         "minimum": 0,
@@ -97,7 +97,7 @@
 
       "result": {
         "description": "Always 0.",
-        "example": 0,
+        "default": 0,
 
         "type": "number",
         "minimum": 0,
@@ -123,21 +123,21 @@
         "properties": {
           "name": {
             "description": "Name of the user to add.",
-            "example": "user",
+            "default": "user",
 
             "type": "string",
             "minLength": 1
           },
           "email": {
             "description": "Email of the user to add.",
-            "example": "user@example.org",
+            "default": "user@example.org",
 
             "type": "string",
             "format": "email"
           },
           "password": {
             "description": "Password of the user to add.",
-            "example": "1234567890",
+            "default": "1234567890",
 
             "type": "string",
             "minLength": 1
@@ -149,7 +149,7 @@
 
       "result": {
         "description": "Always 0.",
-        "example": 0,
+        "default": 0,
 
         "type": "number",
         "minimum": 0,
@@ -175,7 +175,7 @@
         "properties": {
           "name": {
             "description": "Name of the user to add.",
-            "example": "user",
+            "default": "user",
 
             "type": "string",
             "minLength": 1
@@ -187,7 +187,7 @@
 
       "result": {
         "description": "Always 0.",
-        "example": 0,
+        "default": 0,
 
         "type": "number",
         "minimum": 0,
@@ -220,14 +220,14 @@
           "properties": {
             "name": {
               "description": "Name of the user.",
-              "example": "user",
+              "default": "user",
 
               "type": "string",
               "minLength": 1
             },
             "email": {
               "description": "Email of the user.",
-              "example": "user@example.org",
+              "default": "user@example.org",
 
               "type": "string",
               "format": "email"
