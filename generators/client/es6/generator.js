@@ -20,7 +20,7 @@ exports.generate = (schema, outdir) => {
 var buildClient = (schema) => {
 
   var methods = '';
-  Object.keys(schema.methods).forEach(function(key) {
+  Object.keys(schema.methods).forEach((key) => {
     methods += utils.populateTemplate(templates.method, {
       'METHOD': key,
       'METHOD_NAME': key.replace(/\./g, '_'),

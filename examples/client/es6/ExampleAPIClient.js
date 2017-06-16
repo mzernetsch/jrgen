@@ -16,7 +16,7 @@ class RPCClient {
             method: method,
             params: params
           }),
-        }).then(function(response) {
+        }).then((response) => {
           if (response.ok) {
             response.json().then((rpcResponse) => {
               if ("error" in rpcResponse) {
@@ -38,7 +38,7 @@ class RPCClient {
             });
           }
         })
-        .catch(function(error) {
+        .catch((error) => {
           reject({
             code: -1,
             message: "Network error"

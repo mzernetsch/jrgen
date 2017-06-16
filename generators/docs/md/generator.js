@@ -78,7 +78,7 @@ var buildParamsSection = (paramsSchema) => {
   }
 
   var paramsPropertyList = [];
-  parsePropertyList('params', paramsSchema).forEach(function(item) {
+  parsePropertyList('params', paramsSchema).forEach((item) => {
     paramsPropertyList.push([
       item.name,
       item.type,
@@ -98,7 +98,7 @@ var buildResultSection = (resultSchema) => {
   }
 
   var resultPropertyList = [];
-  parsePropertyList('result', resultSchema).forEach(function(item) {
+  parsePropertyList('result', resultSchema).forEach((item) => {
     resultPropertyList.push([
       item.name,
       item.type,
@@ -118,7 +118,7 @@ var buildErrorsSection = (errorsSchema) => {
   }
 
   var errorsPropertyList = [];
-  errorsSchema.forEach(function(item) {
+  errorsSchema.forEach((item) => {
     errorsPropertyList.push([
       item.code,
       item.message,
@@ -149,7 +149,7 @@ var parsePropertyList = (name, schema) => {
     entries = entries.concat(parsePropertyList(name + '.[#]', schema.items));
   }
   else if (schema.type === "object") {
-    Object.keys(schema.properties).forEach(function(key) {
+    Object.keys(schema.properties).forEach((key) => {
       entries = entries.concat(parsePropertyList(name + '.' + key, schema.properties[key]));
     });
   }

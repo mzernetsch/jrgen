@@ -1,15 +1,15 @@
 var jsonschema = require('jsonschema');
 
-beforeEach(function() {
+beforeEach(() => {
   jasmine.addMatchers({
-    toConform: function() {
+    toConform: () => {
       return {
-        compare: function(actual, expected) {
+        compare: (actual, expected) => {
           var validationResult = jsonschema.validate(actual, expected);
 
           var pass = validationResult.errors.length === 0;
           var message = '';
-          validationResult.errors.forEach(function(item) {
+          validationResult.errors.forEach((item) => {
             message += item.stack + '. value: "' + item.instance + '".\n';
           });
 

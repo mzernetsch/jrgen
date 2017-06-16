@@ -7,7 +7,7 @@ var merge = require('deepmerge');
 exports.populateTemplate = (template, values) => {
   var text = new String(template);
 
-  Object.keys(values).forEach(function(key) {
+  Object.keys(values).forEach((key) => {
     var regex = new RegExp("{{" + key + "}}", "g");
     text = text.replace(regex, values[key]);
   });
@@ -53,7 +53,7 @@ exports.generateExample = (schema) => {
   if (schema.type === "object") {
     example = {};
 
-    Object.keys(schema.properties).forEach(function(key) {
+    Object.keys(schema.properties).forEach((key) => {
       example[key] = exports.generateExample(schema.properties[key]);
     });
   }
@@ -72,7 +72,7 @@ exports.resolveSchemaRefs = (schema) => {
   var data;
   var done = false;
 
-  $RefParser.dereference(schema, function(error, schema) {
+  $RefParser.dereference(schema, (error, schema) => {
     if (error) {
       throw error;
     }
@@ -80,7 +80,7 @@ exports.resolveSchemaRefs = (schema) => {
     done = true;
   });
 
-  require('deasync').loopWhile(function() {
+  require('deasync').loopWhile(() => {
     return !done;
   });
 

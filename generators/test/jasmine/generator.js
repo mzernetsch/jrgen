@@ -71,7 +71,7 @@ var buildPackage = (schema) => {
 var buildSpec = (schema) => {
 
   var tests = '';
-  Object.keys(schema.methods).forEach(function(key) {
+  Object.keys(schema.methods).forEach((key) => {
     tests += utils.populateTemplate(templates.test, {
       'METHOD': key,
       'RESULT_SCHEMA': JSON.stringify(schema.methods[key].result)
@@ -87,7 +87,7 @@ var buildSpec = (schema) => {
 var buildConfig = (schema) => {
 
   var methods = {}
-  Object.keys(schema.methods).forEach(function(key) {
+  Object.keys(schema.methods).forEach((key) => {
     methods[key] = {
       params: utils.generateExample(schema.methods[key].params),
       expectError: false

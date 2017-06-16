@@ -141,7 +141,7 @@ var buildParamsSection = (paramsSchema) => {
   }
 
   var paramsPropertyList = '';
-  parsePropertyList('params', paramsSchema).forEach(function(item) {
+  parsePropertyList('params', paramsSchema).forEach((item) => {
     paramsPropertyList += utils.populateTemplate(templates.property, {
       'NAME': item.name,
       'TYPE': item.type,
@@ -162,7 +162,7 @@ var buildResultSection = (resultSchema) => {
   }
 
   var resultPropertyList = '';
-  parsePropertyList('result', resultSchema).forEach(function(item) {
+  parsePropertyList('result', resultSchema).forEach((item) => {
     resultPropertyList += utils.populateTemplate(templates.property, {
       'NAME': item.name,
       'TYPE': item.type,
@@ -183,7 +183,7 @@ var buildErrorsSection = (errorsSchema) => {
   }
 
   var errorsPropertyList = '';
-  errorsSchema.forEach(function(item) {
+  errorsSchema.forEach((item) => {
     errorsPropertyList += utils.populateTemplate(templates.error, {
       'CODE': item.code,
       'MESSAGE': item.message,
@@ -217,7 +217,7 @@ var parsePropertyList = (name, schema) => {
   }
 
   else if (schema.type === "object") {
-    Object.keys(schema.properties).forEach(function(key) {
+    Object.keys(schema.properties).forEach((key) => {
       entries = entries.concat(parsePropertyList(name + '.' + key, schema.properties[key]));
     });
   }

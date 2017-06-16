@@ -85,11 +85,11 @@ describe("{{TITLE}}", () => {
         }
 
         var message = ''
-        response.on('data', function(chunk) {
+        response.on('data', (chunk) => {
           message += chunk;
         });
 
-        response.on('end', function() {
+        response.on('end', () => {
           if (config.log.verbose) {
             console.log(JSON.stringify(response, null, 4));
           }

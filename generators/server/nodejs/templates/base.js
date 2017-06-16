@@ -72,11 +72,11 @@ class RPCServer {
 
       var requestBody = "";
 
-      request.on('data', function(chunk) {
+      request.on('data', (chunk) => {
         requestBody += chunk;
       });
 
-      request.on('end', function() {
+      request.on('end', () => {
         resolve(requestBody)
       });
     });

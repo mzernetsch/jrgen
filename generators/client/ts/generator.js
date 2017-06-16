@@ -22,7 +22,7 @@ var buildClient = (schema) => {
 
   var types = '';
   var methods = '';
-  Object.keys(schema.methods).forEach(function(key) {
+  Object.keys(schema.methods).forEach((key) => {
 
     //Build method
     methods += buildRPCMethod(key, schema.methods[key]) + '\n';
@@ -38,7 +38,7 @@ var buildClient = (schema) => {
     }
   });
 
-  Object.keys(schema.definitions).forEach(function(key) {
+  Object.keys(schema.definitions).forEach((key) => {
 
     types += json2ts.compile(schema.definitions[key], key.replace(/\./g, '') + '.json') + '\n\n';
   });
