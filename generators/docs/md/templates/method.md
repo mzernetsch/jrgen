@@ -1,3 +1,4 @@
+<a name="{{METHOD}}"></a>
 {{METHOD}}
 -------------------
 {{SUMMARY}}
