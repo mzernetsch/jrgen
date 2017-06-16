@@ -21,7 +21,7 @@ exports.generateRequestExample = (method, paramsSchema) => {
 
   var exampleRequest = {
     jsonrpc: '2.0',
-    id: Math.random().toString(16).slice(2),
+    id: '1234567890',
     method: method,
     params: example === null ? undefined : example
   }
@@ -35,7 +35,7 @@ exports.generateResponseExample = (resultSchema) => {
 
   var exampleResponse = {
     jsonrpc: '2.0',
-    id: Math.random().toString(16).slice(2),
+    id: '1234567890',
     result: example === null ? undefined : example
   }
 
