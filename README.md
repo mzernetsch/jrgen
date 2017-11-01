@@ -50,12 +50,14 @@ Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema
 jrgen server ~/API1.schema.json ~/API2.schema.json
 ```
 
-Schema
-------
-A schema is a specification of a json-rpc api. It describes all available methods, its parameters and the expected result or error responses. An example for a schema can be found in the examples directory. All generators do their work based on this specification.
+Specification
+-------------
+jrgen uses special [specification files](https://github.com/mzernetsch/jrgen/blob/master/examples/ExampleAPI.schema.json) which describe all available methods, the parameters and the expected result or error responses of an api. A specification file contains valid json and mostly consists of [JSON-Schema](https://spacetelescope.github.io/understanding-json-schema/). A JSON-Schema describing a jrgen specification can be found [here](https://github.com/mzernetsch/jrgen-schema/blob/master/jrgen.schema.json).   
+If the api is really large you may consider splitting the specification into multiple files and create references using [JSON-Pointer](https://spacetelescope.github.io/understanding-json-schema/structuring.html#reuse).
 
 ```js
 {
+	"$schema": "https://rawgit.com/mzernetsch/jrgen-schema/master/jrgen.schema.json",	//Link to the schema. Used for validation and autocompletion in certain editors.
 	"jrgen":"1.0",		//jrgen version. Currently always "1.0".
 	"jsonrpc":"2.0",	//jsonrpc version. Currently always "2.0".
 
