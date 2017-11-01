@@ -1,4 +1,5 @@
 {
+  "$schema": "https://rawgit.com/mzernetsch/jrgen-schema/master/jrgen.schema.json",
   "jrgen": "1.0",
   "jsonrpc": "2.0",
 
