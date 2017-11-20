@@ -41,11 +41,14 @@ const templates = {
 
 exports.generate = (schemas) => {
 
-  var schema = utils.mergeSchemas(schemas);
+  return new Promise((resolve, reject) => {
 
-  var artifacts = {};
-  artifacts[schema.info.title + '.html'] = Buffer.from(buildDocumentation(schema), 'utf-8');
-  return artifacts;
+    var schema = utils.mergeSchemas(schemas);
+
+    var artifacts = {};
+    artifacts[schema.info.title + '.html'] = Buffer.from(buildDocumentation(schema), 'utf-8');
+    resolve(artifacts);
+  });
 }
 
 var buildDocumentation = (schema) => {

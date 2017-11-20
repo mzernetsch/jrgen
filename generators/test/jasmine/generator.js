@@ -26,19 +26,22 @@ const templates = {
 
 exports.generate = (schemas) => {
 
-  var schema = utils.mergeSchemas(schemas);
+  return new Promise((resolve, reject) => {
 
-  var pathSpec = 'spec';
-  var pathSupport = path.join(pathSpec, 'support');
-  var pathHelpers = path.join(pathSupport, 'helpers');
+    var schema = utils.mergeSchemas(schemas);
 
-  var artifacts = {};
-  artifacts['package.json'] = Buffer.from(buildPackage(schema), 'utf-8');
-  artifacts['config.json'] = Buffer.from(buildConfig(schema), 'utf-8');
-  artifacts[path.join(pathSpec, schema.info.title + '.spec.js')] = Buffer.from(buildSpec(schema), 'utf-8');
-  artifacts[path.join(pathSupport, 'jasmine.json')] = Buffer.from(buildJasmine(schema), 'utf-8');
-  artifacts[path.join(pathHelpers, 'SpecHelper.js')] = Buffer.from(buildHelper(schema), 'utf-8');
-  return artifacts;
+    var pathSpec = 'spec';
+    var pathSupport = path.join(pathSpec, 'support');
+    var pathHelpers = path.join(pathSupport, 'helpers');
+
+    var artifacts = {};
+    artifacts['package.json'] = Buffer.from(buildPackage(schema), 'utf-8');
+    artifacts['config.json'] = Buffer.from(buildConfig(schema), 'utf-8');
+    artifacts[path.join(pathSpec, schema.info.title + '.spec.js')] = Buffer.from(buildSpec(schema), 'utf-8');
+    artifacts[path.join(pathSupport, 'jasmine.json')] = Buffer.from(buildJasmine(schema), 'utf-8');
+    artifacts[path.join(pathHelpers, 'SpecHelper.js')] = Buffer.from(buildHelper(schema), 'utf-8');
+    resolve(artifacts);
+  });
 }
 
 var buildHelper = (schema) => {

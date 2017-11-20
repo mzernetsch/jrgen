@@ -14,11 +14,14 @@ const templates = {
 
 exports.generate = (schemas) => {
 
-  var schema = utils.mergeSchemas(schemas);
+  return new Promise((resolve, reject) => {
+    
+    var schema = utils.mergeSchemas(schemas);
 
-  var artifacts = {};
-  artifacts[schema.info.title + 'Client.js'] = Buffer.from(buildClient(schema), 'utf-8');
-  return artifacts;
+    var artifacts = {};
+    artifacts[schema.info.title + 'Client.js'] = Buffer.from(buildClient(schema), 'utf-8');
+    resolve(artifacts);
+  });
 }
 
 var buildClient = (schema) => {

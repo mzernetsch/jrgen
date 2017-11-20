@@ -15,13 +15,28 @@ const templates = {
 
 exports.generate = (schemas) => {
 
-    var artifacts = {};
-    schemas.forEach((schema) => {
-        Object.assign(artifacts, markdownGenerator.generate([schema]))
+    return new Promise((resolve, reject) => {
+        
+        var artifacts = {};
+        
+        artifacts['README.md'] = Buffer.from(templates.readme, 'utf-8');
+        artifacts['SUMMARY.md'] = Buffer.from(buildSummary(schemas), 'utf-8');
+
+        var markdownPromises = [];
+        schemas.forEach((schema) => {
+            var markdownPromise = markdownGenerator.generate([schema])
+                .then((markdownArtifacts) => {
+                    Object.assign(artifacts, markdownArtifacts);
+                });
+
+            markdownPromises.push(markdownPromise);
+        });
+
+        Promise.all(markdownPromises)
+            .then(() => {
+                resolve(artifacts);
+            });
     });
-    artifacts['README.md'] = Buffer.from(templates.readme, 'utf-8');
-    artifacts['SUMMARY.md'] = Buffer.from(buildSummary(schemas), 'utf-8');
-    return artifacts;
 }
 
 var buildSummary = (schemas) => {
