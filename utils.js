@@ -1,4 +1,4 @@
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
 var $RefParser = require('json-schema-ref-parser');
 var jsonlint = require("jsonlint");
@@ -144,4 +144,11 @@ exports.mergeSchemas = (schemas) => {
   });
 
   return apiSchema;
+}
+
+exports.writeArtifacts = (artifacts, outdir) => {
+
+  Object.keys(artifacts).forEach((artifactPath) => {
+    fs.outputFile(path.join(outdir, artifactPath), artifacts[artifactPath]);
+  });
 }

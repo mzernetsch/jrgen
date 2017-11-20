@@ -24,29 +24,21 @@ const templates = {
   }),
 };
 
-exports.generate = (schemas, outdir) => {
+exports.generate = (schemas) => {
 
   var schema = utils.mergeSchemas(schemas);
 
-  //Create output hierarchy
-  var outdirSpec = path.join(outdir, 'spec');
-  var outdirSupport = path.join(outdirSpec, 'support');
-  var outdirHelpers = path.join(outdirSupport, 'helpers');
+  var pathSpec = 'spec';
+  var pathSupport = path.join(pathSpec, 'support');
+  var pathHelpers = path.join(pathSupport, 'helpers');
 
-  //Create sub outdir
-  try {
-    fs.mkdirSync(outdirSpec);
-    fs.mkdirSync(outdirSupport);
-    fs.mkdirSync(outdirHelpers);
-  }
-  catch (e) {}
-
-  //Create output dir
-  fs.writeFileSync(path.join(outdir, 'package.json'), buildPackage(schema));
-  fs.writeFileSync(path.join(outdir, 'config.json'), buildConfig(schema));
-  fs.writeFileSync(path.join(outdirSpec, schema.info.title + '.spec.js'), buildSpec(schema));
-  fs.writeFileSync(path.join(outdirSupport, 'jasmine.json'), buildJasmine(schema));
-  fs.writeFileSync(path.join(outdirHelpers, 'SpecHelper.js'), buildHelper(schema));
+  var artifacts = {};
+  artifacts['package.json'] = Buffer.from(buildPackage(schema), 'utf-8');
+  artifacts['config.json'] = Buffer.from(buildConfig(schema), 'utf-8');
+  artifacts[path.join(pathSpec, schema.info.title + '.spec.js')] = Buffer.from(buildSpec(schema), 'utf-8');
+  artifacts[path.join(pathSupport, 'jasmine.json')] = Buffer.from(buildJasmine(schema), 'utf-8');
+  artifacts[path.join(pathHelpers, 'SpecHelper.js')] = Buffer.from(buildHelper(schema), 'utf-8');
+  return artifacts;
 }
 
 var buildHelper = (schema) => {

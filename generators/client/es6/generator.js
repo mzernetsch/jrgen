@@ -12,11 +12,13 @@ const templates = {
   })
 };
 
-exports.generate = (schemas, outdir) => {
+exports.generate = (schemas) => {
 
   var schema = utils.mergeSchemas(schemas);
 
-  fs.writeFileSync(path.join(outdir, schema.info.title + 'Client.js'), buildClient(schema));
+  var artifacts = {};
+  artifacts[schema.info.title + 'Client.js'] = Buffer.from(buildClient(schema), 'utf-8');
+  return artifacts;
 }
 
 var buildClient = (schema) => {

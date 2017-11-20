@@ -39,15 +39,13 @@ const templates = {
   })
 };
 
-exports.generate = (schemas, outdir) => {
+exports.generate = (schemas) => {
 
   var schema = utils.mergeSchemas(schemas);
 
-  //Build documentation
-  var doc = buildDocumentation(schema);
-
-  //Write out doc file
-  fs.writeFileSync(path.join(outdir, schema.info.title + '.html'), doc);
+  var artifacts = {};
+  artifacts[schema.info.title + '.html'] = Buffer.from(buildDocumentation(schema), 'utf-8');
+  return artifacts;
 }
 
 var buildDocumentation = (schema) => {

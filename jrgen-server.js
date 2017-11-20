@@ -39,4 +39,7 @@ if (schemas.length === 0) {
 }
 
 //Generate docs
-generator.generate(schemas, outdir);
+var artifacts = generator.generate(schemas);
+
+//Write artifacts to outdir
+utils.writeArtifacts(artifacts, outdir);

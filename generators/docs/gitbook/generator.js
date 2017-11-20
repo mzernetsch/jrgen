@@ -13,14 +13,15 @@ const templates = {
     })
 };
 
-exports.generate = (schemas, outdir) => {
+exports.generate = (schemas) => {
 
+    var artifacts = {};
     schemas.forEach((schema) => {
-        markdownGenerator.generate([schema], outdir);
+        Object.assign(artifacts, markdownGenerator.generate([schema]))
     });
-
-    fs.writeFileSync(path.join(outdir, 'README.md'), templates.readme);
-    fs.writeFileSync(path.join(outdir, 'SUMMARY.md'), buildSummary(schemas));
+    artifacts['README.md'] = Buffer.from(templates.readme, 'utf-8');
+    artifacts['SUMMARY.md'] = Buffer.from(buildSummary(schemas), 'utf-8');
+    return artifacts;
 }
 
 var buildSummary = (schemas) => {
