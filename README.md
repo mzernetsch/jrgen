@@ -1,7 +1,5 @@
 jrgen (json-rpc-generator) generates docs, tests, clients and servers for json-rpc apis.  
 
-Examples
---------
 Generated example files can be found in the [examples directory](https://github.com/mzernetsch/jrgen/tree/master/examples).
 
 ### docs
@@ -123,7 +121,7 @@ If the api is really large you may consider splitting the specification into mul
 
 					"code":1,	//code is always an integer.
 					"message":"InvalidCredentials"	//message is always a string.
-					"data":{	//data is a json-schema describing its contents. Can be omitted is not used.
+					"data":{	//json-schema of the data object within a json-rpc error. Can be omitted if not used.
 
 					}
 				}
@@ -132,17 +130,3 @@ If the api is really large you may consider splitting the specification into mul
 	}
 }
 ```
-
-Create new generators
----------------------
-1. Create a new subfolder within the generators dir. The name of the subfolder equals to the name of the format.
-```
-jrgen/generators/<type>/<format>/
-```
-2. Create a file 'generator.js' within that newly created directory. Fill it with the following code. Parameter [schema] is the schema of the api and [outdir] is a path to a directory where you should place your generated content.
-```js
-exports.generate = (schema, outdir) => {
-	//TODO implement me
-}
-```
-3. Implement your generator.
