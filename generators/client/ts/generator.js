@@ -21,43 +21,65 @@ exports.generate = (schemas) => {
   return new Promise((resolve, reject) => {
 
     var schema = utils.mergeSchemas(schemas);
-    
+
+    buildClient(schema).then((ts) => {
       var artifacts = {};
       artifacts['RPCClient.ts'] = Buffer.from(templates.client, 'utf-8');
-      artifacts[schema.info.title + 'Client.ts'] = Buffer.from(buildClient(schema), 'utf-8');
+      artifacts[schema.info.title + 'Client.ts'] = Buffer.from(ts, 'utf-8');
       resolve(artifacts);
+    });
   });
 }
 
 var buildClient = (schema) => {
 
-  var types = '';
-  var methods = '';
-  Object.keys(schema.methods).forEach((key) => {
+  return new Promise((resolve, reject) => {
 
-    //Build method
-    methods += buildRPCMethod(key, schema.methods[key]) + '\n';
+    var types = '';
+    var methods = '';
+    var promises = [];
 
-    //Build params type
-    if (schema.methods[key].params) {
-      types += json2ts.compile(schema.methods[key].params, key.replace(/\./g, '') + 'RpcParams.json') + '\n\n';
-    }
+    Object.keys(schema.methods).forEach((key) => {
 
-    //Build result type
-    if (schema.methods[key].result) {
-      types += json2ts.compile(schema.methods[key].result, key.replace(/\./g, '') + 'RpcResult.json') + '\n\n';
-    }
-  });
+      //Build method
+      methods += buildRPCMethod(key, schema.methods[key]) + '\n';
 
-  Object.keys(schema.definitions).forEach((key) => {
+      //Build params type
+      if (schema.methods[key].params) {
+        var promise = json2ts.compile(schema.methods[key].params, key.replace(/\./g, '') + 'RpcParams.json');
+        promise.then((ts) => {
+          types += ts + '\n\n'
+        });
+        promises.push(promise);
+      }
 
-    types += json2ts.compile(schema.definitions[key], key.replace(/\./g, '') + '.json') + '\n\n';
-  });
+      //Build result type
+      if (schema.methods[key].result) {
+        var promise = json2ts.compile(schema.methods[key].result, key.replace(/\./g, '') + 'RpcResult.json');
+        promise.then((ts) => {
+          types += ts + '\n\n'
+        });
+        promises.push(promise);
+      }
+    });
 
-  return utils.populateTemplate(templates.base, {
-    'TITLE': schema.info.title + 'Client',
-    'METHODS': methods,
-    'TYPES': types
+    Object.keys(schema.definitions).forEach((key) => {
+
+      var promise = json2ts.compile(schema.definitions[key], key.replace(/\./g, '') + '.json');
+      promise.then((ts) => {
+        types += ts + '\n\n'
+      });
+      promises.push(promise);
+    });
+
+    Promise.all(promises)
+      .then(() => {
+        resolve(utils.populateTemplate(templates.base, {
+          'TITLE': schema.info.title + 'Client',
+          'METHODS': methods,
+          'TYPES': types
+        }));
+      });
   });
 }
 
