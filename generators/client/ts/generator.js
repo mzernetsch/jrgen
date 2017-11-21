@@ -35,6 +35,13 @@ var buildClient = (schema) => {
 
   return new Promise((resolve, reject) => {
 
+    var json2tsOptions = {
+      bannerComment: '',
+      style: {
+        singleQuote: true
+      }
+    };
+
     var types = '';
     var methods = '';
     var promises = [];
@@ -46,7 +53,7 @@ var buildClient = (schema) => {
 
       //Build params type
       if (schema.methods[key].params) {
-        var promise = json2ts.compile(schema.methods[key].params, key.replace(/\./g, '') + 'RpcParams.json');
+        var promise = json2ts.compile(schema.methods[key].params, key.replace(/\./g, '') + 'RpcParams.json', json2tsOptions);
         promise.then((ts) => {
           types += ts + '\n\n'
         });
@@ -55,7 +62,7 @@ var buildClient = (schema) => {
 
       //Build result type
       if (schema.methods[key].result) {
-        var promise = json2ts.compile(schema.methods[key].result, key.replace(/\./g, '') + 'RpcResult.json');
+        var promise = json2ts.compile(schema.methods[key].result, key.replace(/\./g, '') + 'RpcResult.json', json2tsOptions);
         promise.then((ts) => {
           types += ts + '\n\n'
         });
@@ -65,7 +72,7 @@ var buildClient = (schema) => {
 
     Object.keys(schema.definitions).forEach((key) => {
 
-      var promise = json2ts.compile(schema.definitions[key], key.replace(/\./g, '') + '.json');
+      var promise = json2ts.compile(schema.definitions[key], key.replace(/\./g, '') + '.json', json2tsOptions);
       promise.then((ts) => {
         types += ts + '\n\n'
       });
