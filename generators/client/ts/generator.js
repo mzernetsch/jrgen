@@ -5,6 +5,9 @@ const utils = require(path.join(__dirname, "../../../", 'utils.js'));
 
 const templateDir = path.join(__dirname, 'templates');
 const templates = {
+  'client': fs.readFileSync(path.join(templateDir, 'client.ts'), {
+    encoding: 'utf8'
+  }),
   'base': fs.readFileSync(path.join(templateDir, 'base.ts'), {
     encoding: 'utf8'
   }),
@@ -20,6 +23,7 @@ exports.generate = (schemas) => {
     var schema = utils.mergeSchemas(schemas);
     
       var artifacts = {};
+      artifacts['RPCClient.ts'] = Buffer.from(templates.client, 'utf-8');
       artifacts[schema.info.title + 'Client.ts'] = Buffer.from(buildClient(schema), 'utf-8');
       resolve(artifacts);
   });
@@ -51,6 +55,7 @@ var buildClient = (schema) => {
   });
 
   return utils.populateTemplate(templates.base, {
+    'TITLE': schema.info.title + 'Client',
     'METHODS': methods,
     'TYPES': types
   });
