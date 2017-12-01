@@ -12,7 +12,6 @@ deploy:
   - provider: releases
     api_key:
       secure: jKV3qliD58l6dOxEhKoReR7N6y+qvvq6kspT0IRTPnVQL1PWBzcrIJtUr1GvueSYEIKxKxtN7MvHPP5Mcn1BUTJuqBGMhuwS560RwdzxVCJ3tjkf456GnvfGsAZJnmveD6OxqWoFW9IX7blFrPlJVPdSnsikfmCbxGM2XtHDBKv3NjbksbMCsX2FGFnPCc7aDOZUqmi4EVodwlr/1qwN5w8Z5TpswtAFZNPSA5O2jLTKHB42YRPHKw4cLe3tX7RizilFZDB+Ames5J3PiyRjOgL10Ol+/cO/dNkhUPScbZ8O7PMRIEiFa/1lUY2eXMYookZqFe0oynUuHMg97T/d2nMVstjDJGK/z1G789i4fvEawjpAr1WzciwlqZ4xrzKDamLV9nouUARlIJe8On6u8rBAUYX5mEZUGArVtd/5Y0yRmMr9pBWNq7OBBxp7v3zzb0wu6BeGiVILLlL0c2JbVqj5j/A81LjYzzdPRKIXj5N5YcGr+wpfzFy5+nAsYdf7WaZDUAyUFieOATO2d3iePjCJHa+3tZK0Ss31fBkcZD6AdxKOXUFymlncqYYMaHUn+ZmWhupxfzP/iuZmwlzTqJh+s2G/DtDxCvT2sP3Kcr4gDC48XYfbLVgw2hhkGRx+j8cVybwLEr0SEMOu4yCBUUUlvvPSj6RNmSRZ6R9oOVw=
-    file: ''
     on:
       tags: true
       repo: mzernetsch/jrgen
