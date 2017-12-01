@@ -9,6 +9,7 @@ Generated example files can be found in the [examples directory](https://github.
 
 ### test
 - [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
+- [postman](https://github.com/mzernetsch/jrgen/tree/master/examples/test/postman/ExampleAPI.postman_collection.json)
 
 ### client
 - [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)

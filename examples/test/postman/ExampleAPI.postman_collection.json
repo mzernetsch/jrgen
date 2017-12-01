@@ -1,0 +1,232 @@
+{
+    "info": {
+        "_postman_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+        "name": "ExampleAPI",
+        "description": "This api handles various rpc requests.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Session.Login",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"type\":\"object\",\"properties\":{\"session_token\":{\"description\":\"Bearer token of the created session.\",\"default\":\"123456890\",\"type\":\"string\",\"minLength\":1}},\"required\":[\"session_token\"]}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+                            "",
+                            "pm.test('Schema is valid', function() {",
+                            "  var jsonData = pm.response.json();",
+                            "  tv4.validate(jsonData, schema);",
+                            "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                            "});",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.Login\",\n    \"params\": {\n        \"name\": \"admin\",\n        \"password\": \"123456\"\n    }\n}"
+                },
+                "url": {
+                    "raw": "{{url}}",
+                    "host": [
+                        "{{url}}"
+                    ]
+                },
+                "description": "Authenticates the user using the provided credentials and creates a new session."
+            },
+            "response": []
+        },
+        {
+            "name": "Session.Logout",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+                            "",
+                            "pm.test('Schema is valid', function() {",
+                            "  var jsonData = pm.response.json();",
+                            "  tv4.validate(jsonData, schema);",
+                            "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                            "});",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.Logout\"\n}"
+                },
+                "url": {
+                    "raw": "{{url}}",
+                    "host": [
+                        "{{url}}"
+                    ]
+                },
+                "description": "Logs the user out and destroys his active session."
+            },
+            "response": []
+        },
+        {
+            "name": "Session.KeepAlive",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+                            "",
+                            "pm.test('Schema is valid', function() {",
+                            "  var jsonData = pm.response.json();",
+                            "  tv4.validate(jsonData, schema);",
+                            "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                            "});",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.KeepAlive\"\n}"
+                },
+                "url": {
+                    "raw": "{{url}}",
+                    "host": [
+                        "{{url}}"
+                    ]
+                },
+                "description": "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout."
+            },
+            "response": []
+        },
+        {
+            "name": "User.Add",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+                            "",
+                            "pm.test('Schema is valid', function() {",
+                            "  var jsonData = pm.response.json();",
+                            "  tv4.validate(jsonData, schema);",
+                            "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                            "});",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Add\",\n    \"params\": {\n        \"name\": \"user\",\n        \"email\": \"user@example.org\",\n        \"password\": \"1234567890\"\n    }\n}"
+                },
+                "url": {
+                    "raw": "{{url}}",
+                    "host": [
+                        "{{url}}"
+                    ]
+                },
+                "description": "Adds a new user."
+            },
+            "response": []
+        },
+        {
+            "name": "User.Delete",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+                            "",
+                            "pm.test('Schema is valid', function() {",
+                            "  var jsonData = pm.response.json();",
+                            "  tv4.validate(jsonData, schema);",
+                            "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                            "});",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Delete\",\n    \"params\": {\n        \"name\": \"user\"\n    }\n}"
+                },
+                "url": {
+                    "raw": "{{url}}",
+                    "host": [
+                        "{{url}}"
+                    ]
+                },
+                "description": "Deletes an existing user."
+            },
+            "response": []
+        },
+        {
+            "name": "User.GetAll",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"List of all existing users.\",\"type\":\"array\",\"items\":{\"description\":\"Information about a user.\",\"type\":\"object\",\"properties\":{\"name\":{\"description\":\"Name of the user.\",\"default\":\"user\",\"type\":\"string\",\"minLength\":1},\"email\":{\"description\":\"Email of the user.\",\"default\":\"user@example.org\",\"type\":\"string\",\"format\":\"email\"}}}}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+                            "",
+                            "pm.test('Schema is valid', function() {",
+                            "  var jsonData = pm.response.json();",
+                            "  tv4.validate(jsonData, schema);",
+                            "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                            "});",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.GetAll\"\n}"
+                },
+                "url": {
+                    "raw": "{{url}}",
+                    "host": [
+                        "{{url}}"
+                    ]
+                },
+                "description": "This method returns an array with information about all existing users."
+            },
+            "response": []
+        }
+    ]
+}

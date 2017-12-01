@@ -10,6 +10,7 @@ node $JRGEN_PATH docs -f gitbook -o $SCRIPT_PATH/docs/gitbook $SCHEMA_PATH
 
 #test
 node $JRGEN_PATH test -f jasmine -o $SCRIPT_PATH/test/jasmine $SCHEMA_PATH
+node $JRGEN_PATH test -f postman -o $SCRIPT_PATH/test/postman $SCHEMA_PATH
 
 #client
 node $JRGEN_PATH client -f es6 -o $SCRIPT_PATH/client/es6 $SCHEMA_PATH
