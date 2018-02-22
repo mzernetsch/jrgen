@@ -284,12 +284,12 @@ This method returns an array with information about all existing users.
 
 ### Result
 
-| Name             | Type   | Description                 |
-| ---------------- | ------ | --------------------------- |
-| result           | array  | List of all existing users. |
-| result.[#]       | object | Information about a user.   |
-| result.[#].name  | string | Name of the user.           |
-| result.[#].email | string | Email of the user.          |
+| Name            | Type   | Description                 |
+| --------------- | ------ | --------------------------- |
+| result          | array  | List of all existing users. |
+| result[#]       | object | Information about a user.   |
+| result[#].name  | string | Name of the user.           |
+| result[#].email | string | Email of the user.          |
 
 ### Examples
 

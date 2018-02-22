@@ -211,7 +211,7 @@ var parsePropertyList = (name, schema) => {
   });
 
   if (schema.type === "array") {
-    entries = entries.concat(parsePropertyList(name + ".[#]", schema.items));
+    entries = entries.concat(parsePropertyList(name + "[#]", schema.items));
   } else if (schema.type === "object") {
     Object.keys(schema.properties).forEach(key => {
       entries = entries.concat(
