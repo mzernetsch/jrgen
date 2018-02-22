@@ -1,13 +1,16 @@
-var fs = require('fs');
-var path = require('path');
-var program = require('commander');
-var utils = require(path.join(__dirname, 'utils.js'));
+var fs = require("fs");
+var path = require("path");
+var program = require("commander");
+var utils = require(path.join(__dirname, "utils.js"));
 
 //Parse args
 program
-  .usage('[options] <schema ...>')
-  .option('-f, --format <format>', 'Output format. Defaults to "nodejs".')
-  .option('-o, --outdir <directory>', 'Output directory. Defaults to current working directory.')
+  .usage("[options] <schema ...>")
+  .option("-f, --format <format>", 'Output format. Defaults to "nodejs".')
+  .option(
+    "-o, --outdir <directory>",
+    "Output directory. Defaults to current working directory."
+  )
   .parse(process.argv);
 
 //Check outdir
@@ -18,7 +21,13 @@ if (!fs.existsSync(outdir)) {
 }
 
 //Check generator
-var generatorPath = path.join(__dirname, 'generators', 'server', program.format || 'nodejs', 'generator.js');
+var generatorPath = path.join(
+  __dirname,
+  "generators",
+  "server",
+  program.format || "nodejs",
+  "generator.js"
+);
 if (!fs.existsSync(generatorPath)) {
   console.log("Specified format '%s' is not available.", program.format);
   return;
@@ -39,7 +48,7 @@ if (schemas.length === 0) {
 }
 
 //Generate docs
-generator.generate(schemas)
-  .then((artifacts) => {
-    utils.writeArtifacts(artifacts, outdir);
-  });
+generator.generate(schemas).then(artifacts => {
+  utils.prettifyArtifacts(artifacts);
+  utils.writeArtifacts(artifacts, outdir);
+});

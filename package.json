@@ -1,7 +1,8 @@
 {
   "name": "jrgen",
   "version": "1.4.0",
-  "description": "Generates docs, tests, clients and servers for json-rpc apis.",
+  "description":
+    "Generates docs, tests, clients and servers for json-rpc apis.",
   "keywords": [
     "generator",
     "json-rpc",
@@ -19,6 +20,10 @@
     "type": "git",
     "url": "https://github.com/mzernetsch/jrgen.git"
   },
+  "scripts": {
+    "format":
+      "prettier --write './generators/**/!(templates)/*.{js,ts,css,scss,json,md}'"
+  },
   "dependencies": {
     "commander": "^2.9.0",
     "deasync": "^0.1.9",
@@ -29,6 +34,7 @@
     "jsonlint": "^1.6.2",
     "jsonschema": "^1.1.1",
     "markdown-table": "^1.1.0",
+    "prettier": "^1.10.2",
     "uuid": "^3.1.0"
   }
 }

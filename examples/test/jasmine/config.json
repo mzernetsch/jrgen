@@ -9,34 +9,34 @@
   },
   "methods": {
     "Session.Login": {
-        "params": {
-            "name": "admin",
-            "password": "123456"
-        },
-        "expectError": false
+      "params": {
+        "name": "admin",
+        "password": "123456"
+      },
+      "expectError": false
     },
     "Session.Logout": {
-        "expectError": false
+      "expectError": false
     },
     "Session.KeepAlive": {
-        "expectError": false
+      "expectError": false
     },
     "User.Add": {
-        "params": {
-            "name": "user",
-            "email": "user@example.org",
-            "password": "1234567890"
-        },
-        "expectError": false
+      "params": {
+        "name": "user",
+        "email": "user@example.org",
+        "password": "1234567890"
+      },
+      "expectError": false
     },
     "User.Delete": {
-        "params": {
-            "name": "user"
-        },
-        "expectError": false
+      "params": {
+        "name": "user"
+      },
+      "expectError": false
     },
     "User.GetAll": {
-        "expectError": false
+      "expectError": false
     }
-}
+  }
 }
