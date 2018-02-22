@@ -15,7 +15,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"type\":\"object\",\"properties\":{\"session_token\":{\"description\":\"Bearer token of the created session.\",\"default\":\"123456890\",\"type\":\"string\",\"minLength\":1}},\"required\":[\"session_token\"]}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"type\":\"object\",\"properties\":{\"session_token\":{\"description\":\"Bearer token of the created session.\",\"default\":\"123456890\",\"type\":\"string\",\"minLength\":1},\"validity\":{\"description\":\"Validity of the session token in seconds.\",\"default\":3600,\"type\":\"number\",\"multipleOf\":1}},\"required\":[\"session_token\"]}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",
@@ -197,7 +197,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"List of all existing users.\",\"type\":\"array\",\"items\":{\"description\":\"Information about a user.\",\"type\":\"object\",\"properties\":{\"name\":{\"description\":\"Name of the user.\",\"default\":\"user\",\"type\":\"string\",\"minLength\":1},\"email\":{\"description\":\"Email of the user.\",\"default\":\"user@example.org\",\"type\":\"string\",\"format\":\"email\"}}}}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"List of all existing users.\",\"type\":\"array\",\"items\":{\"description\":\"Information about a user.\",\"type\":\"object\",\"properties\":{\"name\":{\"description\":\"Name of the user.\",\"default\":\"user\",\"type\":\"string\",\"minLength\":1},\"email\":{\"description\":\"Email of the user.\",\"default\":\"user@example.org\",\"type\":\"string\",\"format\":\"email\"}},\"required\":[\"name\",\"email\"]}}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",

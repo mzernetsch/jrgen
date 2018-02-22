@@ -150,8 +150,12 @@ var parsePropertyList = (name, schema) => {
     entries = entries.concat(parsePropertyList(name + "[#]", schema.items));
   } else if (schema.type === "object") {
     Object.keys(schema.properties).forEach(key => {
+      var connector = "?.";
+      if (schema.required && schema.required.includes(key)) {
+        connector = ".";
+      }
       entries = entries.concat(
-        parsePropertyList(name + "." + key, schema.properties[key])
+        parsePropertyList(name + connector + key, schema.properties[key])
       );
     });
   }

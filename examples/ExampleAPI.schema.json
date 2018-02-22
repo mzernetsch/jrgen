@@ -1,5 +1,6 @@
 {
-  "$schema": "https://rawgit.com/mzernetsch/jrgen-schema/master/jrgen.schema.json",
+  "$schema":
+    "https://rawgit.com/mzernetsch/jrgen-schema/master/jrgen.schema.json",
   "jrgen": "1.0",
   "jsonrpc": "2.0",
 
@@ -19,6 +20,13 @@
 
           "type": "string",
           "minLength": 1
+        },
+        "validity": {
+          "description": "Validity of the session token in seconds.",
+          "default": 3600,
+
+          "type": "number",
+          "multipleOf": 1
         }
       },
 
@@ -29,7 +37,8 @@
   "methods": {
     "Session.Login": {
       "summary": "Creates a new session.",
-      "description": "Authenticates the user using the provided credentials and creates a new session.",
+      "description":
+        "Authenticates the user using the provided credentials and creates a new session.",
 
       "tags": ["Session"],
 
@@ -59,12 +68,14 @@
         "$ref": "#/definitions/session"
       },
 
-      "errors": [{
-        "description": "The provided credentials are invalid.",
+      "errors": [
+        {
+          "description": "The provided credentials are invalid.",
 
-        "code": 1,
-        "message": "InvalidCredentials"
-      }]
+          "code": 1,
+          "message": "InvalidCredentials"
+        }
+      ]
     },
 
     "Session.Logout": {
@@ -82,17 +93,20 @@
         "maximum": 0
       },
 
-      "errors": [{
-        "description": "Session could not be found.",
+      "errors": [
+        {
+          "description": "Session could not be found.",
 
-        "code": 2,
-        "message": "NotFound"
-      }]
+          "code": 2,
+          "message": "NotFound"
+        }
+      ]
     },
 
     "Session.KeepAlive": {
       "summary": "Refreshs an existing session.",
-      "description": "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.",
+      "description":
+        "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.",
 
       "tags": ["Session"],
 
@@ -105,12 +119,14 @@
         "maximum": 0
       },
 
-      "errors": [{
-        "description": "Session could not be found.",
+      "errors": [
+        {
+          "description": "Session could not be found.",
 
-        "code": 2,
-        "message": "NotFound"
-      }]
+          "code": 2,
+          "message": "NotFound"
+        }
+      ]
     },
 
     "User.Add": {
@@ -157,12 +173,14 @@
         "maximum": 0
       },
 
-      "errors": [{
-        "description": "A user with that name already exists.",
+      "errors": [
+        {
+          "description": "A user with that name already exists.",
 
-        "code": 3,
-        "message": "Already exists"
-      }]
+          "code": 3,
+          "message": "Already exists"
+        }
+      ]
     },
 
     "User.Delete": {
@@ -195,17 +213,20 @@
         "maximum": 0
       },
 
-      "errors": [{
-        "description": "A user with that name could not be found.",
+      "errors": [
+        {
+          "description": "A user with that name could not be found.",
 
-        "code": 2,
-        "message": "Not found"
-      }]
+          "code": 2,
+          "message": "Not found"
+        }
+      ]
     },
 
     "User.GetAll": {
       "summary": "Returns all users.",
-      "description": "This method returns an array with information about all existing users.",
+      "description":
+        "This method returns an array with information about all existing users.",
 
       "tags": ["User"],
 
@@ -233,7 +254,9 @@
               "type": "string",
               "format": "email"
             }
-          }
+          },
+
+          "required": ["name", "email"]
         }
       }
     }

@@ -197,7 +197,7 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22result%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22session_token%22%3A%20%22123456890%22%0A%20%20%20%20%7D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22result%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22session_token%22%3A%20%22123456890%22%2C%0A%20%20%20%20%20%20%20%20%22validity%22%3A%203600%0A%20%20%20%20%7D%0A%7D")'>
             Show Example
           </button>
           <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22Session.Login%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22admin%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%22123456%22%0A%20%20%20%20%7D%0A%7D")'>
@@ -282,6 +282,12 @@
             'default': '123456890',
             'type': 'string',
             'minLength': 1
+        },
+        'validity': {
+            'description': 'Validity of the session token in seconds.',
+            'default': 3600,
+            'type': 'number',
+            'multipleOf': 1
         }
     },
     'required': [
@@ -301,6 +307,16 @@
   <td>result.session_token</td>
   <td>string</td>
   <td>Bearer token of the created session.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Validity of the session token in seconds.',
+    'default': 3600,
+    'type': 'number',
+    'multipleOf': 1
+}</pre>" data-html="true">
+  <td>result?.validity</td>
+  <td>number</td>
+  <td>Validity of the session token in seconds.</td>
 </tr>
 
 </table>
@@ -776,7 +792,11 @@
                 'type': 'string',
                 'format': 'email'
             }
-        }
+        },
+        'required': [
+            'name',
+            'email'
+        ]
     }
 }</pre>" data-html="true">
   <td>result</td>
@@ -799,7 +819,11 @@
             'type': 'string',
             'format': 'email'
         }
-    }
+    },
+    'required': [
+        'name',
+        'email'
+    ]
 }</pre>" data-html="true">
   <td>result[#]</td>
   <td>object</td>

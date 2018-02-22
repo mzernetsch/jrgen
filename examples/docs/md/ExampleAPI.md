@@ -35,10 +35,11 @@ Authenticates the user using the provided credentials and creates a new session.
 
 ### Result
 
-| Name                 | Type   | Description                          |
-| -------------------- | ------ | ------------------------------------ |
-| result               | object |                                      |
-| result.session_token | string | Bearer token of the created session. |
+| Name                 | Type   | Description                               |
+| -------------------- | ------ | ----------------------------------------- |
+| result               | object |                                           |
+| result.session_token | string | Bearer token of the created session.      |
+| result?.validity     | number | Validity of the session token in seconds. |
 
 ### Errors
 
@@ -69,7 +70,8 @@ Authenticates the user using the provided credentials and creates a new session.
   "jsonrpc": "2.0",
   "id": "1234567890",
   "result": {
-    "session_token": "123456890"
+    "session_token": "123456890",
+    "validity": 3600
   }
 }
 ```

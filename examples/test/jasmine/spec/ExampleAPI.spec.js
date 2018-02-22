@@ -151,6 +151,12 @@ describe("ExampleAPI", () => {
               default: "123456890",
               type: "string",
               minLength: 1
+            },
+            validity: {
+              description: "Validity of the session token in seconds.",
+              default: 3600,
+              type: "number",
+              multipleOf: 1
             }
           },
           required: ["session_token"]
@@ -347,7 +353,8 @@ describe("ExampleAPI", () => {
                 type: "string",
                 format: "email"
               }
-            }
+            },
+            required: ["name", "email"]
           }
         });
         done();

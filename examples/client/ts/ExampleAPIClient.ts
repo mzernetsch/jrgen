@@ -67,6 +67,10 @@ export interface SessionLoginRpcResult {
    * Bearer token of the created session.
    */
   session_token: string;
+  /**
+   * Validity of the session token in seconds.
+   */
+  validity?: number;
   [k: string]: any;
 }
 
@@ -121,11 +125,11 @@ export type UserGetAllRpcResult = {
   /**
    * Name of the user.
    */
-  name?: string;
+  name: string;
   /**
    * Email of the user.
    */
-  email?: string;
+  email: string;
   [k: string]: any;
 }[];
 
@@ -134,5 +138,9 @@ export interface Session {
    * Bearer token of the created session.
    */
   session_token: string;
+  /**
+   * Validity of the session token in seconds.
+   */
+  validity?: number;
   [k: string]: any;
 }

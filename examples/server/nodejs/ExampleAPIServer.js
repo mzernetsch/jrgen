@@ -4,7 +4,8 @@ var server = new RPCServer();
 
 server.expose("Session.Login", (params, resolve, reject) => {
   resolve({
-    session_token: "123456890"
+    session_token: "123456890",
+    validity: 3600
   });
 });
 
