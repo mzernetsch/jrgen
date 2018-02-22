@@ -16,9 +16,8 @@ This api handles various rpc requests.
 ---
 
 <a name="Session.Login"></a>
-Session.Login
 
----
+## Session.Login
 
 Creates a new session.
 
@@ -76,9 +75,8 @@ Authenticates the user using the provided credentials and creates a new session.
 ```
 
 <a name="Session.Logout"></a>
-Session.Logout
 
----
+## Session.Logout
 
 Destroys an existing session.
 
@@ -121,9 +119,8 @@ Logs the user out and destroys his active session.
 ```
 
 <a name="Session.KeepAlive"></a>
-Session.KeepAlive
 
----
+## Session.KeepAlive
 
 Refreshs an existing session.
 
@@ -166,9 +163,8 @@ Refreshs an existing session so that it keeps alive and doesn't time out. This m
 ```
 
 <a name="User.Add"></a>
-User.Add
 
----
+## User.Add
 
 Adds a new user.
 
@@ -221,9 +217,8 @@ Adds a new user.
 ```
 
 <a name="User.Delete"></a>
-User.Delete
 
----
+## User.Delete
 
 Deletes an existing user.
 
@@ -272,9 +267,8 @@ Deletes an existing user.
 ```
 
 <a name="User.GetAll"></a>
-User.GetAll
 
----
+## User.GetAll
 
 Returns all users.
 
