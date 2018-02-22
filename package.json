@@ -21,6 +21,7 @@
     "url": "https://github.com/mzernetsch/jrgen.git"
   },
   "scripts": {
+    "test": "./examples/generateAll.sh",
     "format":
       "prettier --write './generators/**/!(templates)/*.{js,ts,css,scss,json,md}'"
   },
