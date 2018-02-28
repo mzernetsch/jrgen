@@ -83,12 +83,10 @@ exports.resolveSchemaRefs = schema => {
 };
 
 exports.loadSchema = schemaPath => {
-  //Normalize relative paths
   if (!path.isAbsolute(schemaPath)) {
     schemaPath = path.join(process.cwd(), schemaPath);
   }
 
-  //Load schema
   var jsonString = fs.readFileSync(schemaPath, {
     encoding: "utf8"
   });
@@ -97,13 +95,11 @@ exports.loadSchema = schemaPath => {
     throw "Error occured during loading schema.";
   }
 
-  //Parse schema
   var schema = jsonlint.parse(jsonString);
   if (!schema) {
     throw "Specified schema does not exist.";
   }
 
-  //Resolve schema refs
   var resolvedSchema = exports.resolveSchemaRefs(schema);
   if (!resolvedSchema) {
     throw "Error occured during resolving schema $refs.";
@@ -115,9 +111,7 @@ exports.loadSchema = schemaPath => {
 exports.loadSchemas = schemaPaths => {
   var schemas = [];
 
-  //Go through all schema paths
   schemaPaths.forEach(schemaPath => {
-    //Load schema
     schemas.push(exports.loadSchema(schemaPath));
   });
 
@@ -127,9 +121,7 @@ exports.loadSchemas = schemaPaths => {
 exports.mergeSchemas = schemas => {
   var apiSchema = {};
 
-  //Go through all schemas
   schemas.forEach(schema => {
-    //Merge schema
     apiSchema = merge(apiSchema, schema);
   });
 

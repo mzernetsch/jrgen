@@ -45,10 +45,8 @@ var buildClient = schema => {
     var promises = [];
 
     Object.keys(schema.methods).forEach(key => {
-      //Build method
       methods += buildRPCMethod(key, schema.methods[key]) + "\n";
 
-      //Build params type
       if (schema.methods[key].params) {
         var promise = json2ts.compile(
           schema.methods[key].params,
@@ -61,7 +59,6 @@ var buildClient = schema => {
         promises.push(promise);
       }
 
-      //Build result type
       if (schema.methods[key].result) {
         var promise = json2ts.compile(
           schema.methods[key].result,

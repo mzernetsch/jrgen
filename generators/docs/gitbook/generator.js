@@ -44,7 +44,6 @@ var buildSummary = schemas => {
     chapters += "* [" + schema.info.title + "](" + schema.info.title + ".md)\n";
   });
 
-  //Build summary
   return utils.populateTemplate(templates.summary, {
     CHAPTERS: chapters
   });

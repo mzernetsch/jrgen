@@ -53,7 +53,6 @@ exports.generate = schemas => {
 };
 
 var buildDocumentation = schema => {
-  //Build docs
   return utils.populateTemplate(templates.base, {
     TITLE: schema.info.title,
     DESCRIPTION: schema.info.description,
@@ -73,7 +72,6 @@ var buildMethodsDocumentation = methodsSchema => {
   for (var methodName in methodsSchema) {
     var methodSchema = methodsSchema[methodName];
 
-    //Build method block
     methodsDocumentation += utils.populateTemplate(templates.method, {
       METHOD: methodName,
       ID: methodName.replace(/\./g, "_"),
