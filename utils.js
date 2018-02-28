@@ -5,6 +5,25 @@ const jsonlint = require("jsonlint");
 const merge = require("deepmerge");
 const prettier = require("prettier");
 
+exports.findGenerators = generatorId => {
+  var generators = {};
+  var baseFolderPath = path.join(__dirname, "generators");
+  fs.readdirSync(baseFolderPath).forEach(categoryName => {
+    var categoryFolderPath = path.join(baseFolderPath, categoryName);
+    fs.readdirSync(categoryFolderPath).forEach(generatorName => {
+      var generatorPath = path.join(
+        categoryFolderPath,
+        generatorName,
+        "generator.js"
+      );
+      if (fs.existsSync(generatorPath)) {
+        generators[categoryName + "/" + generatorName] = generatorPath;
+      }
+    });
+  });
+  return generators;
+};
+
 exports.populateTemplate = (template, values) => {
   var text = new String(template);
 

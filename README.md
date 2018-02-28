@@ -37,25 +37,25 @@ jrgen is divided in 4 sections 'docs', 'test', 'client' and 'server'. Call `jrge
 Create html documentation from 'API.schema.json'.
 
 ```bash
-jrgen docs ~/API.schema.json
+jrgen docs/html ~/API.schema.json
 ```
 
-Create jasmine unit tests from 'API.schema.json'.
+Create postman test collection from 'API.schema.json'.
 
 ```bash
-jrgen test -f jasmine ~/API.schema.json
+jrgen test/postman ~/API.schema.json
 ```
 
 Create a js client from 'API.schema.json' and write all generated files into the ./client subdirectory.
 
 ```bash
-jrgen client -o ./client ~/API.schema.json
+jrgen client/es6 -o ./client ~/API.schema.json
 ```
 
 Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema.json'. The generated server will handle the api calls of both schemes. A schema will overwrite all properties of its preceeding schemes.
 
 ```bash
-jrgen server ~/API1.schema.json ~/API2.schema.json
+jrgen server/nodejs ~/API1.schema.json ~/API2.schema.json
 ```
 
 ## Specification
