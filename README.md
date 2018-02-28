@@ -30,32 +30,42 @@ npm install -g jrgen
 
 ## Usage
 
-jrgen is divided in 4 sections 'docs', 'test', 'client' and 'server'. Call `jrgen -h` or `jrgen [section] -h` for usage information.
-
-### Examples
-
-Create html documentation from 'API.schema.json'.
-
 ```bash
-jrgen docs/html ~/API.schema.json
-```
+  Usage: jrgen [options] [command]
 
-Create postman test collection from 'API.schema.json'.
 
-```bash
-jrgen test/postman ~/API.schema.json
-```
+  Options:
 
-Create a js client from 'API.schema.json' and write all generated files into the ./client subdirectory.
+    -V, --version        output the version number
+    -o, --outdir <path>  Output directory. Defaults to current working directory.
+    -h, --help           output usage information
 
-```bash
-jrgen client/es6 -o ./client ~/API.schema.json
-```
 
-Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema.json'. The generated server will handle the api calls of both schemes. A schema will overwrite all properties of its preceeding schemes.
+  Commands:
 
-```bash
-jrgen server/nodejs ~/API1.schema.json ~/API2.schema.json
+    client/es6 <specFiles...>
+    client/ts <specFiles...>
+    docs/gitbook <specFiles...>
+    docs/html <specFiles...>
+    docs/md <specFiles...>
+    server/nodejs <specFiles...>
+    test/jasmine <specFiles...>
+    test/postman <specFiles...>
+
+
+  Examples:
+
+    Create html documentation from 'API.schema.json':
+    $ jrgen docs/html ~/API.schema.json
+
+    Create a postman test collection from 'API.schema.json':
+    $ jrgen test/postman ~/API.schema.json
+
+    Create a js client from 'API.schema.json' and write all generated files into the ./client subdirectory:
+    $ jrgen client/es6 -o ./client ~/API.schema.json
+
+    Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema.json':
+    $ jrgen server/nodejs ~/API1.schema.json ~/API2.schema.json
 ```
 
 ## Specification

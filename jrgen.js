@@ -10,7 +10,32 @@ program
   .option(
     "-o, --outdir <path>",
     "Output directory. Defaults to current working directory."
-  );
+  )
+  .on("--help", () => {
+    console.log("");
+    console.log("");
+    console.log("  Examples:");
+    console.log("");
+    console.log("    Create html documentation from 'API.schema.json':");
+    console.log("    $ jrgen docs/html ~/API.schema.json");
+    console.log("");
+    console.log("    Create a postman test collection from 'API.schema.json':");
+    console.log("    $ jrgen test/postman ~/API.schema.json");
+    console.log("");
+    console.log(
+      "    Create a ts client from 'API.schema.json' and write all generated files into the ./client subdirectory:"
+    );
+    console.log("    $ jrgen client/ts -o ./client ~/API.schema.json");
+    console.log("");
+    console.log(
+      "    Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema.json':"
+    );
+    console.log(
+      "    $ jrgen server/nodejs ~/API1.schema.json ~/API2.schema.json"
+    );
+    console.log("");
+    console.log("");
+  });
 
 const generators = utils.findGenerators();
 
