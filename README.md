@@ -75,78 +75,71 @@ If the api is really large you may consider splitting the specification into mul
 
 ```js
 {
-	"$schema": "https://rawgit.com/mzernetsch/jrgen-schema/master/jrgen.schema.json",	//Link to the schema. Used for validation and autocompletion in certain editors.
-	"jrgen":"1.0",		//jrgen version. Currently always "1.0".
-	"jsonrpc":"2.0",	//jsonrpc version. Currently always "2.0".
+  $schema: "https://rawgit.com/mzernetsch/jrgen-schema/master/jrgen.schema.json", //Link to the schema. Used for validation and autocompletion in certain editors.
+  jrgen: "1.0", //jrgen version. Currently always "1.0".
+  jsonrpc: "2.0", //jsonrpc version. Currently always "2.0".
 
-	"info":{
-		"title":"ExampleAPI",	//Name of your api.
-		"description":"This api handles various rpc requests.",	//Description or usage information about your api.
-		"version":"1.0"	//Current version of your api
-	},
+  info: {
+    title: "ExampleAPI", //Name of your api.
+    description: "This api handles various rpc requests.", //Description or usage information about your api.
+    version: "1.0" //Current version of your api
+  },
 
-	"definitions":{	//You can define global types and reference them from anywhere using a "$ref" property
-		"session":{
-			"type":"object",
-			"properties":{
-				"session_token":{
-					"description":"Bearer token of the created session.",
-					"default":"123456890",
+  definitions: { //You can define global types and reference them from anywhere using a "$ref" property
+    session: {
+      type: "object",
+      properties: {
+        session_token: {
+          description: "Bearer token of the created session.",
+          default: "123456890",
+          type: "string",
+          minLength: 1
+        }
+      },
+      required: ["session_token"]
+    }
+  },
 
-					"type":"string",
-					"minLength":1
-				}
-			},
+  methods: { //All methods of the api are specified within this object.
+    "Session.Login": { //The key of the property equals to the name of the method.
+      summary: "Creates a new session.", //Short summary of what the method does.
+      description: "Authenticates the user using the provided credentials and creates a new session.", //Longer description of what the method does.
+      tags: ["Session"], //Tags for grouping similar methods.
 
-			"required":["session_token"]
-		}
-	},
+      params: { //json-schema of the params object within a json-rpc request. Can be omitted if not used.
+        type: "object",
+        properties: {
+          name: {
+            description: "Name of the user to create a session for.", //You can provide a description for every property.
+            default: "admin", //You should provide a valid default value for each non-object and non-array property. These provided default values will be used to generate example requests and responses.
+            type: "string",
+            minLength: 1
+          },
+          password: {
+            description: "Password of the user to create a session for.",
+            default: "123456",
+            type: "string",
+            minLength: 1
+          }
+        },
+        required: ["name", "password"]
+      },
 
-	"methods":{	//All methods of the api are specified within this object.
-		"Session.Login":{	//The key of the property equals to the name of the method.
-			"summary":"Creates a new session.",	//Short summary of what the method does.
-			"description":"Authenticates the user using the provided credentials and creates a new session.",	//Longer description of what the method does.
+      result: { //json-schema of the result object within a json-rpc response. Can be omitted if not used.
+        $ref: "#/definitions/session" //Reference to a global type
+      },
 
-			"tags":["Session"],	//Tags for grouping similar methods.
+      errors: [ //Possible errors in a json-rpc response. Can be omitted if not used.
+        {
+          description: "The provided credentials are invalid.",
 
-			"params":{	//json-schema of the params object within a json-rpc request. Can be omitted if not used.
-				"type":"object",
-				"properties":{
-					"name":{
-						"description":"Name of the user to create a session for.",	//You can provide a description for every property.
-						"default":"admin",	//You should provide a valid default value for each non-object and non-array property. These provided default values will be used to generate example requests and responses.
-
-						"type":"string",
-						"minLength":1
-					},
-					"password":{
-						"description":"Password of the user to create a session for.",
-						"default":"123456",
-
-						"type":"string",
-						"minLength":1
-					}
-				},
-
-				"required":["name", "password"]
-			},
-
-			"result":{	//json-schema of the result object within a json-rpc response. Can be omitted if not used.
-				"$ref":"#/definitions/session" //Reference to a global type
-			},
-
-			"errors":[	//Possible errors in a json-rpc response. Can be omitted if not used.
-				{
-					"description":"The provided credentials are invalid.",
-
-					"code":1,	//code is always an integer.
-					"message":"InvalidCredentials"	//message is always a string.
-					"data":{	//json-schema of the data object within a json-rpc error. Can be omitted if not used.
-
-					}
-				}
-			]
-		}
-	}
+          code: 1, //code is always an integer.
+          message: "InvalidCredentials", //message is always a string.
+          data: { //json-schema of the data object within a json-rpc error. Can be omitted if not used.
+          }
+        }
+      ]
+    }
+  }
 }
 ```
