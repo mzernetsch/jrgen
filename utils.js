@@ -7,20 +7,38 @@ const prettier = require("prettier");
 
 exports.findGenerators = generatorId => {
   var generators = {};
-  var baseFolderPath = path.join(__dirname, "generators");
-  fs.readdirSync(baseFolderPath).forEach(categoryName => {
-    var categoryFolderPath = path.join(baseFolderPath, categoryName);
-    fs.readdirSync(categoryFolderPath).forEach(generatorName => {
-      var generatorPath = path.join(
-        categoryFolderPath,
-        generatorName,
-        "generator.js"
-      );
-      if (fs.existsSync(generatorPath)) {
-        generators[categoryName + "/" + generatorName] = generatorPath;
+
+  var loadPlugin = pluginFolderPath => {
+    var generatorsFolderPath = path.join(pluginFolderPath, "generators");
+    fs.readdirSync(generatorsFolderPath).forEach(categoryName => {
+      var categoryFolderPath = path.join(generatorsFolderPath, categoryName);
+      fs.readdirSync(categoryFolderPath).forEach(generatorName => {
+        var generatorPath = path.join(
+          categoryFolderPath,
+          generatorName,
+          "generator.js"
+        );
+        if (fs.existsSync(generatorPath)) {
+          generators[categoryName + "/" + generatorName] = generatorPath;
+        }
+      });
+    });
+  };
+
+  var parsePlugins = pluginsFolderPath => {
+    fs.readdirSync(pluginsFolderPath).forEach(pluginName => {
+      var pluginFolderPath = path.join(pluginsFolderPath, pluginName);
+      if (pluginName.startsWith("jrgen-plugin-")) {
+        loadPlugin(pluginFolderPath);
+      } else if (pluginName.startsWith("@")) {
+        parsePlugins(pluginFolderPath);
       }
     });
-  });
+  };
+
+  loadPlugin(__dirname);
+  parsePlugins(path.join(__dirname, ".."));
+
   return generators;
 };
 
