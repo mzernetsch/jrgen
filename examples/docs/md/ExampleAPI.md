@@ -6,12 +6,12 @@ This api handles various rpc requests.
 
 ---
 
-* [Session.Login](#Session.Login)
-* [Session.Logout](#Session.Logout)
-* [Session.KeepAlive](#Session.KeepAlive)
-* [User.Add](#User.Add)
-* [User.Delete](#User.Delete)
-* [User.GetAll](#User.GetAll)
+- [Session.Login](#Session.Login)
+- [Session.Logout](#Session.Logout)
+- [Session.KeepAlive](#Session.KeepAlive)
+- [User.Add](#User.Add)
+- [User.Delete](#User.Delete)
+- [User.GetAll](#User.GetAll)
 
 ---
 

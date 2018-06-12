@@ -1,3 +1,3 @@
 # Table of content
 
-* [ExampleAPI](ExampleAPI.md)
+- [ExampleAPI](ExampleAPI.md)

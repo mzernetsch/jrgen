@@ -1,8 +1,7 @@
 {
   "name": "jrgen",
   "version": "1.5.1",
-  "description":
-    "Generates docs, tests, clients and servers for json-rpc apis.",
+  "description": "Generates docs, tests, clients and servers for json-rpc apis.",
   "keywords": [
     "generator",
     "json-rpc",
@@ -22,20 +21,19 @@
   },
   "scripts": {
     "test": "true",
-    "format":
-      "prettier --write './generators/**/!(templates)/*.{js,ts,css,scss,json,md}'"
+    "format": "prettier --write './generators/**/!(templates)/*.{js,ts,css,scss,json,md}'"
   },
   "dependencies": {
-    "commander": "^2.9.0",
-    "deasync": "^0.1.9",
-    "deepmerge": "^2.0.1",
-    "fs-extra": "^4.0.2",
-    "json-schema-ref-parser": "^4.0.4",
-    "json-schema-to-typescript": "^5.1.0",
-    "jsonlint": "^1.6.2",
-    "jsonschema": "^1.1.1",
-    "markdown-table": "^1.1.0",
-    "prettier": "^1.10.2",
-    "uuid": "^3.1.0"
+    "commander": "^2.15.1",
+    "deasync": "^0.1.13",
+    "deepmerge": "^2.1.1",
+    "fs-extra": "^6.0.1",
+    "json-schema-ref-parser": "^5.0.3",
+    "json-schema-to-typescript": "^5.5.0",
+    "jsonlint": "^1.6.3",
+    "jsonschema": "^1.2.4",
+    "markdown-table": "^1.1.2",
+    "prettier": "^1.13.5",
+    "uuid": "^3.2.1"
   }
 }
