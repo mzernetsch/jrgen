@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "jrgen": {
+      "description": "Version of the jrgen schema.",
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "jsonrpc": {
+      "description": "Version of the json-rpc protocol.",
+      "type": "string",
+      "enum": ["2.0"]
+    },
+    "info": {
+      "description": "Meta information about the api.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "Name of the api.",
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "description": "Description or usage information about the api.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Current version of the api.",
+          "type": "string",
+          "minLength": 3
+        }
+      },
+      "required": ["title", "version"]
+    },
+    "definitions": {
+      "description": "Global definitions for use in the api.",
+      "type": "object"
+    },
+    "methods": {
+      "description":
+        "Definitions of the available procedures in the api. A key equals to the name of a procedure.",
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "description": "Definition of an api procedure.",
+          "type": "object",
+          "properties": {
+            "summary": {
+              "description": "Short summary of what the procedure does.",
+              "type": "string"
+            },
+            "description": {
+              "description": "Longer description of what the procedure does.",
+              "type": "string"
+            },
+            "tags": {
+              "description": "Tags for grouping similar procedures.",
+              "type": "array",
+              "items": {
+                "description": "Tag for the procedure.",
+                "type": "string"
+              }
+            },
+            "params": {
+              "description": "JSON-Schema of the procedure params.",
+              "type": "object",
+              "$ref": "http://json-schema.org/schema#"
+            },
+            "result": {
+              "description": "JSON-Schema of the procedure result.",
+              "type": "object",
+              "$ref": "http://json-schema.org/schema#"
+            },
+            "errors": {
+              "description": "Definition of possible error responses.",
+              "type": "array",
+              "items": {
+                "description": "Definition of an error response.",
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "description": "Description of what went wrong.",
+                    "type": "string"
+                  },
+                  "code": {
+                    "description": "Unique error code.",
+                    "type": "number"
+                  },
+                  "message": {
+                    "description": "Unique error message,",
+                    "type": "string"
+                  },
+                  "data": {
+                    "description": "JSON-Schema of the additonal error data.",
+                    "type": "object",
+                    "$ref": "http://json-schema.org/schema#"
+                  }
+                },
+                "required": ["code", "message"]
+              }
+            }
+          },
+          "required": ["summary"]
+        }
+      }
+    }
+  },
+  "required": ["jrgen", "jsonrpc", "info", "methods"]
+}

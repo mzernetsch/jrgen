@@ -4,23 +4,23 @@ Generated example files can be found in the [examples directory](https://github.
 
 ### docs
 
-* [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/ExampleAPI.html)
-* [md](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/md/ExampleAPI.md)
-* [gitbook](https://github.com/mzernetsch/jrgen/tree/master/examples/docs/gitbook)
+- [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/ExampleAPI.html)
+- [md](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/md/ExampleAPI.md)
+- [gitbook](https://github.com/mzernetsch/jrgen/tree/master/examples/docs/gitbook)
 
 ### test
 
-* [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
-* [postman](https://github.com/mzernetsch/jrgen/tree/master/examples/test/postman/ExampleAPI.postman_collection.json)
+- [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
+- [postman](https://github.com/mzernetsch/jrgen/tree/master/examples/test/postman/ExampleAPI.postman_collection.json)
 
 ### client
 
-* [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)
-* [ts](https://github.com/mzernetsch/jrgen/blob/master/examples/client/ts/ExampleAPIClient.ts)
+- [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)
+- [ts](https://github.com/mzernetsch/jrgen/blob/master/examples/client/ts/ExampleAPIClient.ts)
 
 ### server
 
-* [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
+- [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
 
 ## Installation
 
@@ -70,12 +70,12 @@ npm install -g jrgen
 
 ## Specification
 
-jrgen uses special [specification files](https://github.com/mzernetsch/jrgen/blob/master/examples/ExampleAPI.schema.json) which describe all available methods, the parameters and the expected result or error responses of an api. A specification file contains valid json and mostly consists of [JSON-Schema](https://spacetelescope.github.io/understanding-json-schema/). A JSON-Schema describing a jrgen specification can be found [here](https://github.com/mzernetsch/jrgen-schema/blob/master/jrgen.schema.json).  
+jrgen uses special [specification files](https://github.com/mzernetsch/jrgen/blob/master/examples/ExampleAPI.schema.json) which describe all available methods, the parameters and the expected result or error responses of an api. A specification file contains valid json and mostly consists of [JSON-Schema](https://spacetelescope.github.io/understanding-json-schema/). A JSON-Schema describing a jrgen specification can be found [here](https://github.com/mzernetsch/jrgen/blob/master/jrgen-spec.schema.json).  
 If the api is really large you may consider splitting the specification into multiple files and create references using [JSON-Pointer](https://spacetelescope.github.io/understanding-json-schema/structuring.html#reuse).
 
 ```js
 {
-  $schema: "https://rawgit.com/mzernetsch/jrgen-schema/master/jrgen.schema.json", //Link to the schema. Used for validation and autocompletion in certain editors.
+  $schema: "https://rawgit.com/mzernetsch/jrgen/master/jrgen-spec.schema.json", //Link to the schema. Used for validation and autocompletion in certain editors.
   jrgen: "1.0", //jrgen version. Currently always "1.0".
   jsonrpc: "2.0", //jsonrpc version. Currently always "2.0".
 
