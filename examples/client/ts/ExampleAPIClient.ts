@@ -1,52 +1,32 @@
 import { RPCClient } from "./RPCClient";
 
 export class ExampleAPIClient extends RPCClient {
-  Session_Login(params: SessionLoginRpcParams) {
-    return new Promise<SessionLoginRpcResult>((resolve, reject) => {
-      this.request("Session.Login", params)
-        .then(resolve)
-        .catch(reject);
-    });
+  async Session_Login(
+    params: SessionLoginRpcParams
+  ): Promise<SessionLoginRpcResult> {
+    return await this.request("Session.Login", params);
   }
 
-  Session_Logout(params?: undefined) {
-    return new Promise<SessionLogoutRpcResult>((resolve, reject) => {
-      this.request("Session.Logout", params)
-        .then(resolve)
-        .catch(reject);
-    });
+  async Session_Logout(params?: undefined): Promise<SessionLogoutRpcResult> {
+    return await this.request("Session.Logout", params);
   }
 
-  Session_KeepAlive(params?: undefined) {
-    return new Promise<SessionKeepAliveRpcResult>((resolve, reject) => {
-      this.request("Session.KeepAlive", params)
-        .then(resolve)
-        .catch(reject);
-    });
+  async Session_KeepAlive(
+    params?: undefined
+  ): Promise<SessionKeepAliveRpcResult> {
+    return await this.request("Session.KeepAlive", params);
   }
 
-  User_Add(params: UserAddRpcParams) {
-    return new Promise<UserAddRpcResult>((resolve, reject) => {
-      this.request("User.Add", params)
-        .then(resolve)
-        .catch(reject);
-    });
+  async User_Add(params: UserAddRpcParams): Promise<UserAddRpcResult> {
+    return await this.request("User.Add", params);
   }
 
-  User_Delete(params: UserDeleteRpcParams) {
-    return new Promise<UserDeleteRpcResult>((resolve, reject) => {
-      this.request("User.Delete", params)
-        .then(resolve)
-        .catch(reject);
-    });
+  async User_Delete(params: UserDeleteRpcParams): Promise<UserDeleteRpcResult> {
+    return await this.request("User.Delete", params);
   }
 
-  User_GetAll(params?: undefined) {
-    return new Promise<UserGetAllRpcResult>((resolve, reject) => {
-      this.request("User.GetAll", params)
-        .then(resolve)
-        .catch(reject);
-    });
+  async User_GetAll(params?: undefined): Promise<UserGetAllRpcResult> {
+    return await this.request("User.GetAll", params);
   }
 }
 

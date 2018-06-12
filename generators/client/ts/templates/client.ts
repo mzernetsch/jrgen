@@ -1,5 +1,4 @@
 export class RPCClient {
-
   private url: string;
   private requestModifier: RPCModifier[] = [];
   private responseModifier: RPCModifier[] = [];
@@ -16,57 +15,41 @@ export class RPCClient {
     this.responseModifier.push(modifier);
   }
 
-  request(method: string, params: any) {
+  async request(method: string, params: any) {
+    var rpcRequest = {
+      jsonrpc: "2.0",
+      id: Math.random()
+        .toString(16)
+        .slice(2),
+      method: method,
+      params: params
+    };
 
-    return new Promise<any>((resolve, reject) => {
+    this.requestModifier.forEach(modifier => {
+      modifier(rpcRequest);
+    });
 
-      var rpcRequest = {
-        jsonrpc: "2.0",
-        id: Math.random().toString(16).slice(2),
-        method: method,
-        params: params
-      };
+    const response = await fetch(this.url, {
+      method: "post",
+      body: JSON.stringify(rpcRequest)
+    });
 
-      this.requestModifier.forEach((modifier) => {
-        modifier(rpcRequest);
+    if (response.ok) {
+      const rpcResponse = await response.json();
+
+      this.responseModifier.forEach(modifier => {
+        modifier(rpcResponse);
       });
 
-      fetch(this.url, {
-        method: 'post',
-        body: JSON.stringify(rpcRequest),
-      }).then((response: any) => {
-        if (response.ok) {
-          response.json().then((rpcResponse) => {
-            this.responseModifier.forEach((modifier) => {
-              modifier(rpcResponse);
-            });
-            if ("error" in rpcResponse) {
-              reject(rpcResponse.error);
-            }
-            else {
-              resolve(rpcResponse.result);
-            }
-          });
-        }
-        else {
-          reject({
-            code: -1,
-            message: "Network error",
-            data: {
-              statusCode: response.status,
-              statusText: response.statusText
-            }
-          });
-        }
-      })
-        .catch((error) => {
-          reject({
-            code: -1,
-            message: "Network error"
-          });
-        });
-    });
-  };
+      if ("error" in rpcResponse) {
+        throw new Error(rpcResponse.error);
+      } else {
+        return rpcResponse.result;
+      }
+    } else {
+      throw new Error(response.statusText);
+    }
+  }
 }
 
 export type RPCModifier = (request: Object) => void;

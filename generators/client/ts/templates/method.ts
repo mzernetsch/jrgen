@@ -1,5 +1,3 @@
-  {{NAME}} (params{{PARAMS_TYPE}}) {
-    return new Promise<{{RESULT_TYPE}}>((resolve, reject) => {
-      this.request('{{METHOD}}', params).then(resolve).catch(reject);
-    });
+  async {{NAME}} (params{{PARAMS_TYPE}}): Promise<{{RESULT_TYPE}}> {
+      return await this.request('{{METHOD}}', params);
   }
