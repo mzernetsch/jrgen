@@ -1,4 +1,4 @@
-jrgen (json-rpc-generator) generates docs, tests, clients and servers for json-rpc apis.
+jrgen (json-rpc-generator) generates docs, tests, clients, servers and more for json-rpc apis.
 
 Generated example files can be found in the [examples directory](https://github.com/mzernetsch/jrgen/tree/master/examples).
 
@@ -11,7 +11,6 @@ Generated example files can be found in the [examples directory](https://github.
 ### test
 
 - [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
-- [postman](https://github.com/mzernetsch/jrgen/tree/master/examples/test/postman/ExampleAPI.postman_collection.json)
 
 ### client
 
@@ -21,6 +20,10 @@ Generated example files can be found in the [examples directory](https://github.
 ### server
 
 - [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
+
+### spec
+
+- [postman](https://github.com/mzernetsch/jrgen/tree/master/examples/spec/postman/ExampleAPI.postman_collection.json)
 
 ## Installation
 
@@ -50,7 +53,7 @@ npm install -g jrgen
     docs/md <specFiles...>
     server/nodejs <specFiles...>
     test/jasmine <specFiles...>
-    test/postman <specFiles...>
+    spec/postman <specFiles...>
 
 
   Examples:
@@ -58,8 +61,8 @@ npm install -g jrgen
     Create html documentation from 'API.schema.json':
     $ jrgen docs/html ~/API.schema.json
 
-    Create a postman test collection from 'API.schema.json':
-    $ jrgen test/postman ~/API.schema.json
+    Create a postman collection from 'API.schema.json':
+    $ jrgen spec/postman ~/API.schema.json
 
     Create a js client from 'API.schema.json' and write all generated files into the ./client subdirectory:
     $ jrgen client/es6 -o ./client ~/API.schema.json
