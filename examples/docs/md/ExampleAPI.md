@@ -1,6 +1,7 @@
 # ExampleAPI
 
-This api handles various rpc requests.
+An example api which handles various rpc requests.  
+This api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification.
 
 <strong>Version 1.0</strong>
 

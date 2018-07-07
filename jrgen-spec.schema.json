@@ -5,7 +5,7 @@
     "jrgen": {
       "description": "Version of the jrgen schema.",
       "type": "string",
-      "enum": ["1.0"]
+      "enum": ["1.0", "1.1"]
     },
     "jsonrpc": {
       "description": "Version of the json-rpc protocol.",
@@ -23,7 +23,17 @@
         },
         "description": {
           "description": "Description or usage information about the api.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
         },
         "version": {
           "description": "Current version of the api.",
@@ -52,7 +62,17 @@
             },
             "description": {
               "description": "Longer description of what the procedure does.",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
             },
             "tags": {
               "description": "Tags for grouping similar procedures.",

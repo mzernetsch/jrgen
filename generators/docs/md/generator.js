@@ -27,10 +27,17 @@ exports.generate = schemas => {
   });
 };
 
+var normalizeDescription = description => {
+  if (Array.isArray(description)) {
+    return description.join("  \n");
+  }
+  return description.toString();
+};
+
 var buildDocumentation = schema => {
   return utils.populateTemplate(templates.base, {
     TITLE: schema.info.title,
-    DESCRIPTION: schema.info.description,
+    DESCRIPTION: normalizeDescription(schema.info.description),
     VERSION: schema.info.version,
     API: buildMethodsDocumentation(schema.methods),
     TOC: buildToc(schema.methods)
@@ -71,7 +78,7 @@ var buildDescriptionSection = descripton => {
     return "";
   }
 
-  return "### Description\n" + descripton + "\n\n";
+  return "### Description\n" + normalizeDescription(descripton) + "\n\n";
 };
 
 var buildParamsSection = paramsSchema => {

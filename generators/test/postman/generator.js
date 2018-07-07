@@ -15,12 +15,19 @@ exports.generate = schemas => {
   });
 };
 
+var normalizeDescription = description => {
+  if (Array.isArray(description)) {
+    return description.join("\n");
+  }
+  return description.toString();
+};
+
 var buildCollection = schema => {
   var collection = {
     info: {
       _postman_id: uuidv5.URL,
       name: schema.info.title,
-      description: schema.info.description,
+      description: normalizeDescription(schema.info.description),
       schema:
         "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },

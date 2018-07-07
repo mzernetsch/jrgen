@@ -2,7 +2,8 @@
   "info": {
     "_postman_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
     "name": "ExampleAPI",
-    "description": "This api handles various rpc requests.",
+    "description":
+      "An example api which handles various rpc requests.\nThis api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification.",
     "schema":
       "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },

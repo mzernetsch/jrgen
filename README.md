@@ -76,12 +76,15 @@ If the api is really large you may consider splitting the specification into mul
 ```js
 {
   $schema: "https://rawgit.com/mzernetsch/jrgen/master/jrgen-spec.schema.json", //Link to the schema. Used for validation and autocompletion in certain editors.
-  jrgen: "1.0", //jrgen version. Currently always "1.0".
+  jrgen: "1.1", //jrgen version.
   jsonrpc: "2.0", //jsonrpc version. Currently always "2.0".
 
   info: {
     title: "ExampleAPI", //Name of your api.
-    description: "This api handles various rpc requests.", //Description or usage information about your api.
+    description: [
+      "An example api which handles various rpc requests.",
+      "This api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification."
+    ], //Description or usage information about your api.
     version: "1.0" //Current version of your api
   },
 
