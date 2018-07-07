@@ -3,41 +3,7 @@ const path = require("path");
 const utils = require(path.join(__dirname, "../../../", "utils.js"));
 
 const templateDir = path.join(__dirname, "templates");
-const templates = {
-  base: fs.readFileSync(path.join(templateDir, "base.html"), {
-    encoding: "utf8"
-  }),
-  method: fs.readFileSync(path.join(templateDir, "method.html"), {
-    encoding: "utf8"
-  }),
-  description: fs.readFileSync(path.join(templateDir, "description.html"), {
-    encoding: "utf8"
-  }),
-  parameters: fs.readFileSync(path.join(templateDir, "parameters.html"), {
-    encoding: "utf8"
-  }),
-  property: fs.readFileSync(path.join(templateDir, "parameter.html"), {
-    encoding: "utf8"
-  }),
-  result: fs.readFileSync(path.join(templateDir, "result.html"), {
-    encoding: "utf8"
-  }),
-  errors: fs.readFileSync(path.join(templateDir, "errors.html"), {
-    encoding: "utf8"
-  }),
-  error: fs.readFileSync(path.join(templateDir, "error.html"), {
-    encoding: "utf8"
-  }),
-  tag: fs.readFileSync(path.join(templateDir, "tag.html"), {
-    encoding: "utf8"
-  }),
-  toc: fs.readFileSync(path.join(templateDir, "toc.html"), {
-    encoding: "utf8"
-  }),
-  toc_entry: fs.readFileSync(path.join(templateDir, "toc-entry.html"), {
-    encoding: "utf8"
-  })
-};
+const templates = utils.loadTemplates(templateDir);
 
 exports.generate = schemas => {
   return new Promise((resolve, reject) => {
@@ -60,7 +26,7 @@ var normalizeDescription = description => {
 };
 
 var buildDocumentation = schema => {
-  return utils.populateTemplate(templates.base, {
+  return utils.populateTemplate(templates["base.html"], {
     TITLE: schema.info.title,
     DESCRIPTION: normalizeDescription(schema.info.description),
     VERSION: schema.info.version,
@@ -79,7 +45,7 @@ var buildMethodsDocumentation = methodsSchema => {
   for (var methodName in methodsSchema) {
     var methodSchema = methodsSchema[methodName];
 
-    methodsDocumentation += utils.populateTemplate(templates.method, {
+    methodsDocumentation += utils.populateTemplate(templates["method.html"], {
       METHOD: methodName,
       ID: methodName.replace(/\./g, "_"),
       SUMMARY: methodSchema.summary,
@@ -104,13 +70,13 @@ var buildToc = methodsSchema => {
   var entries = "";
 
   for (var methodName in methodsSchema) {
-    entries += utils.populateTemplate(templates.toc_entry, {
+    entries += utils.populateTemplate(templates["toc-entry.html"], {
       TARGET: methodName.replace(/\./g, "_"),
       TITLE: methodName
     });
   }
 
-  return utils.populateTemplate(templates.toc, {
+  return utils.populateTemplate(templates["toc.html"], {
     CONTENT: entries
   });
 };
@@ -123,7 +89,7 @@ var buildTagBadges = tags => {
   var badges = "";
 
   tags.forEach(item => {
-    badges += utils.populateTemplate(templates.tag, {
+    badges += utils.populateTemplate(templates["tag.html"], {
       TITLE: item
     });
   });
@@ -136,7 +102,7 @@ var buildDescriptionSection = descripton => {
     return "";
   }
 
-  return utils.populateTemplate(templates.description, {
+  return utils.populateTemplate(templates["description.html"], {
     CONTENT: normalizeDescription(descripton)
   });
 };
@@ -148,7 +114,7 @@ var buildParamsSection = paramsSchema => {
 
   var paramsPropertyList = "";
   utils.parsePropertyList("params", paramsSchema).forEach(item => {
-    paramsPropertyList += utils.populateTemplate(templates.property, {
+    paramsPropertyList += utils.populateTemplate(templates["parameter.html"], {
       NAME: item.name,
       TYPE: item.type,
       DESCRIPTION: item.description,
@@ -156,7 +122,7 @@ var buildParamsSection = paramsSchema => {
     });
   });
 
-  return utils.populateTemplate(templates.parameters, {
+  return utils.populateTemplate(templates["parameters.html"], {
     CONTENT: paramsPropertyList
   });
 };
@@ -168,7 +134,7 @@ var buildResultSection = resultSchema => {
 
   var resultPropertyList = "";
   utils.parsePropertyList("result", resultSchema).forEach(item => {
-    resultPropertyList += utils.populateTemplate(templates.property, {
+    resultPropertyList += utils.populateTemplate(templates["parameter.html"], {
       NAME: item.name,
       TYPE: item.type,
       DESCRIPTION: item.description,
@@ -176,7 +142,7 @@ var buildResultSection = resultSchema => {
     });
   });
 
-  return utils.populateTemplate(templates.result, {
+  return utils.populateTemplate(templates["result.html"], {
     CONTENT: resultPropertyList
   });
 };
@@ -188,7 +154,7 @@ var buildErrorsSection = errorsSchema => {
 
   var errorsPropertyList = "";
   errorsSchema.forEach(item => {
-    errorsPropertyList += utils.populateTemplate(templates.error, {
+    errorsPropertyList += utils.populateTemplate(templates["error.html"], {
       CODE: item.code,
       MESSAGE: item.message,
       DESCRIPTION: item.description,
@@ -196,7 +162,7 @@ var buildErrorsSection = errorsSchema => {
     });
   });
 
-  return utils.populateTemplate(templates.errors, {
+  return utils.populateTemplate(templates["errors.html"], {
     CONTENT: errorsPropertyList
   });
 };

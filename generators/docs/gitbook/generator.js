@@ -4,20 +4,13 @@ const utils = require(path.join(__dirname, "../../../", "utils.js"));
 const markdownGenerator = require("./../md/generator.js");
 
 const templateDir = path.join(__dirname, "templates");
-const templates = {
-  readme: fs.readFileSync(path.join(templateDir, "README.md"), {
-    encoding: "utf8"
-  }),
-  summary: fs.readFileSync(path.join(templateDir, "SUMMARY.md"), {
-    encoding: "utf8"
-  })
-};
+const templates = utils.loadTemplates(templateDir);
 
 exports.generate = schemas => {
   return new Promise((resolve, reject) => {
     var artifacts = {};
 
-    artifacts["README.md"] = Buffer.from(templates.readme, "utf-8");
+    artifacts["README.md"] = Buffer.from(templates["README.md"], "utf-8");
     artifacts["SUMMARY.md"] = Buffer.from(buildSummary(schemas), "utf-8");
 
     var markdownPromises = [];
@@ -44,7 +37,7 @@ var buildSummary = schemas => {
     chapters += "* [" + schema.info.title + "](" + schema.info.title + ".md)\n";
   });
 
-  return utils.populateTemplate(templates.summary, {
+  return utils.populateTemplate(templates["SUMMARY.md"], {
     CHAPTERS: chapters
   });
 };

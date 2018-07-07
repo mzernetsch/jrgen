@@ -5,17 +5,7 @@ const json2ts = require("json-schema-to-typescript");
 const utils = require(path.join(__dirname, "../../../", "utils.js"));
 
 const templateDir = path.join(__dirname, "templates");
-const templates = {
-  client: fs.readFileSync(path.join(templateDir, "client.ts"), {
-    encoding: "utf8"
-  }),
-  base: fs.readFileSync(path.join(templateDir, "base.ts"), {
-    encoding: "utf8"
-  }),
-  method: fs.readFileSync(path.join(templateDir, "method.ts"), {
-    encoding: "utf8"
-  })
-};
+const templates = utils.loadTemplates(templateDir);
 
 exports.generate = schemas => {
   return new Promise((resolve, reject) => {
@@ -23,7 +13,7 @@ exports.generate = schemas => {
 
     buildClient(schema).then(ts => {
       var artifacts = {};
-      artifacts["RPCClient.ts"] = Buffer.from(templates.client, "utf-8");
+      artifacts["RPCClient.ts"] = Buffer.from(templates["client.ts"], "utf-8");
       artifacts[schema.info.title + "Client.ts"] = Buffer.from(ts, "utf-8");
 
       resolve(artifacts);
@@ -86,7 +76,7 @@ var buildClient = schema => {
 
     Promise.all(promises).then(() => {
       resolve(
-        utils.populateTemplate(templates.base, {
+        utils.populateTemplate(templates["base.ts"], {
           TITLE: schema.info.title + "Client",
           METHODS: methods,
           TYPES: types
@@ -107,7 +97,7 @@ var buildRPCMethod = (method, schema) => {
     resultType = method.replace(/\./g, "") + "RpcResult";
   }
 
-  return utils.populateTemplate(templates.method, {
+  return utils.populateTemplate(templates["method.ts"], {
     METHOD: method,
     NAME: method.replace(/\./g, "_"),
     PARAMS_TYPE: paramsType,

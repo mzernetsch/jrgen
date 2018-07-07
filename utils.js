@@ -4,6 +4,7 @@ const $RefParser = require("json-schema-ref-parser");
 const jsonlint = require("jsonlint");
 const merge = require("deepmerge");
 const prettier = require("prettier");
+const glob = require("glob");
 
 exports.findGenerators = generatorId => {
   var generators = {};
@@ -217,6 +218,26 @@ exports.mergeSchemas = schemas => {
   });
 
   return apiSchema;
+};
+
+exports.loadTemplates = templateDir => {
+  const templates = {};
+
+  const templatesPaths = glob.sync(templateDir + "/**/*");
+  templatesPaths
+    .filter(templatePath => {
+      return fs.lstatSync(templatePath).isFile();
+    })
+    .forEach(templatePath => {
+      templates[path.relative(templateDir, templatePath)] = fs.readFileSync(
+        templatePath,
+        {
+          encoding: "utf8"
+        }
+      );
+    });
+
+  return templates;
 };
 
 exports.writeArtifacts = (artifacts, outdir) => {

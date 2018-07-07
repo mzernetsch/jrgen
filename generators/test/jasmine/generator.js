@@ -3,26 +3,7 @@ const path = require("path");
 const utils = require(path.join(__dirname, "../../../", "utils.js"));
 
 const templateDir = path.join(__dirname, "templates");
-const templates = {
-  base: fs.readFileSync(path.join(templateDir, "base.js"), {
-    encoding: "utf8"
-  }),
-  test: fs.readFileSync(path.join(templateDir, "test.js"), {
-    encoding: "utf8"
-  }),
-  config: fs.readFileSync(path.join(templateDir, "config.json"), {
-    encoding: "utf8"
-  }),
-  jasmine: fs.readFileSync(path.join(templateDir, "jasmine.json"), {
-    encoding: "utf8"
-  }),
-  package: fs.readFileSync(path.join(templateDir, "package.json"), {
-    encoding: "utf8"
-  }),
-  helper: fs.readFileSync(path.join(templateDir, "SpecHelper.js"), {
-    encoding: "utf8"
-  })
-};
+const templates = utils.loadTemplates(templateDir);
 
 exports.generate = schemas => {
   return new Promise((resolve, reject) => {
@@ -51,15 +32,15 @@ exports.generate = schemas => {
 };
 
 var buildHelper = schema => {
-  return templates.helper;
+  return templates["SpecHelper.js"];
 };
 
 var buildJasmine = schema => {
-  return templates.jasmine;
+  return templates["jasmine.json"];
 };
 
 var buildPackage = schema => {
-  return utils.populateTemplate(templates.package, {
+  return utils.populateTemplate(templates["package.json"], {
     TITLE: schema.info.title
   });
 };
@@ -67,13 +48,13 @@ var buildPackage = schema => {
 var buildSpec = schema => {
   var tests = "";
   Object.keys(schema.methods).forEach(key => {
-    tests += utils.populateTemplate(templates.test, {
+    tests += utils.populateTemplate(templates["test.js"], {
       METHOD: key,
       RESULT_SCHEMA: JSON.stringify(schema.methods[key].result)
     });
   });
 
-  return utils.populateTemplate(templates.base, {
+  return utils.populateTemplate(templates["base.js"], {
     TITLE: schema.info.title,
     TESTS: tests
   });
@@ -88,7 +69,7 @@ var buildConfig = schema => {
     };
   });
 
-  return utils.populateTemplate(templates.config, {
+  return utils.populateTemplate(templates["config.json"], {
     METHODS: JSON.stringify(methods, null, 4)
   });
 };

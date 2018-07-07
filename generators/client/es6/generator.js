@@ -3,14 +3,7 @@ const path = require("path");
 const utils = require(path.join(__dirname, "../../../", "utils.js"));
 
 const templateDir = path.join(__dirname, "templates");
-const templates = {
-  base: fs.readFileSync(path.join(templateDir, "base.js"), {
-    encoding: "utf8"
-  }),
-  method: fs.readFileSync(path.join(templateDir, "method.js"), {
-    encoding: "utf8"
-  })
-};
+const templates = utils.loadTemplates(templateDir);
 
 exports.generate = schemas => {
   return new Promise((resolve, reject) => {
@@ -29,13 +22,13 @@ exports.generate = schemas => {
 var buildClient = schema => {
   var methods = "";
   Object.keys(schema.methods).forEach(key => {
-    methods += utils.populateTemplate(templates.method, {
+    methods += utils.populateTemplate(templates["method.js"], {
       METHOD: key,
       METHOD_NAME: key.replace(/\./g, "_")
     });
   });
 
-  return utils.populateTemplate(templates.base, {
+  return utils.populateTemplate(templates["base.js"], {
     CONTENT: methods
   });
 };

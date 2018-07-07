@@ -4,14 +4,7 @@ const markdowntable = require("markdown-table");
 const utils = require(path.join(__dirname, "../../../", "utils.js"));
 
 const templateDir = path.join(__dirname, "templates");
-const templates = {
-  base: fs.readFileSync(path.join(templateDir, "base.md"), {
-    encoding: "utf8"
-  }),
-  method: fs.readFileSync(path.join(templateDir, "method.md"), {
-    encoding: "utf8"
-  })
-};
+const templates = utils.loadTemplates(templateDir);
 
 exports.generate = schemas => {
   return new Promise((resolve, reject) => {
@@ -35,7 +28,7 @@ var normalizeDescription = description => {
 };
 
 var buildDocumentation = schema => {
-  return utils.populateTemplate(templates.base, {
+  return utils.populateTemplate(templates["base.md"], {
     TITLE: schema.info.title,
     DESCRIPTION: normalizeDescription(schema.info.description),
     VERSION: schema.info.version,
@@ -55,7 +48,7 @@ var buildMethodsDocumentation = methodsSchema => {
     var methodSchema = methodsSchema[methodName];
 
     methodsDocumentation +=
-      utils.populateTemplate(templates.method, {
+      utils.populateTemplate(templates["method.md"], {
         METHOD: methodName,
         SUMMARY: methodSchema.summary,
         EXAMPLE_REQUEST: utils.generateRequestExample(
