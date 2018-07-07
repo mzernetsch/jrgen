@@ -29,7 +29,8 @@ server.expose("User.GetAll", (params, resolve, reject) => {
   resolve([
     {
       name: "user",
-      email: "user@example.org"
+      email: "user@example.org",
+      address: [1600, "Pennsylvania", "Avenue", "NW"]
     }
   ]);
 });

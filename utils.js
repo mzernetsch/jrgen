@@ -92,12 +92,66 @@ exports.generateExample = schema => {
       example[key] = exports.generateExample(schema.properties[key]);
     });
   } else if (schema.type === "array") {
-    example = [exports.generateExample(schema.items)];
+    if (schema.default !== undefined || schema.example !== undefined) {
+      example = schema.default === undefined ? schema.example : schema.default;
+    } else if (Array.isArray(schema.items)) {
+      example = schema.items.map(item => exports.generateExample(item));
+    } else {
+      example = [exports.generateExample(schema.items)];
+    }
   } else {
     example = schema.default === undefined ? schema.example : schema.default;
   }
 
   return example;
+};
+
+exports.parsePropertyList = (name, schema) => {
+  if (!schema) {
+    return [];
+  }
+
+  var entries = [];
+
+  entries.push({
+    name: name,
+    type: schema.type,
+    description: schema.description || "",
+    schema: schema
+  });
+
+  if (schema.type === "array") {
+    if (Array.isArray(schema.items)) {
+      schema.items.forEach((item, index) => {
+        let selector = index;
+        if (item.name) {
+          selector += ":" + item.name;
+        }
+        entries = entries.concat(
+          exports.parsePropertyList(name + "[" + selector + "]", item)
+        );
+      });
+    } else {
+      entries = entries.concat(
+        exports.parsePropertyList(name + "[#]", schema.items)
+      );
+    }
+  } else if (schema.type === "object") {
+    Object.keys(schema.properties).forEach(key => {
+      var connector = "?.";
+      if (schema.required && schema.required.includes(key)) {
+        connector = ".";
+      }
+      entries = entries.concat(
+        exports.parsePropertyList(
+          name + connector + key,
+          schema.properties[key]
+        )
+      );
+    });
+  }
+
+  return entries;
 };
 
 exports.resolveSchemaRefs = schema => {

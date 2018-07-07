@@ -144,7 +144,7 @@
         "body": {
           "mode": "raw",
           "raw":
-            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Add\",\n    \"params\": {\n        \"name\": \"user\",\n        \"email\": \"user@example.org\",\n        \"password\": \"1234567890\"\n    }\n}"
+            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Add\",\n    \"params\": {\n        \"name\": \"user\",\n        \"email\": \"user@example.org\",\n        \"address\": [\n            1600,\n            \"Pennsylvania\",\n            \"Avenue\",\n            \"NW\"\n        ],\n        \"password\": \"1234567890\"\n    }\n}"
         },
         "url": {
           "raw": "{{url}}",
@@ -198,7 +198,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"List of all existing users.\",\"type\":\"array\",\"items\":{\"description\":\"Information about a user.\",\"type\":\"object\",\"properties\":{\"name\":{\"description\":\"Name of the user.\",\"default\":\"user\",\"type\":\"string\",\"minLength\":1},\"email\":{\"description\":\"Email of the user.\",\"default\":\"user@example.org\",\"type\":\"string\",\"format\":\"email\"}},\"required\":[\"name\",\"email\"]}}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"List of all existing users.\",\"type\":\"array\",\"items\":{\"description\":\"Information about a user.\",\"type\":\"object\",\"properties\":{\"name\":{\"description\":\"Name of the user.\",\"default\":\"user\",\"type\":\"string\",\"minLength\":1},\"email\":{\"description\":\"Email of the user.\",\"default\":\"user@example.org\",\"type\":\"string\",\"format\":\"email\"},\"address\":{\"description\":\"Address of the user to add.\",\"type\":\"array\",\"items\":[{\"name\":\"number\",\"description\":\"Address number.\",\"default\":1600,\"type\":\"number\",\"minimum\":1},{\"name\":\"street_name\",\"description\":\"Name of the street.\",\"default\":\"Pennsylvania\",\"type\":\"string\",\"minLength\":1},{\"name\":\"street_type\",\"description\":\"Type of the street.\",\"default\":\"Avenue\",\"type\":\"string\",\"enum\":[\"Street\",\"Avenue\",\"Boulevard\"]},{\"name\":\"direction\",\"description\":\"City quadrant of the address\",\"default\":\"NW\",\"type\":\"string\",\"enum\":[\"NW\",\"NE\",\"SW\",\"SE\"]}]}},\"required\":[\"name\",\"email\",\"address\"]}}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",

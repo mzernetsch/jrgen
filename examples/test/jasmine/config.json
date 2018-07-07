@@ -25,6 +25,7 @@
       "params": {
         "name": "user",
         "email": "user@example.org",
+        "address": [1600, "Pennsylvania", "Avenue", "NW"],
         "password": "1234567890"
       },
       "expectError": false

@@ -519,10 +519,10 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22address%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%201600%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Pennsylvania%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Avenue%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22NW%22%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22result%22%3A%200%0A%7D")'>
             Show Example
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.Add%22%2C%0A%20%20%20%20%22params%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%22address%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%201600%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Pennsylvania%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Avenue%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22NW%22%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%20%20%22password%22%3A%20%221234567890%22%0A%20%20%20%20%7D%0A%7D")'>
             Send Request
           </button>
         </div>
@@ -554,6 +554,45 @@
       'default': 'user@example.org',
       'type': 'string',
       'format': 'email'
+    },
+    'address': {
+      'description': 'Address of the user to add.',
+      'type': 'array',
+      'items': [
+        {
+          'description': 'Address number.',
+          'default': 1600,
+          'type': 'number',
+          'minimum': 1
+        },
+        {
+          'description': 'Name of the street.',
+          'default': 'Pennsylvania',
+          'type': 'string',
+          'minLength': 1
+        },
+        {
+          'description': 'Type of the street.',
+          'default': 'Avenue',
+          'type': 'string',
+          'enum': [
+            'Street',
+            'Avenue',
+            'Boulevard'
+          ]
+        },
+        {
+          'description': 'City quadrant of the address',
+          'default': 'NW',
+          'type': 'string',
+          'enum': [
+            'NW',
+            'NE',
+            'SW',
+            'SE'
+          ]
+        }
+      ]
     },
     'password': {
       'description': 'Password of the user to add.',
@@ -591,6 +630,98 @@
   <td>params.email</td>
   <td>string</td>
   <td>Email of the user to add.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Address of the user to add.',
+  'type': 'array',
+  'items': [
+    {
+      'description': 'Address number.',
+      'default': 1600,
+      'type': 'number',
+      'minimum': 1
+    },
+    {
+      'description': 'Name of the street.',
+      'default': 'Pennsylvania',
+      'type': 'string',
+      'minLength': 1
+    },
+    {
+      'description': 'Type of the street.',
+      'default': 'Avenue',
+      'type': 'string',
+      'enum': [
+        'Street',
+        'Avenue',
+        'Boulevard'
+      ]
+    },
+    {
+      'description': 'City quadrant of the address',
+      'default': 'NW',
+      'type': 'string',
+      'enum': [
+        'NW',
+        'NE',
+        'SW',
+        'SE'
+      ]
+    }
+  ]
+}</pre>" data-html="true">
+  <td>params?.address</td>
+  <td>array</td>
+  <td>Address of the user to add.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Address number.',
+  'default': 1600,
+  'type': 'number',
+  'minimum': 1
+}</pre>" data-html="true">
+  <td>params?.address[0]</td>
+  <td>number</td>
+  <td>Address number.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Name of the street.',
+  'default': 'Pennsylvania',
+  'type': 'string',
+  'minLength': 1
+}</pre>" data-html="true">
+  <td>params?.address[1]</td>
+  <td>string</td>
+  <td>Name of the street.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'Type of the street.',
+  'default': 'Avenue',
+  'type': 'string',
+  'enum': [
+    'Street',
+    'Avenue',
+    'Boulevard'
+  ]
+}</pre>" data-html="true">
+  <td>params?.address[2]</td>
+  <td>string</td>
+  <td>Type of the street.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+  'description': 'City quadrant of the address',
+  'default': 'NW',
+  'type': 'string',
+  'enum': [
+    'NW',
+    'NE',
+    'SW',
+    'SE'
+  ]
+}</pre>" data-html="true">
+  <td>params?.address[3]</td>
+  <td>string</td>
+  <td>City quadrant of the address</td>
 </tr>
 <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
   'description': 'Password of the user to add.',
@@ -775,7 +906,7 @@
 
       <div class="summary-container">
         <div class="float-right">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22result%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%5D%0A%7D")'>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D", "%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22result%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22name%22%3A%20%22user%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22email%22%3A%20%22user%40example.org%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22address%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201600%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22Pennsylvania%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22Avenue%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22NW%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%5D%0A%7D")'>
             Show Example
           </button>
           <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("%7B%0A%20%20%20%20%22jsonrpc%22%3A%20%222.0%22%2C%0A%20%20%20%20%22id%22%3A%20%221234567890%22%2C%0A%20%20%20%20%22method%22%3A%20%22User.GetAll%22%0A%7D")'>
@@ -816,11 +947,55 @@
                 'default': 'user@example.org',
                 'type': 'string',
                 'format': 'email'
+            },
+            'address': {
+                'description': 'Address of the user to add.',
+                'type': 'array',
+                'items': [
+                    {
+                        'name': 'number',
+                        'description': 'Address number.',
+                        'default': 1600,
+                        'type': 'number',
+                        'minimum': 1
+                    },
+                    {
+                        'name': 'street_name',
+                        'description': 'Name of the street.',
+                        'default': 'Pennsylvania',
+                        'type': 'string',
+                        'minLength': 1
+                    },
+                    {
+                        'name': 'street_type',
+                        'description': 'Type of the street.',
+                        'default': 'Avenue',
+                        'type': 'string',
+                        'enum': [
+                            'Street',
+                            'Avenue',
+                            'Boulevard'
+                        ]
+                    },
+                    {
+                        'name': 'direction',
+                        'description': 'City quadrant of the address',
+                        'default': 'NW',
+                        'type': 'string',
+                        'enum': [
+                            'NW',
+                            'NE',
+                            'SW',
+                            'SE'
+                        ]
+                    }
+                ]
             }
         },
         'required': [
             'name',
-            'email'
+            'email',
+            'address'
         ]
     }
 }</pre>" data-html="true">
@@ -843,11 +1018,55 @@
             'default': 'user@example.org',
             'type': 'string',
             'format': 'email'
+        },
+        'address': {
+            'description': 'Address of the user to add.',
+            'type': 'array',
+            'items': [
+                {
+                    'name': 'number',
+                    'description': 'Address number.',
+                    'default': 1600,
+                    'type': 'number',
+                    'minimum': 1
+                },
+                {
+                    'name': 'street_name',
+                    'description': 'Name of the street.',
+                    'default': 'Pennsylvania',
+                    'type': 'string',
+                    'minLength': 1
+                },
+                {
+                    'name': 'street_type',
+                    'description': 'Type of the street.',
+                    'default': 'Avenue',
+                    'type': 'string',
+                    'enum': [
+                        'Street',
+                        'Avenue',
+                        'Boulevard'
+                    ]
+                },
+                {
+                    'name': 'direction',
+                    'description': 'City quadrant of the address',
+                    'default': 'NW',
+                    'type': 'string',
+                    'enum': [
+                        'NW',
+                        'NE',
+                        'SW',
+                        'SE'
+                    ]
+                }
+            ]
         }
     },
     'required': [
         'name',
-        'email'
+        'email',
+        'address'
     ]
 }</pre>" data-html="true">
   <td>result[#]</td>
@@ -873,6 +1092,106 @@
   <td>result[#].email</td>
   <td>string</td>
   <td>Email of the user.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'description': 'Address of the user to add.',
+    'type': 'array',
+    'items': [
+        {
+            'name': 'number',
+            'description': 'Address number.',
+            'default': 1600,
+            'type': 'number',
+            'minimum': 1
+        },
+        {
+            'name': 'street_name',
+            'description': 'Name of the street.',
+            'default': 'Pennsylvania',
+            'type': 'string',
+            'minLength': 1
+        },
+        {
+            'name': 'street_type',
+            'description': 'Type of the street.',
+            'default': 'Avenue',
+            'type': 'string',
+            'enum': [
+                'Street',
+                'Avenue',
+                'Boulevard'
+            ]
+        },
+        {
+            'name': 'direction',
+            'description': 'City quadrant of the address',
+            'default': 'NW',
+            'type': 'string',
+            'enum': [
+                'NW',
+                'NE',
+                'SW',
+                'SE'
+            ]
+        }
+    ]
+}</pre>" data-html="true">
+  <td>result[#].address</td>
+  <td>array</td>
+  <td>Address of the user to add.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'name': 'number',
+    'description': 'Address number.',
+    'default': 1600,
+    'type': 'number',
+    'minimum': 1
+}</pre>" data-html="true">
+  <td>result[#].address[0:number]</td>
+  <td>number</td>
+  <td>Address number.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'name': 'street_name',
+    'description': 'Name of the street.',
+    'default': 'Pennsylvania',
+    'type': 'string',
+    'minLength': 1
+}</pre>" data-html="true">
+  <td>result[#].address[1:street_name]</td>
+  <td>string</td>
+  <td>Name of the street.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'name': 'street_type',
+    'description': 'Type of the street.',
+    'default': 'Avenue',
+    'type': 'string',
+    'enum': [
+        'Street',
+        'Avenue',
+        'Boulevard'
+    ]
+}</pre>" data-html="true">
+  <td>result[#].address[2:street_type]</td>
+  <td>string</td>
+  <td>Type of the street.</td>
+</tr>
+<tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content="<pre class='schema-preview'>{
+    'name': 'direction',
+    'description': 'City quadrant of the address',
+    'default': 'NW',
+    'type': 'string',
+    'enum': [
+        'NW',
+        'NE',
+        'SW',
+        'SE'
+    ]
+}</pre>" data-html="true">
+  <td>result[#].address[3:direction]</td>
+  <td>string</td>
+  <td>City quadrant of the address</td>
 </tr>
 
   </table>

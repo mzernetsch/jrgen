@@ -74,6 +74,15 @@ export interface UserAddRpcParams {
    */
   email: string;
   /**
+   * Address of the user to add.
+   */
+  address?: [
+    number,
+    string,
+    ("Street" | "Avenue" | "Boulevard"),
+    ("NW" | "NE" | "SW" | "SE")
+  ];
+  /**
    * Password of the user to add.
    */
   password: string;
@@ -110,6 +119,15 @@ export type UserGetAllRpcResult = {
    * Email of the user.
    */
   email: string;
+  /**
+   * Address of the user to add.
+   */
+  address: [
+    number,
+    string,
+    ("Street" | "Avenue" | "Boulevard"),
+    ("NW" | "NE" | "SW" | "SE")
+  ];
   [k: string]: any;
 }[];
 

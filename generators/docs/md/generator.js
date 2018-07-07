@@ -87,7 +87,7 @@ var buildParamsSection = paramsSchema => {
   }
 
   var paramsPropertyList = [];
-  parsePropertyList("params", paramsSchema).forEach(item => {
+  utils.parsePropertyList("params", paramsSchema).forEach(item => {
     paramsPropertyList.push([item.name, item.type, item.description]);
   });
 
@@ -106,7 +106,7 @@ var buildResultSection = resultSchema => {
   }
 
   var resultPropertyList = [];
-  parsePropertyList("result", resultSchema).forEach(item => {
+  utils.parsePropertyList("result", resultSchema).forEach(item => {
     resultPropertyList.push([item.name, item.type, item.description]);
   });
 
@@ -136,36 +136,6 @@ var buildErrorsSection = errorsSchema => {
     ) +
     "\n\n"
   );
-};
-
-var parsePropertyList = (name, schema) => {
-  if (!schema) {
-    return [];
-  }
-
-  var entries = [];
-
-  entries.push({
-    name: name,
-    type: schema.type,
-    description: schema.description || ""
-  });
-
-  if (schema.type === "array") {
-    entries = entries.concat(parsePropertyList(name + "[#]", schema.items));
-  } else if (schema.type === "object") {
-    Object.keys(schema.properties).forEach(key => {
-      var connector = "?.";
-      if (schema.required && schema.required.includes(key)) {
-        connector = ".";
-      }
-      entries = entries.concat(
-        parsePropertyList(name + connector + key, schema.properties[key])
-      );
-    });
-  }
-
-  return entries;
 };
 
 var buildToc = methodsSchema => {

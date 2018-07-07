@@ -352,9 +352,43 @@ describe("ExampleAPI", () => {
                 default: "user@example.org",
                 type: "string",
                 format: "email"
+              },
+              address: {
+                description: "Address of the user to add.",
+                type: "array",
+                items: [
+                  {
+                    name: "number",
+                    description: "Address number.",
+                    default: 1600,
+                    type: "number",
+                    minimum: 1
+                  },
+                  {
+                    name: "street_name",
+                    description: "Name of the street.",
+                    default: "Pennsylvania",
+                    type: "string",
+                    minLength: 1
+                  },
+                  {
+                    name: "street_type",
+                    description: "Type of the street.",
+                    default: "Avenue",
+                    type: "string",
+                    enum: ["Street", "Avenue", "Boulevard"]
+                  },
+                  {
+                    name: "direction",
+                    description: "City quadrant of the address",
+                    default: "NW",
+                    type: "string",
+                    enum: ["NW", "NE", "SW", "SE"]
+                  }
+                ]
               }
             },
-            required: ["name", "email"]
+            required: ["name", "email", "address"]
           }
         });
         done();

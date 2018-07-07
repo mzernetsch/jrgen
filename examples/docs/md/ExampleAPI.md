@@ -173,12 +173,17 @@ Adds a new user.
 
 ### Parameters
 
-| Name            | Type   | Description                  |
-| --------------- | ------ | ---------------------------- |
-| params          | object |                              |
-| params.name     | string | Name of the user to add.     |
-| params.email    | string | Email of the user to add.    |
-| params.password | string | Password of the user to add. |
+| Name               | Type   | Description                  |
+| ------------------ | ------ | ---------------------------- |
+| params             | object |                              |
+| params.name        | string | Name of the user to add.     |
+| params.email       | string | Email of the user to add.    |
+| params?.address    | array  | Address of the user to add.  |
+| params?.address[0] | number | Address number.              |
+| params?.address[1] | string | Name of the street.          |
+| params?.address[2] | string | Type of the street.          |
+| params?.address[3] | string | City quadrant of the address |
+| params.password    | string | Password of the user to add. |
 
 ### Result
 
@@ -204,6 +209,7 @@ Adds a new user.
   "params": {
     "name": "user",
     "email": "user@example.org",
+    "address": [1600, "Pennsylvania", "Avenue", "NW"],
     "password": "1234567890"
   }
 }
@@ -281,12 +287,17 @@ This method returns an array with information about all existing users.
 
 ### Result
 
-| Name            | Type   | Description                 |
-| --------------- | ------ | --------------------------- |
-| result          | array  | List of all existing users. |
-| result[#]       | object | Information about a user.   |
-| result[#].name  | string | Name of the user.           |
-| result[#].email | string | Email of the user.          |
+| Name                             | Type   | Description                  |
+| -------------------------------- | ------ | ---------------------------- |
+| result                           | array  | List of all existing users.  |
+| result[#]                        | object | Information about a user.    |
+| result[#].name                   | string | Name of the user.            |
+| result[#].email                  | string | Email of the user.           |
+| result[#].address                | array  | Address of the user to add.  |
+| result[#].address[0:number]      | number | Address number.              |
+| result[#].address[1:street_name] | string | Name of the street.          |
+| result[#].address[2:street_type] | string | Type of the street.          |
+| result[#].address[3:direction]   | string | City quadrant of the address |
 
 ### Examples
 
@@ -309,7 +320,8 @@ This method returns an array with information about all existing users.
   "result": [
     {
       "name": "user",
-      "email": "user@example.org"
+      "email": "user@example.org",
+      "address": [1600, "Pennsylvania", "Avenue", "NW"]
     }
   ]
 }

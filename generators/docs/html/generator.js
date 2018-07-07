@@ -147,7 +147,7 @@ var buildParamsSection = paramsSchema => {
   }
 
   var paramsPropertyList = "";
-  parsePropertyList("params", paramsSchema).forEach(item => {
+  utils.parsePropertyList("params", paramsSchema).forEach(item => {
     paramsPropertyList += utils.populateTemplate(templates.property, {
       NAME: item.name,
       TYPE: item.type,
@@ -167,7 +167,7 @@ var buildResultSection = resultSchema => {
   }
 
   var resultPropertyList = "";
-  parsePropertyList("result", resultSchema).forEach(item => {
+  utils.parsePropertyList("result", resultSchema).forEach(item => {
     resultPropertyList += utils.populateTemplate(templates.property, {
       NAME: item.name,
       TYPE: item.type,
@@ -199,35 +199,4 @@ var buildErrorsSection = errorsSchema => {
   return utils.populateTemplate(templates.errors, {
     CONTENT: errorsPropertyList
   });
-};
-
-var parsePropertyList = (name, schema) => {
-  if (!schema) {
-    return [];
-  }
-
-  var entries = [];
-
-  entries.push({
-    name: name,
-    type: schema.type,
-    description: schema.description || "",
-    schema: schema
-  });
-
-  if (schema.type === "array") {
-    entries = entries.concat(parsePropertyList(name + "[#]", schema.items));
-  } else if (schema.type === "object") {
-    Object.keys(schema.properties).forEach(key => {
-      var connector = "?.";
-      if (schema.required && schema.required.includes(key)) {
-        connector = ".";
-      }
-      entries = entries.concat(
-        parsePropertyList(name + connector + key, schema.properties[key])
-      );
-    });
-  }
-
-  return entries;
 };
