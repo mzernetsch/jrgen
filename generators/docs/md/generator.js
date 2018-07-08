@@ -1,142 +1,148 @@
-const fs = require("fs");
-const path = require("path");
-const markdowntable = require("markdown-table");
-const utils = require(path.join(__dirname, "../../../", "utils.js"));
+module.exports.Generator = class Generator {
+  constructor() {
+    this.fs = require("fs");
+    this.path = require("path");
+    this.markdowntable = require("markdown-table");
+    this.utils = require(this.path.join(__dirname, "../../../", "utils.js"));
 
-const templateDir = path.join(__dirname, "templates");
-const templates = utils.loadTemplates(templateDir);
+    this.templateDir = this.path.join(__dirname, "templates");
+    this.templates = this.utils.loadTemplates(this.templateDir);
+  }
 
-exports.generate = schemas => {
-  return new Promise((resolve, reject) => {
-    var schema = utils.mergeSchemas(schemas);
+  generate(schemas) {
+    return new Promise((resolve, reject) => {
+      var schema = this.utils.mergeSchemas(schemas);
 
-    var artifacts = {};
-    artifacts[schema.info.title + ".md"] = Buffer.from(
-      buildDocumentation(schema),
-      "utf-8"
+      var artifacts = {};
+      artifacts[schema.info.title + ".md"] = Buffer.from(
+        this.buildDocumentation(schema),
+        "utf-8"
+      );
+
+      resolve(artifacts);
+    });
+  }
+
+  normalizeDescription(description) {
+    if (Array.isArray(description)) {
+      return description.join("  \n");
+    }
+    return description.toString();
+  }
+
+  buildDocumentation(schema) {
+    return this.utils.populateTemplate(this.templates["base.md"], {
+      TITLE: schema.info.title,
+      DESCRIPTION: this.normalizeDescription(schema.info.description),
+      VERSION: schema.info.version,
+      API: this.buildMethodsDocumentation(schema.methods),
+      TOC: this.buildToc(schema.methods)
+    });
+  }
+
+  buildMethodsDocumentation(methodsSchema) {
+    if (!methodsSchema) {
+      return "";
+    }
+
+    var methodsDocumentation = "";
+
+    for (var methodName in methodsSchema) {
+      var methodSchema = methodsSchema[methodName];
+
+      methodsDocumentation +=
+        this.utils.populateTemplate(this.templates["method.md"], {
+          METHOD: methodName,
+          SUMMARY: methodSchema.summary,
+          EXAMPLE_REQUEST: this.utils.generateRequestExample(
+            methodName,
+            methodSchema.params
+          ),
+          EXAMPLE_RESPONSE: this.utils.generateResponseExample(
+            methodSchema.result
+          ),
+          DESCRIPTION: this.buildDescriptionSection(methodSchema.description),
+          PARAMETERS: this.buildParamsSection(methodSchema.params),
+          RESULT: this.buildResultSection(methodSchema.result),
+          ERRORS: this.buildErrorsSection(methodSchema.errors)
+        }) + "\n";
+    }
+
+    return methodsDocumentation;
+  }
+
+  buildDescriptionSection(descripton) {
+    if (!descripton) {
+      return "";
+    }
+
+    return "### Description\n" + this.normalizeDescription(descripton) + "\n\n";
+  }
+
+  buildParamsSection(paramsSchema) {
+    if (!paramsSchema) {
+      return "";
+    }
+
+    var paramsPropertyList = [];
+    this.utils.parsePropertyList("params", paramsSchema).forEach(item => {
+      paramsPropertyList.push([item.name, item.type, item.description]);
+    });
+
+    return (
+      "### Parameters\n" +
+      this.markdowntable(
+        [["Name", "Type", "Description"]].concat(paramsPropertyList)
+      ) +
+      "\n\n"
     );
-
-    resolve(artifacts);
-  });
-};
-
-var normalizeDescription = description => {
-  if (Array.isArray(description)) {
-    return description.join("  \n");
-  }
-  return description.toString();
-};
-
-var buildDocumentation = schema => {
-  return utils.populateTemplate(templates["base.md"], {
-    TITLE: schema.info.title,
-    DESCRIPTION: normalizeDescription(schema.info.description),
-    VERSION: schema.info.version,
-    API: buildMethodsDocumentation(schema.methods),
-    TOC: buildToc(schema.methods)
-  });
-};
-
-var buildMethodsDocumentation = methodsSchema => {
-  if (!methodsSchema) {
-    return "";
   }
 
-  var methodsDocumentation = "";
+  buildResultSection(resultSchema) {
+    if (!resultSchema) {
+      return "";
+    }
 
-  for (var methodName in methodsSchema) {
-    var methodSchema = methodsSchema[methodName];
+    var resultPropertyList = [];
+    this.utils.parsePropertyList("result", resultSchema).forEach(item => {
+      resultPropertyList.push([item.name, item.type, item.description]);
+    });
 
-    methodsDocumentation +=
-      utils.populateTemplate(templates["method.md"], {
-        METHOD: methodName,
-        SUMMARY: methodSchema.summary,
-        EXAMPLE_REQUEST: utils.generateRequestExample(
-          methodName,
-          methodSchema.params
-        ),
-        EXAMPLE_RESPONSE: utils.generateResponseExample(methodSchema.result),
-        DESCRIPTION: buildDescriptionSection(methodSchema.description),
-        PARAMETERS: buildParamsSection(methodSchema.params),
-        RESULT: buildResultSection(methodSchema.result),
-        ERRORS: buildErrorsSection(methodSchema.errors)
-      }) + "\n";
+    return (
+      "### Result\n" +
+      this.markdowntable(
+        [["Name", "Type", "Description"]].concat(resultPropertyList)
+      ) +
+      "\n\n"
+    );
   }
 
-  return methodsDocumentation;
-};
+  buildErrorsSection(errorsSchema) {
+    if (!errorsSchema || !errorsSchema.length) {
+      return "";
+    }
 
-var buildDescriptionSection = descripton => {
-  if (!descripton) {
-    return "";
+    var errorsPropertyList = [];
+    errorsSchema.forEach(item => {
+      errorsPropertyList.push([item.code, item.message, item.description]);
+    });
+
+    return (
+      "### Errors\n" +
+      this.markdowntable(
+        [["Code", "Message", "Description"]].concat(errorsPropertyList)
+      ) +
+      "\n\n"
+    );
   }
 
-  return "### Description\n" + normalizeDescription(descripton) + "\n\n";
-};
+  buildToc(methodsSchema) {
+    var toc = "";
 
-var buildParamsSection = paramsSchema => {
-  if (!paramsSchema) {
-    return "";
+    for (var methodName in methodsSchema) {
+      toc += "* [" + methodName + "](#" + methodName + ")\n";
+    }
+
+    return toc;
   }
-
-  var paramsPropertyList = [];
-  utils.parsePropertyList("params", paramsSchema).forEach(item => {
-    paramsPropertyList.push([item.name, item.type, item.description]);
-  });
-
-  return (
-    "### Parameters\n" +
-    markdowntable(
-      [["Name", "Type", "Description"]].concat(paramsPropertyList)
-    ) +
-    "\n\n"
-  );
-};
-
-var buildResultSection = resultSchema => {
-  if (!resultSchema) {
-    return "";
-  }
-
-  var resultPropertyList = [];
-  utils.parsePropertyList("result", resultSchema).forEach(item => {
-    resultPropertyList.push([item.name, item.type, item.description]);
-  });
-
-  return (
-    "### Result\n" +
-    markdowntable(
-      [["Name", "Type", "Description"]].concat(resultPropertyList)
-    ) +
-    "\n\n"
-  );
-};
-
-var buildErrorsSection = errorsSchema => {
-  if (!errorsSchema || !errorsSchema.length) {
-    return "";
-  }
-
-  var errorsPropertyList = [];
-  errorsSchema.forEach(item => {
-    errorsPropertyList.push([item.code, item.message, item.description]);
-  });
-
-  return (
-    "### Errors\n" +
-    markdowntable(
-      [["Code", "Message", "Description"]].concat(errorsPropertyList)
-    ) +
-    "\n\n"
-  );
-};
-
-var buildToc = methodsSchema => {
-  var toc = "";
-
-  for (var methodName in methodsSchema) {
-    toc += "* [" + methodName + "](#" + methodName + ")\n";
-  }
-
-  return toc;
 };

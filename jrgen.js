@@ -53,12 +53,13 @@ Object.keys(generators).forEach(key => {
       return;
     }
 
-    var generator = require(generators[key]);
-    if (!generator) {
-      console.error("Cant load generator '%s.", key);
+    var Generator = require(generators[key]).Generator;
+    if (!Generator) {
+      console.error("Cant load generator class '%s.", key);
       return;
     }
 
+    const generator = new Generator();
     generator.generate(specs).then(artifacts => {
       utils.prettifyArtifacts(artifacts);
       utils.writeArtifacts(artifacts, outdir);

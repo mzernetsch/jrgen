@@ -1,43 +1,56 @@
-const fs = require("fs");
-const path = require("path");
-const utils = require(path.join(__dirname, "../../../", "utils.js"));
-const markdownGenerator = require("./../md/generator.js");
+module.exports.Generator = class Generator {
+  constructor() {
+    this.fs = require("fs");
+    this.path = require("path");
+    this.utils = require(this.path.join(__dirname, "../../../", "utils.js"));
+    this.markdownGeneratorClass = require("./../md/generator.js").Generator;
 
-const templateDir = path.join(__dirname, "templates");
-const templates = utils.loadTemplates(templateDir);
+    this.templateDir = this.path.join(__dirname, "templates");
+    this.templates = this.utils.loadTemplates(this.templateDir);
+  }
 
-exports.generate = schemas => {
-  return new Promise((resolve, reject) => {
-    var artifacts = {};
+  generate(schemas) {
+    return new Promise((resolve, reject) => {
+      var artifacts = {};
 
-    artifacts["README.md"] = Buffer.from(templates["README.md"], "utf-8");
-    artifacts["SUMMARY.md"] = Buffer.from(buildSummary(schemas), "utf-8");
+      artifacts["README.md"] = Buffer.from(
+        this.templates["README.md"],
+        "utf-8"
+      );
+      artifacts["SUMMARY.md"] = Buffer.from(
+        this.buildSummary(schemas),
+        "utf-8"
+      );
 
-    var markdownPromises = [];
+      var markdownGenerator = new this.markdownGeneratorClass();
+
+      var markdownPromises = [];
+      schemas.forEach(schema => {
+        var markdownPromise = markdownGenerator
+          .generate([schema])
+          .then(markdownArtifacts => {
+            Object.assign(artifacts, markdownArtifacts);
+          });
+
+        markdownPromises.push(markdownPromise);
+      });
+
+      Promise.all(markdownPromises).then(() => {
+        resolve(artifacts);
+      });
+    });
+  }
+
+  buildSummary(schemas) {
+    let chapters = "";
+
     schemas.forEach(schema => {
-      var markdownPromise = markdownGenerator
-        .generate([schema])
-        .then(markdownArtifacts => {
-          Object.assign(artifacts, markdownArtifacts);
-        });
-
-      markdownPromises.push(markdownPromise);
+      chapters +=
+        "* [" + schema.info.title + "](" + schema.info.title + ".md)\n";
     });
 
-    Promise.all(markdownPromises).then(() => {
-      resolve(artifacts);
+    return this.utils.populateTemplate(this.templates["SUMMARY.md"], {
+      CHAPTERS: chapters
     });
-  });
-};
-
-var buildSummary = schemas => {
-  let chapters = "";
-
-  schemas.forEach(schema => {
-    chapters += "* [" + schema.info.title + "](" + schema.info.title + ".md)\n";
-  });
-
-  return utils.populateTemplate(templates["SUMMARY.md"], {
-    CHAPTERS: chapters
-  });
+  }
 };

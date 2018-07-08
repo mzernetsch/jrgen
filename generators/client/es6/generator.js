@@ -1,34 +1,38 @@
-const fs = require("fs");
-const path = require("path");
-const utils = require(path.join(__dirname, "../../../", "utils.js"));
+module.exports.Generator = class Generator {
+  constructor() {
+    this.fs = require("fs");
+    this.path = require("path");
+    this.utils = require(this.path.join(__dirname, "../../../", "utils.js"));
 
-const templateDir = path.join(__dirname, "templates");
-const templates = utils.loadTemplates(templateDir);
+    this.templateDir = this.path.join(__dirname, "templates");
+    this.templates = this.utils.loadTemplates(this.templateDir);
+  }
 
-exports.generate = schemas => {
-  return new Promise((resolve, reject) => {
-    var schema = utils.mergeSchemas(schemas);
+  generate(schemas) {
+    return new Promise((resolve, reject) => {
+      var schema = this.utils.mergeSchemas(schemas);
 
-    var artifacts = {};
-    artifacts[schema.info.title + "Client.js"] = Buffer.from(
-      buildClient(schema),
-      "utf-8"
-    );
+      var artifacts = {};
+      artifacts[schema.info.title + "Client.js"] = Buffer.from(
+        this.buildClient(schema),
+        "utf-8"
+      );
 
-    resolve(artifacts);
-  });
-};
-
-var buildClient = schema => {
-  var methods = "";
-  Object.keys(schema.methods).forEach(key => {
-    methods += utils.populateTemplate(templates["method.js"], {
-      METHOD: key,
-      METHOD_NAME: key.replace(/\./g, "_")
+      resolve(artifacts);
     });
-  });
+  }
 
-  return utils.populateTemplate(templates["base.js"], {
-    CONTENT: methods
-  });
+  buildClient(schema) {
+    var methods = "";
+    Object.keys(schema.methods).forEach(key => {
+      methods += this.utils.populateTemplate(this.templates["method.js"], {
+        METHOD: key,
+        METHOD_NAME: key.replace(/\./g, "_")
+      });
+    });
+
+    return this.utils.populateTemplate(this.templates["base.js"], {
+      CONTENT: methods
+    });
+  }
 };

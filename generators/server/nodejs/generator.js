@@ -1,39 +1,50 @@
-const fs = require("fs");
-const path = require("path");
-const utils = require(path.join(__dirname, "../../../", "utils.js"));
+module.exports.Generator = class Generator {
+  constructor() {
+    this.fs = require("fs");
+    this.path = require("path");
+    this.utils = require(this.path.join(__dirname, "../../../", "utils.js"));
 
-const templateDir = path.join(__dirname, "templates");
-const templates = utils.loadTemplates(templateDir);
+    this.templateDir = this.path.join(__dirname, "templates");
+    this.templates = this.utils.loadTemplates(this.templateDir);
+  }
 
-exports.generate = schemas => {
-  return new Promise((resolve, reject) => {
-    var schema = utils.mergeSchemas(schemas);
+  generate(schemas) {
+    return new Promise((resolve, reject) => {
+      var schema = this.utils.mergeSchemas(schemas);
 
-    var artifacts = {};
-    artifacts["RPCServer.js"] = Buffer.from(templates["server.js"], "utf-8");
-    artifacts[schema.info.title + "Server.js"] = Buffer.from(
-      buildServer(schema),
-      "utf-8"
-    );
-    resolve(artifacts);
-  });
-};
+      var artifacts = {};
+      artifacts["RPCServer.js"] = Buffer.from(
+        this.templates["server.js"],
+        "utf-8"
+      );
+      artifacts[schema.info.title + "Server.js"] = Buffer.from(
+        this.buildServer(schema),
+        "utf-8"
+      );
+      resolve(artifacts);
+    });
+  }
 
-var buildServer = schema => {
-  var methods = "";
+  buildServer(schema) {
+    var methods = "";
 
-  Object.keys(schema.methods).forEach(key => {
-    var resultSchema = schema.methods[key].result;
+    Object.keys(schema.methods).forEach(key => {
+      var resultSchema = schema.methods[key].result;
 
-    methods += utils.populateTemplate(templates["method.js"], {
-      METHOD: key,
-      RESULT: JSON.stringify(utils.generateExample(resultSchema), null, 4)
+      methods += this.utils.populateTemplate(this.templates["method.js"], {
+        METHOD: key,
+        RESULT: JSON.stringify(
+          this.utils.generateExample(resultSchema),
+          null,
+          4
+        )
+      });
+
+      methods += "\n";
     });
 
-    methods += "\n";
-  });
-
-  return utils.populateTemplate(templates["base.js"], {
-    CONTENT: methods
-  });
+    return this.utils.populateTemplate(this.templates["base.js"], {
+      CONTENT: methods
+    });
+  }
 };

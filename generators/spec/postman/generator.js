@@ -1,95 +1,100 @@
-const path = require("path");
-const utils = require(path.join(__dirname, "../../../", "utils.js"));
-const uuidv5 = require("uuid/v5");
+module.exports.Generator = class Generator {
+  constructor() {
+    this.fs = require("fs");
+    this.path = require("path");
+    this.uuidv5 = require("uuid/v5");
+    this.utils = require(this.path.join(__dirname, "../../../", "utils.js"));
 
-exports.generate = schemas => {
-  return new Promise((resolve, reject) => {
-    var schema = utils.mergeSchemas(schemas);
-
-    var artifacts = {};
-    artifacts[schema.info.title + ".postman_collection.json"] = Buffer.from(
-      buildCollection(schema),
-      "utf-8"
-    );
-    resolve(artifacts);
-  });
-};
-
-var normalizeDescription = description => {
-  if (Array.isArray(description)) {
-    return description.join("\n");
+    this.templateDir = this.path.join(__dirname, "templates");
+    this.templates = this.utils.loadTemplates(this.templateDir);
   }
-  return description.toString();
-};
 
-var buildCollection = schema => {
-  var collection = {
-    info: {
-      _postman_id: uuidv5.URL,
-      name: schema.info.title,
-      description: normalizeDescription(schema.info.description),
-      schema:
-        "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    item: []
-  };
+  generate(schemas) {
+    return new Promise((resolve, reject) => {
+      var schema = this.utils.mergeSchemas(schemas);
 
-  Object.keys(schema.methods).forEach(key => {
-    collection.item.push(buildItem(key, schema.methods[key]));
-  });
+      var artifacts = {};
+      artifacts[schema.info.title + ".postman_collection.json"] = Buffer.from(
+        this.buildCollection(schema),
+        "utf-8"
+      );
+      resolve(artifacts);
+    });
+  }
 
-  return JSON.stringify(collection, null, 4);
-};
+  normalizeDescription(description) {
+    if (Array.isArray(description)) {
+      return description.join("\n");
+    }
+    return description.toString();
+  }
 
-var buildItem = (method, methodSchema) => {
-  var responseSchema = {
-    type: "object",
-    properties: {
-      id: {
-        type: "string"
+  buildCollection(schema) {
+    var collection = {
+      info: {
+        _postman_id: this.uuidv5.URL,
+        name: schema.info.title,
+        description: this.normalizeDescription(schema.info.description),
+        schema:
+          "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
       },
-      jsonrpc: {
-        type: "string",
-        enum: ["2.0"]
-      },
-      result: methodSchema.result
-    },
-    required: ["id", "jsonrpc", "result"]
-  };
+      item: []
+    };
 
-  return {
-    name: method,
-    event: [
-      {
-        listen: "test",
-        script: {
-          type: "text/javascript",
-          exec: [
-            `var schema = ${JSON.stringify(responseSchema)};`,
-            "",
-            "pm.test('Schema is valid', function() {",
-            "  var jsonData = pm.response.json();",
-            "  tv4.validate(jsonData, schema);",
-            "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
-            "});",
-            ""
-          ]
+    Object.keys(schema.methods).forEach(key => {
+      collection.item.push(this.buildItem(key, schema.methods[key]));
+    });
+
+    return JSON.stringify(collection, null, 4);
+  }
+
+  buildItem(method, methodSchema) {
+    var responseSchema = {
+      type: "object",
+      properties: {
+        id: {
+          type: "string"
+        },
+        jsonrpc: {
+          type: "string",
+          enum: ["2.0"]
+        },
+        result: methodSchema.result
+      },
+      required: ["id", "jsonrpc", "result"]
+    };
+
+    return {
+      name: method,
+      event: [
+        {
+          listen: "test",
+          script: {
+            type: "text/javascript",
+            exec: [
+              `var schema = ${JSON.stringify(responseSchema)};`,
+              "",
+              "pm.test('Schema is valid', function() {",
+              "  var jsonData = pm.response.json();",
+              "  tv4.validate(jsonData, schema);",
+              "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+              "});",
+              ""
+            ]
+          }
         }
-      }
-    ],
-    request: {
-      method: "POST",
-      header: [],
-      body: {
-        mode: "raw",
-        raw: utils.generateRequestExample(method, methodSchema.params)
+      ],
+      request: {
+        method: "POST",
+        header: [],
+        body: {
+          mode: "raw",
+          raw: this.utils.generateRequestExample(method, methodSchema.params)
+        },
+        url: { raw: "{{url}}", host: ["{{url}}"] },
+        description: methodSchema.description || methodSchema.summary
       },
-      url: {
-        raw: "{{url}}",
-        host: ["{{url}}"]
-      },
-      description: methodSchema.description || methodSchema.summary
-    },
-    response: []
-  };
+      response: []
+    };
+  }
 };
