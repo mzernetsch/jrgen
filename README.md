@@ -149,3 +149,36 @@ If the api is really large you may consider splitting the specification into mul
   }
 }
 ```
+
+## Plugins
+
+jrgen provides a simple plugin mechanism which allows to add new generators or overwrite/extend existing ones.
+
+A jrgen plugin...
+
+- is a nodejs module.
+- has a name that starts with `jrgen-plugin-` (e.g. `jrgen-plugin-myplugin`).
+- has a directory called `generators` which contains the custom generators.
+- must be installed as a sibling to jrgen (e.g. `npm i -g jrgen jrgen-plugin-myplugin`).
+
+### Generators
+
+The path to a generator has a format like this: `<jrgen-plugin>/generators/<category>/<name>/generator.js` (e.g. `jrgen-plugin-myplugin/generators/docs/html/generator.js`).
+
+The file `generator.js` must export a class called `Generator` with a `generate` method.
+
+A simple generator would look like this:
+
+```js
+module.exports.Generator = class Generator {
+  generate(schemas) {
+    return new Promise((resolve, reject) => {
+      resolve({
+        "HelloWorld.txt": Buffer.from("Hello World!", "utf-8");
+      });
+    });
+  }
+};
+```
+
+More advanced examples for generators can be found in the [main jrgen module](https://rawgit.com/mzernetsch/jrgen/master/generators/).
