@@ -73,7 +73,7 @@ npm install -g jrgen
 
 ## Specification
 
-jrgen uses special [specification files](https://github.com/mzernetsch/jrgen/blob/master/examples/ExampleAPI.schema.json) which describe all available methods, the parameters and the expected result or error responses of an api. A specification file contains valid json and mostly consists of [JSON-Schema](https://spacetelescope.github.io/understanding-json-schema/). A JSON-Schema describing a jrgen specification can be found [here](https://github.com/mzernetsch/jrgen/blob/master/jrgen-spec.schema.json).  
+jrgen uses special [specification files](https://github.com/mzernetsch/jrgen/blob/master/examples/ExampleAPI.jrgen.json) which describe all available methods, the parameters and the expected result or error responses of an api. A specification file contains valid json and mostly consists of [JSON-Schema](https://spacetelescope.github.io/understanding-json-schema/). A JSON-Schema describing a jrgen specification can be found [here](https://github.com/mzernetsch/jrgen/blob/master/jrgen-spec.schema.json).  
 If the api is really large you may consider splitting the specification into multiple files and create references using [JSON-Pointer](https://spacetelescope.github.io/understanding-json-schema/structuring.html#reuse).
 
 ```js

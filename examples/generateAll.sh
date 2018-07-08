@@ -3,7 +3,7 @@ set -e
 
 SCRIPT_PATH="`dirname \"$0\"`"
 JRGEN_PATH=$SCRIPT_PATH/../jrgen.js
-SCHEMA_PATH=${1:-$SCRIPT_PATH"/ExampleAPI.schema.json"}
+SCHEMA_PATH=${1:-$SCRIPT_PATH"/ExampleAPI.jrgen.json"}
 
 #docs
 node $JRGEN_PATH docs/html -o $SCRIPT_PATH/docs/html $SCHEMA_PATH
