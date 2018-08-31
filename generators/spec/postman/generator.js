@@ -86,7 +86,12 @@ module.exports.Generator = class Generator {
       ],
       request: {
         method: "POST",
-        header: [],
+        header: [
+          {
+            key: "Content-Type",
+            value: "application/json"
+          }
+        ],
         body: {
           mode: "raw",
           raw: this.utils.generateRequestExample(method, methodSchema.params)
