@@ -2,10 +2,8 @@
   "info": {
     "_postman_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
     "name": "ExampleAPI",
-    "description":
-      "An example api which handles various rpc requests.\nThis api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification.",
-    "schema":
-      "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "description": "An example api which handles various rpc requests.\nThis api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
@@ -30,18 +28,21 @@
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw":
-            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.Login\",\n    \"params\": {\n        \"name\": \"admin\",\n        \"password\": \"123456\"\n    }\n}"
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.Login\",\n    \"params\": {\n        \"name\": \"admin\",\n        \"password\": \"123456\"\n    }\n}"
         },
         "url": {
           "raw": "{{url}}",
           "host": ["{{url}}"]
         },
-        "description":
-          "Authenticates the user using the provided credentials and creates a new session."
+        "description": "Authenticates the user using the provided credentials and creates a new session."
       },
       "response": []
     },
@@ -67,11 +68,15 @@
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw":
-            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.Logout\"\n}"
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.Logout\"\n}"
         },
         "url": {
           "raw": "{{url}}",
@@ -103,18 +108,21 @@
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw":
-            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.KeepAlive\"\n}"
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"Session.KeepAlive\"\n}"
         },
         "url": {
           "raw": "{{url}}",
           "host": ["{{url}}"]
         },
-        "description":
-          "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout."
+        "description": "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout."
       },
       "response": []
     },
@@ -140,11 +148,15 @@
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw":
-            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Add\",\n    \"params\": {\n        \"name\": \"user\",\n        \"email\": \"user@example.org\",\n        \"address\": [\n            1600,\n            \"Pennsylvania\",\n            \"Avenue\",\n            \"NW\"\n        ],\n        \"password\": \"1234567890\"\n    }\n}"
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Add\",\n    \"params\": {\n        \"name\": \"user\",\n        \"email\": \"user@example.org\",\n        \"address\": [\n            1600,\n            \"Pennsylvania\",\n            \"Avenue\",\n            \"NW\"\n        ],\n        \"password\": \"1234567890\"\n    }\n}"
         },
         "url": {
           "raw": "{{url}}",
@@ -176,11 +188,15 @@
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw":
-            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Delete\",\n    \"params\": {\n        \"name\": \"user\"\n    }\n}"
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.Delete\",\n    \"params\": {\n        \"name\": \"user\"\n    }\n}"
         },
         "url": {
           "raw": "{{url}}",
@@ -212,18 +228,21 @@
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw":
-            "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.GetAll\"\n}"
+          "raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1234567890\",\n    \"method\": \"User.GetAll\"\n}"
         },
         "url": {
           "raw": "{{url}}",
           "host": ["{{url}}"]
         },
-        "description":
-          "This method returns an array with information about all existing users."
+        "description": "This method returns an array with information about all existing users."
       },
       "response": []
     }
