@@ -1,6 +1,6 @@
 {
   "name": "jrgen",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Generates docs, tests, clients and servers for json-rpc apis.",
   "keywords": [
     "generator",
