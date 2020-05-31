@@ -6,7 +6,7 @@ const ApiSpecPath = path.join(
   "examples",
   "ExampleAPI.jrgen.json"
 );
-const jrgenPath = path.join(__dirname, "..", "jrgen.js");
+const jrgenPath = path.join(__dirname, "..", "src", "index.js");
 const examplesPath = path.join(__dirname, "..", "examples");
 
 const generatorIds = [

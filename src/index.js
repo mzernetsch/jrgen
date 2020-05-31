@@ -2,7 +2,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const program = require("commander");
-const version = require("./package.json").version;
+const version = require("../package.json").version;
 const utils = require(path.join(__dirname, "utils.js"));
 
 program

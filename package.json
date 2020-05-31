@@ -13,7 +13,7 @@
   ],
   "author": "Marco Zernetsch <m.zernetsch@gmail.com>",
   "license": "MIT",
-  "bin": "./jrgen.js",
+  "bin": "./src/index.js",
   "bugs": "https://github.com/mzernetsch/jrgen/issues",
   "repository": {
     "type": "git",
