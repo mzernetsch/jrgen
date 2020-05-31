@@ -18,26 +18,24 @@ export class RPCClient {
   async request(method: string, params: any) {
     var rpcRequest = {
       jsonrpc: "2.0",
-      id: Math.random()
-        .toString(16)
-        .slice(2),
+      id: Math.random().toString(16).slice(2),
       method: method,
-      params: params
+      params: params,
     };
 
-    this.requestModifier.forEach(modifier => {
+    this.requestModifier.forEach((modifier) => {
       modifier(rpcRequest);
     });
 
     const response = await fetch(this.url, {
       method: "post",
-      body: JSON.stringify(rpcRequest)
+      body: JSON.stringify(rpcRequest),
     });
 
     if (response.ok) {
       const rpcResponse = await response.json();
 
-      this.responseModifier.forEach(modifier => {
+      this.responseModifier.forEach((modifier) => {
         modifier(rpcResponse);
       });
 

@@ -9,16 +9,14 @@ class RPCClient {
         method: "post",
         body: JSON.stringify({
           jsonrpc: "2.0",
-          id: Math.random()
-            .toString(16)
-            .slice(2),
+          id: Math.random().toString(16).slice(2),
           method: method,
-          params: params
-        })
+          params: params,
+        }),
       })
-        .then(response => {
+        .then((response) => {
           if (response.ok) {
-            response.json().then(rpcResponse => {
+            response.json().then((rpcResponse) => {
               if ("error" in rpcResponse) {
                 reject(rpcResponse.error);
               } else {
@@ -31,15 +29,15 @@ class RPCClient {
               message: "Network error",
               data: {
                 statusCode: response.status,
-                statusText: response.statusText
-              }
+                statusText: response.statusText,
+              },
             });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           reject({
             code: -1,
-            message: "Network error"
+            message: "Network error",
           });
         });
     });

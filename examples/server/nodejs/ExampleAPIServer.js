@@ -5,7 +5,7 @@ var server = new RPCServer();
 server.expose("Session.Login", (params, resolve, reject) => {
   resolve({
     session_token: "123456890",
-    validity: 3600
+    validity: 3600,
   });
 });
 
@@ -30,8 +30,8 @@ server.expose("User.GetAll", (params, resolve, reject) => {
     {
       name: "user",
       email: "user@example.org",
-      address: [1600, "Pennsylvania", "Avenue", "NW"]
-    }
+      address: [1600, "Pennsylvania", "Avenue", "NW"],
+    },
   ]);
 });
 

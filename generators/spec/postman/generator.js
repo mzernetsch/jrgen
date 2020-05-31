@@ -2,7 +2,7 @@ module.exports.Generator = class Generator {
   constructor() {
     this.fs = require("fs");
     this.path = require("path");
-    this.uuidv5 = require("uuid/v5");
+    this.uuidv5 = require("uuid").v5;
     this.utils = require(this.path.join(__dirname, "../../../", "utils.js"));
 
     this.templateDir = this.path.join(__dirname, "templates");
@@ -36,12 +36,12 @@ module.exports.Generator = class Generator {
         name: schema.info.title,
         description: this.normalizeDescription(schema.info.description),
         schema:
-          "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+          "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
       },
-      item: []
+      item: [],
     };
 
-    Object.keys(schema.methods).forEach(key => {
+    Object.keys(schema.methods).forEach((key) => {
       collection.item.push(this.buildItem(key, schema.methods[key]));
     });
 
@@ -53,15 +53,15 @@ module.exports.Generator = class Generator {
       type: "object",
       properties: {
         id: {
-          type: "string"
+          type: "string",
         },
         jsonrpc: {
           type: "string",
-          enum: ["2.0"]
+          enum: ["2.0"],
         },
-        result: methodSchema.result
+        result: methodSchema.result,
       },
-      required: ["id", "jsonrpc", "result"]
+      required: ["id", "jsonrpc", "result"],
     };
 
     return {
@@ -79,27 +79,27 @@ module.exports.Generator = class Generator {
               "  tv4.validate(jsonData, schema);",
               "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
               "});",
-              ""
-            ]
-          }
-        }
+              "",
+            ],
+          },
+        },
       ],
       request: {
         method: "POST",
         header: [
           {
             key: "Content-Type",
-            value: "application/json"
-          }
+            value: "application/json",
+          },
         ],
         body: {
           mode: "raw",
-          raw: this.utils.generateRequestExample(method, methodSchema.params)
+          raw: this.utils.generateRequestExample(method, methodSchema.params),
         },
         url: { raw: "{{url}}", host: ["{{url}}"] },
-        description: methodSchema.description || methodSchema.summary
+        description: methodSchema.description || methodSchema.summary,
       },
-      response: []
+      response: [],
     };
   }
 };

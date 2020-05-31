@@ -39,7 +39,7 @@ export interface SessionLoginRpcParams {
    * Password of the user to create a session for.
    */
   password: string;
-  [k: string]: any;
+  [k: string]: unknown;
 }
 
 export interface SessionLoginRpcResult {
@@ -51,7 +51,7 @@ export interface SessionLoginRpcResult {
    * Validity of the session token in seconds.
    */
   validity?: number;
-  [k: string]: any;
+  [k: string]: unknown;
 }
 
 /**
@@ -76,17 +76,22 @@ export interface UserAddRpcParams {
   /**
    * Address of the user to add.
    */
-  address?: [
-    number,
-    string,
-    ("Street" | "Avenue" | "Boulevard"),
-    ("NW" | "NE" | "SW" | "SE")
-  ];
+  address?:
+    | []
+    | [number]
+    | [number, string]
+    | [number, string, "Street" | "Avenue" | "Boulevard"]
+    | [
+        number,
+        string,
+        "Street" | "Avenue" | "Boulevard",
+        "NW" | "NE" | "SW" | "SE"
+      ];
   /**
    * Password of the user to add.
    */
   password: string;
-  [k: string]: any;
+  [k: string]: unknown;
 }
 
 /**
@@ -99,7 +104,7 @@ export interface UserDeleteRpcParams {
    * Name of the user to add.
    */
   name: string;
-  [k: string]: any;
+  [k: string]: unknown;
 }
 
 /**
@@ -122,13 +127,18 @@ export type UserGetAllRpcResult = {
   /**
    * Address of the user to add.
    */
-  address: [
-    number,
-    string,
-    ("Street" | "Avenue" | "Boulevard"),
-    ("NW" | "NE" | "SW" | "SE")
-  ];
-  [k: string]: any;
+  address:
+    | []
+    | [number]
+    | [number, string]
+    | [number, string, "Street" | "Avenue" | "Boulevard"]
+    | [
+        number,
+        string,
+        "Street" | "Avenue" | "Boulevard",
+        "NW" | "NE" | "SW" | "SE"
+      ];
+  [k: string]: unknown;
 }[];
 
 export interface Session {
@@ -140,5 +150,5 @@ export interface Session {
    * Validity of the session token in seconds.
    */
   validity?: number;
-  [k: string]: any;
+  [k: string]: unknown;
 }

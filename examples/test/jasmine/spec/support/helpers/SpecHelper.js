@@ -9,16 +9,16 @@ beforeEach(() => {
 
           var pass = validationResult.errors.length === 0;
           var message = "";
-          validationResult.errors.forEach(item => {
+          validationResult.errors.forEach((item) => {
             message += item.stack + '. value: "' + item.instance + '".\n';
           });
 
           return {
             pass: pass,
-            message: message
+            message: message,
           };
-        }
+        },
       };
-    }
+    },
   });
 });

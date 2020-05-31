@@ -8,15 +8,15 @@ describe("ExampleAPI", () => {
     properties: {
       jsonrpc: {
         type: "string",
-        enum: ["2.0"]
+        enum: ["2.0"],
       },
       id: {
         type: "string",
-        minLength: 1
-      }
+        minLength: 1,
+      },
     },
 
-    required: ["jsonrpc", "id", "result"]
+    required: ["jsonrpc", "id", "result"],
   };
 
   var rpcErrorResponseSchema = {
@@ -25,38 +25,36 @@ describe("ExampleAPI", () => {
     properties: {
       jsonrpc: {
         type: "string",
-        enum: ["2.0"]
+        enum: ["2.0"],
       },
       id: {
         type: "string",
-        minLength: 1
+        minLength: 1,
       },
       error: {
         type: "object",
         properties: {
           code: {
-            type: "number"
+            type: "number",
           },
           message: {
-            type: "string"
-          }
+            type: "string",
+          },
         },
 
-        required: ["code", "message"]
-      }
+        required: ["code", "message"],
+      },
     },
 
-    required: ["jsonrpc", "id", "error"]
+    required: ["jsonrpc", "id", "error"],
   };
 
   var request = (method, params) => {
     var request = {
       jsonrpc: "2.0",
-      id: Math.random()
-        .toString(16)
-        .slice(2),
+      id: Math.random().toString(16).slice(2),
       method: method,
-      params: params
+      params: params,
     };
 
     if (config.log.verbose) {
@@ -69,23 +67,23 @@ describe("ExampleAPI", () => {
           host: config.api.host,
           port: config.api.port,
           path: config.api.path,
-          method: "POST"
+          method: "POST",
         },
-        response => {
+        (response) => {
           if (response.statusCode < 200 || response.statusCode > 299) {
             reject({
               code: -1,
               message: "Network error",
               data: {
                 statusCode: response.status,
-                statusText: response.statusText
-              }
+                statusText: response.statusText,
+              },
             });
             return;
           }
 
           var message = "";
-          response.on("data", chunk => {
+          response.on("data", (chunk) => {
             message += chunk;
           });
 
@@ -100,7 +98,7 @@ describe("ExampleAPI", () => {
             } catch (error) {
               reject({
                 code: -32700,
-                message: "Parse error"
+                message: "Parse error",
               });
               return;
             }
@@ -116,11 +114,11 @@ describe("ExampleAPI", () => {
         }
       );
 
-      httpRequest.on("error", error => {
+      httpRequest.on("error", (error) => {
         reject({
           code: -1,
           message: "Network error",
-          data: error.message
+          data: error.message,
         });
       });
 
@@ -129,11 +127,11 @@ describe("ExampleAPI", () => {
     });
   };
 
-  it("should handle 'Session.Login' requests.", done => {
+  it("should handle 'Session.Login' requests.", (done) => {
     var methodConfig = config.methods["Session.Login"];
 
     request("Session.Login", methodConfig.params)
-      .then(result => {
+      .then((result) => {
         if (methodConfig.expectError) {
           fail(
             "Expected error, got result. Result: " +
@@ -150,20 +148,20 @@ describe("ExampleAPI", () => {
               description: "Bearer token of the created session.",
               default: "123456890",
               type: "string",
-              minLength: 1
+              minLength: 1,
             },
             validity: {
               description: "Validity of the session token in seconds.",
               default: 3600,
               type: "number",
-              multipleOf: 1
-            }
+              multipleOf: 1,
+            },
           },
-          required: ["session_token"]
+          required: ["session_token"],
         });
         done();
       })
-      .catch(error => {
+      .catch((error) => {
         if (!methodConfig.expectError) {
           fail(
             "Expected result, got error. Error: " +
@@ -176,11 +174,11 @@ describe("ExampleAPI", () => {
         done();
       });
   });
-  it("should handle 'Session.Logout' requests.", done => {
+  it("should handle 'Session.Logout' requests.", (done) => {
     var methodConfig = config.methods["Session.Logout"];
 
     request("Session.Logout", methodConfig.params)
-      .then(result => {
+      .then((result) => {
         if (methodConfig.expectError) {
           fail(
             "Expected error, got result. Result: " +
@@ -195,11 +193,11 @@ describe("ExampleAPI", () => {
           default: 0,
           type: "number",
           minimum: 0,
-          maximum: 0
+          maximum: 0,
         });
         done();
       })
-      .catch(error => {
+      .catch((error) => {
         if (!methodConfig.expectError) {
           fail(
             "Expected result, got error. Error: " +
@@ -212,11 +210,11 @@ describe("ExampleAPI", () => {
         done();
       });
   });
-  it("should handle 'Session.KeepAlive' requests.", done => {
+  it("should handle 'Session.KeepAlive' requests.", (done) => {
     var methodConfig = config.methods["Session.KeepAlive"];
 
     request("Session.KeepAlive", methodConfig.params)
-      .then(result => {
+      .then((result) => {
         if (methodConfig.expectError) {
           fail(
             "Expected error, got result. Result: " +
@@ -231,11 +229,11 @@ describe("ExampleAPI", () => {
           default: 0,
           type: "number",
           minimum: 0,
-          maximum: 0
+          maximum: 0,
         });
         done();
       })
-      .catch(error => {
+      .catch((error) => {
         if (!methodConfig.expectError) {
           fail(
             "Expected result, got error. Error: " +
@@ -248,11 +246,11 @@ describe("ExampleAPI", () => {
         done();
       });
   });
-  it("should handle 'User.Add' requests.", done => {
+  it("should handle 'User.Add' requests.", (done) => {
     var methodConfig = config.methods["User.Add"];
 
     request("User.Add", methodConfig.params)
-      .then(result => {
+      .then((result) => {
         if (methodConfig.expectError) {
           fail(
             "Expected error, got result. Result: " +
@@ -267,11 +265,11 @@ describe("ExampleAPI", () => {
           default: 0,
           type: "number",
           minimum: 0,
-          maximum: 0
+          maximum: 0,
         });
         done();
       })
-      .catch(error => {
+      .catch((error) => {
         if (!methodConfig.expectError) {
           fail(
             "Expected result, got error. Error: " +
@@ -284,11 +282,11 @@ describe("ExampleAPI", () => {
         done();
       });
   });
-  it("should handle 'User.Delete' requests.", done => {
+  it("should handle 'User.Delete' requests.", (done) => {
     var methodConfig = config.methods["User.Delete"];
 
     request("User.Delete", methodConfig.params)
-      .then(result => {
+      .then((result) => {
         if (methodConfig.expectError) {
           fail(
             "Expected error, got result. Result: " +
@@ -303,11 +301,11 @@ describe("ExampleAPI", () => {
           default: 0,
           type: "number",
           minimum: 0,
-          maximum: 0
+          maximum: 0,
         });
         done();
       })
-      .catch(error => {
+      .catch((error) => {
         if (!methodConfig.expectError) {
           fail(
             "Expected result, got error. Error: " +
@@ -320,11 +318,11 @@ describe("ExampleAPI", () => {
         done();
       });
   });
-  it("should handle 'User.GetAll' requests.", done => {
+  it("should handle 'User.GetAll' requests.", (done) => {
     var methodConfig = config.methods["User.GetAll"];
 
     request("User.GetAll", methodConfig.params)
-      .then(result => {
+      .then((result) => {
         if (methodConfig.expectError) {
           fail(
             "Expected error, got result. Result: " +
@@ -345,13 +343,13 @@ describe("ExampleAPI", () => {
                 description: "Name of the user.",
                 default: "user",
                 type: "string",
-                minLength: 1
+                minLength: 1,
               },
               email: {
                 description: "Email of the user.",
                 default: "user@example.org",
                 type: "string",
-                format: "email"
+                format: "email",
               },
               address: {
                 description: "Address of the user to add.",
@@ -362,38 +360,38 @@ describe("ExampleAPI", () => {
                     description: "Address number.",
                     default: 1600,
                     type: "number",
-                    minimum: 1
+                    minimum: 1,
                   },
                   {
                     name: "street_name",
                     description: "Name of the street.",
                     default: "Pennsylvania",
                     type: "string",
-                    minLength: 1
+                    minLength: 1,
                   },
                   {
                     name: "street_type",
                     description: "Type of the street.",
                     default: "Avenue",
                     type: "string",
-                    enum: ["Street", "Avenue", "Boulevard"]
+                    enum: ["Street", "Avenue", "Boulevard"],
                   },
                   {
                     name: "direction",
                     description: "City quadrant of the address",
                     default: "NW",
                     type: "string",
-                    enum: ["NW", "NE", "SW", "SE"]
-                  }
-                ]
-              }
+                    enum: ["NW", "NE", "SW", "SE"],
+                  },
+                ],
+              },
             },
-            required: ["name", "email", "address"]
-          }
+            required: ["name", "email", "address"],
+          },
         });
         done();
       })
-      .catch(error => {
+      .catch((error) => {
         if (!methodConfig.expectError) {
           fail(
             "Expected result, got error. Error: " +

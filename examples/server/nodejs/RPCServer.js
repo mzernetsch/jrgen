@@ -25,47 +25,47 @@ class RPCServer {
     }
 
     this.loadBody(request)
-      .then(body => {
+      .then((body) => {
         this.parseRPCMessage(body)
-          .then(rpc => {
+          .then((rpc) => {
             new Promise((resolve, reject) => {
               this.api[rpc.method](rpc.params, resolve, reject);
             })
-              .then(result => {
+              .then((result) => {
                 response.end(
                   JSON.stringify({
                     id: rpc.id,
                     jsonrpc: "2.0",
-                    result: result
+                    result: result,
                   })
                 );
               })
-              .catch(error => {
+              .catch((error) => {
                 response.end(
                   JSON.stringify({
                     id: rpc.id,
                     jsonrpc: "2.0",
-                    error: error
+                    error: error,
                   })
                 );
               });
           })
-          .catch(error => {
+          .catch((error) => {
             response.end(
               JSON.stringify({
                 id: null,
                 jsonrpc: "2.0",
-                error: error
+                error: error,
               })
             );
           });
       })
-      .catch(error => {
+      .catch((error) => {
         response.end(
           JSON.stringify({
             id: null,
             jsonrpc: "2.0",
-            error: error
+            error: error,
           })
         );
       });
@@ -75,7 +75,7 @@ class RPCServer {
     return new Promise((resolve, reject) => {
       var requestBody = "";
 
-      request.on("data", chunk => {
+      request.on("data", (chunk) => {
         requestBody += chunk;
       });
 
@@ -93,7 +93,7 @@ class RPCServer {
       } catch (e) {
         return reject({
           code: -32700,
-          message: "Parse error"
+          message: "Parse error",
         });
       }
 
@@ -101,7 +101,7 @@ class RPCServer {
         return reject({
           code: -32600,
           message: "Invalid Request",
-          data: "rpc is not of type object."
+          data: "rpc is not of type object.",
         });
       }
 
@@ -109,7 +109,7 @@ class RPCServer {
         return reject({
           code: -32600,
           message: "Invalid Request",
-          data: "jsonrpc has not been set or has an invalid value."
+          data: "jsonrpc has not been set or has an invalid value.",
         });
       }
 
@@ -120,7 +120,7 @@ class RPCServer {
         return reject({
           code: -32600,
           message: "Invalid Request",
-          data: "id is not of type number or string."
+          data: "id is not of type number or string.",
         });
       }
 
@@ -128,7 +128,7 @@ class RPCServer {
         return reject({
           code: -32600,
           message: "Invalid Request",
-          data: "method is not of type string."
+          data: "method is not of type string.",
         });
       }
 
@@ -136,7 +136,7 @@ class RPCServer {
         return reject({
           code: -32600,
           message: "Invalid Request",
-          data: "params is not of type object."
+          data: "params is not of type object.",
         });
       }
 
