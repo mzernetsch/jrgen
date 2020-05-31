@@ -1,6 +1,7 @@
 language: node_js
 node_js:
-- node
+  - node
+script: "true"
 deploy:
   - provider: npm
     email: m.zernetsch@gmail.com
