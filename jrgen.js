@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 const program = require("commander");
 const version = require("./package.json").version;
@@ -39,13 +39,10 @@ program
 
 const generators = utils.findGenerators();
 
-Object.keys(generators).forEach(key => {
+Object.keys(generators).forEach((key) => {
   program.command(key + " <specFiles...>").action((specFiles, cmd) => {
     var outdir = path.normalize(program.outdir || process.cwd());
-    if (!fs.existsSync(outdir)) {
-      console.error("Specified outdir '%s' is not available.", outdir);
-      return;
-    }
+    fs.ensureDirSync(outdir);
 
     var specs = utils.loadSchemas(specFiles);
     if (specs.length === 0) {
@@ -60,7 +57,7 @@ Object.keys(generators).forEach(key => {
     }
 
     const generator = new Generator();
-    generator.generate(specs).then(artifacts => {
+    generator.generate(specs).then((artifacts) => {
       utils.prettifyArtifacts(artifacts);
       utils.writeArtifacts(artifacts, outdir);
     });
