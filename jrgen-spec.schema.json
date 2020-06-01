@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "jrgen": {
-      "description": "Version of the jrgen schema.",
+      "description": "Version of the jrgen spec.",
       "type": "string",
       "enum": ["1.0", "1.1"]
     },
@@ -48,8 +48,7 @@
       "type": "object"
     },
     "methods": {
-      "description":
-        "Definitions of the available procedures in the api. A key equals to the name of a procedure.",
+      "description": "Definitions of the available procedures in the api. A key equals to the name of a procedure.",
       "type": "object",
       "patternProperties": {
         "^.*$": {

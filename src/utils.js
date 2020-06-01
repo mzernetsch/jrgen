@@ -2,81 +2,79 @@ const fs = require("fs-extra");
 const path = require("path");
 const $RefParser = require("json-schema-ref-parser");
 const jsonlint = require("jsonlint");
-const merge = require("deepmerge");
 const prettier = require("prettier");
 const glob = require("glob");
+const mustache = require("mustache");
 
-exports.findGenerators = (generatorId) => {
-  var generators = {};
-
-  var loadPlugin = (pluginFolderPath) => {
-    var generatorsFolderPath = path.join(pluginFolderPath, "generators");
-    fs.readdirSync(generatorsFolderPath).forEach((categoryName) => {
-      var categoryFolderPath = path.join(generatorsFolderPath, categoryName);
-      fs.readdirSync(categoryFolderPath).forEach((generatorName) => {
-        var generatorPath = path.join(
-          categoryFolderPath,
-          generatorName,
-          "generator.js"
-        );
-        if (fs.existsSync(generatorPath)) {
-          generators[categoryName + "/" + generatorName] = generatorPath;
-        }
+exports.loadFileTreeFrom = (inputPath) => {
+  const fileTree = {};
+  glob
+    .sync(`${inputPath}/**/*`)
+    .filter((filePath) => {
+      return fs.lstatSync(filePath).isFile();
+    })
+    .forEach((filePath) => {
+      fileTree[path.relative(inputPath, filePath)] = fs.readFileSync(filePath, {
+        encoding: "utf8",
       });
     });
-  };
-
-  var parsePlugins = (pluginsFolderPath) => {
-    fs.readdirSync(pluginsFolderPath).forEach((pluginName) => {
-      var pluginFolderPath = path.join(pluginsFolderPath, pluginName);
-      if (pluginName.startsWith("jrgen-plugin-")) {
-        loadPlugin(pluginFolderPath);
-      } else if (pluginName.startsWith("@")) {
-        parsePlugins(pluginFolderPath);
-      }
-    });
-  };
-
-  loadPlugin(__dirname);
-  parsePlugins(path.join(__dirname, ".."));
-
-  return generators;
+  return fileTree;
 };
 
-exports.populateTemplate = (template, values) => {
-  var text = new String(template);
+exports.saveFileTreeTo = (fileTree, outputPath) => {
+  outputPath = path.normalize(outputPath || process.cwd());
 
-  Object.keys(values).forEach((key) => {
-    var regex = new RegExp("{{" + key + "}}", "g");
-    text = text.replace(regex, values[key]);
+  Object.keys(fileTree).forEach((relativeFilePath) => {
+    fs.outputFile(
+      path.join(outputPath, relativeFilePath),
+      fileTree[relativeFilePath]
+    );
   });
-
-  return text;
 };
 
-exports.generateRequestExample = (method, paramsSchema) => {
-  var example = exports.generateExample(paramsSchema);
+exports.normalizeMultiLineString = (multiLineString, separator) => {
+  if (!multiLineString) {
+    return "";
+  }
+  if (Array.isArray(multiLineString)) {
+    return multiLineString.join(separator || "\n");
+  }
+  return multiLineString.toString();
+};
 
-  var exampleRequest = {
-    jsonrpc: "2.0",
-    id: "1234567890",
-    method: method,
-    params: example === null ? undefined : example,
-  };
+exports.gatherBlueprints = () => {
+  return glob
+    .sync(__dirname + "/../../jrgen*/**/*.jrgen.blueprint.js")
+    .reduce((acc, blueprintPath) => {
+      const blueprintId = path.basename(blueprintPath, ".jrgen.blueprint.js");
+      acc[blueprintId] = blueprintPath;
+      return acc;
+    }, {});
+};
 
-  return JSON.stringify(exampleRequest, null, 4);
+exports.generateRequestExample = (methodName, paramsSchema) => {
+  return JSON.stringify(
+    {
+      jsonrpc: "2.0",
+      id: "1234567890",
+      method: methodName,
+      params: exports.generateExample(paramsSchema),
+    },
+    null,
+    2
+  );
 };
 
 exports.generateResponseExample = (resultSchema) => {
-  var example = exports.generateExample(resultSchema);
-
-  var exampleResponse = {
-    jsonrpc: "2.0",
-    id: "1234567890",
-    result: example === null ? undefined : example,
-  };
-
-  return JSON.stringify(exampleResponse, null, 4);
+  return JSON.stringify(
+    {
+      jsonrpc: "2.0",
+      id: "1234567890",
+      result: exports.generateExample(resultSchema),
+    },
+    null,
+    2
+  );
 };
 
 exports.generateExample = (schema) => {
@@ -84,7 +82,7 @@ exports.generateExample = (schema) => {
     return;
   }
 
-  var example = null;
+  let example;
 
   if (schema.type === "object") {
     example = {};
@@ -112,13 +110,13 @@ exports.parsePropertyList = (name, schema) => {
     return [];
   }
 
-  var entries = [];
+  let entries = [];
 
   entries.push({
     name: name,
     type: schema.type,
     description: schema.description || "",
-    schema: schema,
+    schema: JSON.stringify(schema, null, 2),
   });
 
   if (schema.type === "array") {
@@ -134,12 +132,12 @@ exports.parsePropertyList = (name, schema) => {
       });
     } else {
       entries = entries.concat(
-        exports.parsePropertyList(name + "[#]", schema.items)
+        exports.parsePropertyList(name + "[]", schema.items)
       );
     }
   } else if (schema.type === "object") {
     Object.keys(schema.properties).forEach((key) => {
-      var connector = "?.";
+      let connector = "?.";
       if (schema.required && schema.required.includes(key)) {
         connector = ".";
       }
@@ -155,23 +153,15 @@ exports.parsePropertyList = (name, schema) => {
   return entries;
 };
 
-exports.resolveSchemaRefs = (schema) => {
-  var data;
-  var done = false;
-
-  $RefParser.dereference(schema, (error, schema) => {
-    if (error) {
-      throw error;
-    }
-    data = schema;
-    done = true;
+exports.resolveSchemaRefs = async (schema) => {
+  return new Promise((resolve) => {
+    $RefParser.dereference(schema, (error, schema) => {
+      if (error) {
+        throw error;
+      }
+      resolve(schema);
+    });
   });
-
-  require("deasync").loopWhile(() => {
-    return !done;
-  });
-
-  return data;
 };
 
 exports.loadSchema = (schemaPath) => {
@@ -179,76 +169,20 @@ exports.loadSchema = (schemaPath) => {
     schemaPath = path.join(process.cwd(), schemaPath);
   }
 
-  var jsonString = fs.readFileSync(schemaPath, {
+  const jsonString = fs.readFileSync(schemaPath, {
     encoding: "utf8",
   });
 
-  if (!jsonString) {
-    throw "Error occured during loading schema.";
-  }
+  const schema = jsonlint.parse(jsonString);
 
-  var schema = jsonlint.parse(jsonString);
-  if (!schema) {
-    throw "Specified schema does not exist.";
-  }
-
-  var resolvedSchema = exports.resolveSchemaRefs(schema);
-  if (!resolvedSchema) {
-    throw "Error occured during resolving schema $refs.";
-  }
+  const resolvedSchema = exports.resolveSchemaRefs(schema);
 
   return resolvedSchema;
 };
 
-exports.loadSchemas = (schemaPaths) => {
-  var schemas = [];
-
-  schemaPaths.forEach((schemaPath) => {
-    schemas.push(exports.loadSchema(schemaPath));
-  });
-
-  return schemas;
-};
-
-exports.mergeSchemas = (schemas) => {
-  var apiSchema = {};
-
-  schemas.forEach((schema) => {
-    apiSchema = merge(apiSchema, schema);
-  });
-
-  return apiSchema;
-};
-
-exports.loadTemplates = (templateDir) => {
-  const templates = {};
-
-  const templatesPaths = glob.sync(templateDir + "/**/*");
-  templatesPaths
-    .filter((templatePath) => {
-      return fs.lstatSync(templatePath).isFile();
-    })
-    .forEach((templatePath) => {
-      templates[path.relative(templateDir, templatePath)] = fs.readFileSync(
-        templatePath,
-        {
-          encoding: "utf8",
-        }
-      );
-    });
-
-  return templates;
-};
-
-exports.writeArtifacts = (artifacts, outdir) => {
-  Object.keys(artifacts).forEach((artifactPath) => {
-    fs.outputFile(path.join(outdir, artifactPath), artifacts[artifactPath]);
-  });
-};
-
-exports.prettifyArtifacts = (artifacts) => {
-  Object.keys(artifacts).forEach((key) => {
-    var parser;
+exports.prettifyFileTree = (fileTree) => {
+  Object.keys(fileTree).forEach((key) => {
+    let parser;
     if (key.endsWith(".js")) {
       parser = "babel";
     }
@@ -265,12 +199,34 @@ exports.prettifyArtifacts = (artifacts) => {
       parser = "markdown";
     }
     if (parser) {
-      artifacts[key] = Buffer.from(
-        prettier.format(artifacts[key].toString(), {
+      fileTree[key] = Buffer.from(
+        prettier.format(fileTree[key].toString(), {
           parser,
         }),
         "utf-8"
       );
     }
   });
+};
+
+exports.buildArtifacts = (artifactsBlueprint) => {
+  const artifacts = {};
+
+  const templateKeys = Object.keys(artifactsBlueprint.templates);
+  for (const templateKey of templateKeys) {
+    let artifact = artifactsBlueprint.templates[templateKey];
+    let artifactPath = templateKey;
+
+    if (templateKey.endsWith(".mustache")) {
+      artifact = mustache.render(
+        artifactsBlueprint.templates[templateKey],
+        artifactsBlueprint.model
+      );
+      artifactPath = artifactPath.replace(/\.mustache$/, "");
+    }
+
+    artifacts[artifactPath] = Buffer.from(artifact, "utf-8");
+  }
+
+  return artifacts;
 };

@@ -1,0 +1,71 @@
+{{title}}
+===
+{{{description}}}
+
+<strong>Version {{version}}</strong>
+
+---
+{{#methods}}
+- [{{name}}](#{{name}})
+{{/methods}}
+---
+
+
+{{#methods}}
+<a name="{{name}}"></a>
+
+## {{name}}
+
+{{{summary}}}
+
+{{#description}}
+### Description
+{{/description}}
+
+{{{description}}}
+
+{{#params.length}}
+### Parameters
+
+| Name  | Type | Description |
+| --- | --- | --- |
+{{/params.length}}
+{{#params}}
+| {{name}} | {{type}} | {{{description}}} |
+{{/params}}
+
+{{#result.length}}
+### Result
+
+| Name  | Type | Description |
+| --- | --- | --- |
+{{/result.length}}
+{{#result}}
+| {{name}} | {{type}} | {{{description}}} |
+{{/result}}
+
+{{#errors.length}}
+### Errors
+
+| Code | Message | Description |
+| --- | --- | --- |
+{{/errors.length}}
+{{#errors}}
+| {{code}} | {{message}} | {{{description}}} |
+{{/errors}}
+
+### Examples
+
+#### Request
+
+```json
+{{{requestExample}}}
+```
+
+#### Response
+
+```json
+{{{responseExample}}}
+```
+
+{{/methods}}

@@ -1,0 +1,13 @@
+import { RpcClient } from './rpc-client';
+
+export class {{title}}Client extends RpcClient {
+
+  {{#methods}}
+  async {{functionName}} (params{{{paramsType}}}): Promise<{{{resultType}}}> {
+      return await this.request('{{rpcName}}', params);
+  }
+  
+  {{/methods}}
+}
+
+{{{types}}}

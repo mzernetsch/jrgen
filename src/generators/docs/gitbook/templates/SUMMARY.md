@@ -1,3 +1,0 @@
-# Table of content
-
-{{CHAPTERS}}

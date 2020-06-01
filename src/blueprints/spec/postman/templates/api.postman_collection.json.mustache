@@ -1,0 +1,50 @@
+{
+    info: {
+    _postman_id: "{{{postmanId}}}",
+    name: "{{title}}",
+    description: {{{description}}},
+    schema:
+        "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    },
+    item: [
+        {{#methods}}
+        {
+        name: "{{name}}",
+        event: [
+            {
+            listen: "test",
+            script: {
+                type: "text/javascript",
+                exec: [
+                'var schema = {{{responseSchema}}};',
+                "",
+                "pm.test('Schema is valid', function() {",
+                "  var jsonData = pm.response.json();",
+                "  tv4.validate(jsonData, schema);",
+                "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                "});",
+                "",
+                ],
+            },
+            },
+        ],
+        request: {
+            method: "POST",
+            header: [
+            {
+                key: "Content-Type",
+                value: "application/json",
+            },
+            ],
+            body: {
+            mode: "raw",
+            raw: {{{requestExample}}},
+            },
+            url: { raw: "{\{url}}", host: ["{\{url}}"] },
+            description: "{{{description}}}",
+        },
+        response: [],
+        },
+        {{/methods}}
+    ],
+}

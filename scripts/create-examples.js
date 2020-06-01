@@ -6,22 +6,20 @@ const ApiSpecPath = path.join(
   "examples",
   "ExampleAPI.jrgen.json"
 );
-const jrgenPath = path.join(__dirname, "..", "src", "index.js");
+const jrgenPath = path.join(__dirname, "..", "src", "jrgen.js");
 const examplesPath = path.join(__dirname, "..", "examples");
 
-const generatorIds = [
-  "docs/html",
-  "docs/md",
-  "docs/gitbook",
-  "test/jasmine",
-  "client/es6",
-  "client/ts",
-  "server/nodejs",
-  "spec/postman",
+const blueprintIds = [
+  "docs-html",
+  "docs-md",
+  "client-web-js",
+  "client-web-ts",
+  "server-nodejs-js",
+  "spec-postman",
 ];
 
-for (const generatorId of generatorIds) {
-  const outputPath = path.join(examplesPath, generatorId);
+for (const generatorId of blueprintIds) {
+  const outputPath = path.join(examplesPath, generatorId.replace(/-/g, "/"));
   child_process.execSync(
     `node "${jrgenPath}" ${generatorId} -o ${outputPath} ${ApiSpecPath}`
   );

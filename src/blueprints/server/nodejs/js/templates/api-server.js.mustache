@@ -1,0 +1,12 @@
+const RpcServer = require('./rpc-server.js');
+
+const server = new RpcServer();
+
+{{#methods}}
+server.expose('{{rpcName}}', (params, resolve, reject) => {
+	resolve({{{result}}});
+});
+
+{{/methods}}
+
+server.listen(8080, '0.0.0.0');

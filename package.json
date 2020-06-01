@@ -13,7 +13,7 @@
   ],
   "author": "Marco Zernetsch <m.zernetsch@gmail.com>",
   "license": "MIT",
-  "bin": "./src/index.js",
+  "bin": "./src/jrgen.js",
   "bugs": "https://github.com/mzernetsch/jrgen/issues",
   "repository": {
     "type": "git",
@@ -26,15 +26,12 @@
   },
   "dependencies": {
     "commander": "^5.1.0",
-    "deasync": "^0.1.20",
-    "deepmerge": "^4.2.2",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
     "json-schema-ref-parser": "^9.0.1",
     "json-schema-to-typescript": "^9.1.0",
     "jsonlint": "^1.6.3",
-    "jsonschema": "^1.2.6",
-    "markdown-table": "^2.0.0",
+    "mustache": "^4.0.1",
     "prettier": "^2.0.5",
     "uuid": "^8.1.0"
   }

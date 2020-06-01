@@ -1,11 +1,10 @@
 {
-  "$schema":
-    "https://rawgit.com/mzernetsch/jrgen/master/jrgen-spec.schema.json",
+  "$schema": "https://rawgit.com/mzernetsch/jrgen/master/jrgen-spec.schema.json",
   "jrgen": "1.1",
   "jsonrpc": "2.0",
 
   "info": {
-    "title": "ExampleAPI",
+    "title": "Example API",
     "description": [
       "An example api which handles various rpc requests.",
       "This api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification."
@@ -40,8 +39,7 @@
   "methods": {
     "Session.Login": {
       "summary": "Creates a new session.",
-      "description":
-        "Authenticates the user using the provided credentials and creates a new session.",
+      "description": "Authenticates the user using the provided credentials and creates a new session.",
 
       "tags": ["Session"],
 
@@ -108,8 +106,7 @@
 
     "Session.KeepAlive": {
       "summary": "Refreshs an existing session.",
-      "description":
-        "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.",
+      "description": "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.",
 
       "tags": ["Session"],
 
@@ -263,8 +260,7 @@
 
     "User.GetAll": {
       "summary": "Returns all users.",
-      "description":
-        "This method returns an array with information about all existing users.",
+      "description": "This method returns an array with information about all existing users.",
 
       "tags": ["User"],
 

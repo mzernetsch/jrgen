@@ -1,29 +1,24 @@
-jrgen (json-rpc-generator) generates docs, tests, clients, servers and more for json-rpc apis.
+jrgen (json-rpc-generator) generates docs, clients, servers and more for json-rpc apis.
 
 Generated example files can be found in the [examples directory](https://github.com/mzernetsch/jrgen/tree/master/examples).
 
 ### docs
 
-- [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/ExampleAPI.html)
-- [md](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/md/ExampleAPI.md)
-- [gitbook](https://github.com/mzernetsch/jrgen/tree/master/examples/docs/gitbook)
-
-### test
-
-- [jasmine](https://github.com/mzernetsch/jrgen/tree/master/examples/test/jasmine)
+- [html](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/html/example-api-reference.html)
+- [md](https://rawgit.com/mzernetsch/jrgen/master/examples/docs/md/example-api-reference.md)
 
 ### client
 
-- [es6](https://github.com/mzernetsch/jrgen/blob/master/examples/client/es6/ExampleAPIClient.js)
-- [ts](https://github.com/mzernetsch/jrgen/blob/master/examples/client/ts/ExampleAPIClient.ts)
+- [web-js](https://github.com/mzernetsch/jrgen/blob/master/examples/client/web/js/example-api-client.js)
+- [web-ts](https://github.com/mzernetsch/jrgen/blob/master/examples/client/web/ts/example-api-client.ts)
 
 ### server
 
-- [nodejs](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/ExampleAPIServer.js)
+- [nodejs-js](https://github.com/mzernetsch/jrgen/blob/master/examples/server/nodejs/js/example-api-server.js)
 
 ### spec
 
-- [postman](https://github.com/mzernetsch/jrgen/tree/master/examples/spec/postman/ExampleAPI.postman_collection.json)
+- [postman](https://github.com/mzernetsch/jrgen/tree/master/examples/spec/postman/example-api.postman_collection.json)
 
 ## Installation
 
@@ -34,41 +29,33 @@ npm install -g jrgen
 ## Usage
 
 ```bash
-  Usage: jrgen [options] [command]
+Usage: jrgen [options] [command]
 
+Options:
+  -V, --version                    output the version number
+  -o, --outdir <path>              Output directory. Defaults to current working directory.
+  -h, --help                       display help for command
 
-  Options:
-
-    -V, --version        output the version number
-    -o, --outdir <path>  Output directory. Defaults to current working directory.
-    -h, --help           output usage information
-
-
-  Commands:
-
-    client/es6 <specFiles...>
-    client/ts <specFiles...>
-    docs/gitbook <specFiles...>
-    docs/html <specFiles...>
-    docs/md <specFiles...>
-    server/nodejs <specFiles...>
-    test/jasmine <specFiles...>
-    spec/postman <specFiles...>
+Commands:
+  client-web-js <specFilePath>
+  client-web-ts <specFilePath>
+  docs-html <specFilePath>
+  docs-md <specFilePath>
+  server-nodejs-js <specFilePath>
+  spec-postman <specFilePath>
+  help [command]                   display help for command
 
 
   Examples:
 
-    Create html documentation from 'API.schema.json':
-    $ jrgen docs/html ~/API.schema.json
+    Create html documentation from 'API.jrgen.json':
+    $ jrgen docs-html ~/API.jrgen.json
 
-    Create a postman collection from 'API.schema.json':
-    $ jrgen spec/postman ~/API.schema.json
+    Create a postman specification from 'API.jrgen.json':
+    $ jrgen spec-postman ~/API.jrgen.json
 
-    Create a js client from 'API.schema.json' and write all generated files into the ./client subdirectory:
-    $ jrgen client/es6 -o ./client ~/API.schema.json
-
-    Create a nodejs server from a combination of 'API1.schema.json' and 'API2.schema.json':
-    $ jrgen server/nodejs ~/API1.schema.json ~/API2.schema.json
+    Create a ts web client from 'API.jrgen.json' and write all generated files into the ./client subdirectory:
+    $ jrgen client-web-ts -o ./client ~/API.jrgen.json
 ```
 
 ## Specification
@@ -79,7 +66,7 @@ If the api is really large you may consider splitting the specification into mul
 ```js
 {
   $schema: "https://rawgit.com/mzernetsch/jrgen/master/jrgen-spec.schema.json", //Link to the schema. Used for validation and autocompletion in certain editors.
-  jrgen: "1.1", //jrgen version.
+  jrgen: "1.1", //jrgen spec version.
   jsonrpc: "2.0", //jsonrpc version. Currently always "2.0".
 
   info: {
@@ -152,33 +139,45 @@ If the api is really large you may consider splitting the specification into mul
 
 ## Plugins
 
-jrgen provides a simple plugin mechanism which allows to add new generators or overwrite/extend existing ones.
+jrgen provides a simple plugin mechanism which allows to add new blueprints to generate additional artifacts.
 
 A jrgen plugin...
 
 - is a nodejs module.
 - has a name that starts with `jrgen-plugin-` (e.g. `jrgen-plugin-myplugin`).
-- has a directory called `generators` which contains the custom generators.
+- contains `*.jrgen.blueprint.js` files which will be used to generate new artifacts.
 - must be installed as a sibling to jrgen (e.g. `npm i -g jrgen jrgen-plugin-myplugin`).
 
-### Generators
+### Blueprints
 
-The path to a generator has a format like this: `<jrgen-plugin>/generators/<category>/<name>/generator.js` (e.g. `jrgen-plugin-myplugin/generators/docs/html/generator.js`).
+The artifacts are generated based on a specification called `Blueprint` which itself is created by a `BlueprintFactory`.
 
-The file `generator.js` must export a class called `Generator` with a `generate` method.
+A `Blueprint` contains the actual artifacts data in form of templates and an optional model which will be used to render dynamic templates using the [mustache.js](https://github.com/janl/mustache.js) library. Basically for every template key ending with `.mustache`, jrgen will call `mustache.render(template, model)` and remove the `.mustache` extension. Templates without `.mustache` extension are static and won't be changed.
 
-A simple generator would look like this:
-
-```js
-module.exports.Generator = class Generator {
-  generate(schemas) {
-    return new Promise((resolve, reject) => {
-      resolve({
-        "HelloWorld.txt": Buffer.from("Hello World!", "utf-8");
-      });
-    });
+```json
+{
+  "templates": {
+    "HelloWorld.txt": "Hello world!",
+    "sub/HelloWorld.txt": "Hello world!",
+    "sub/sub/HelloWorld.txt.mustache": "Hello {{title}}!"
+  },
+  "model": {
+    "title": "world"
   }
-};
+}
 ```
 
-More advanced examples for generators can be found in the [main jrgen module](https://rawgit.com/mzernetsch/jrgen/master/generators/).
+A `BlueprintFactory` is a file ending with `.jrgen.blueprint.js`. It exports a function which creates the `Blueprint` based on the provided jrgen specification. The name of the file will be used as the cli command to generate the artifacts (e.g. a factory with the name `docs-txt.jrgen.blueprint.js` can be called using `jrgen docs-txt 'API.jrgen.json'`).
+
+```js
+module.exports = async (spec) => {
+  return {
+    templates: {
+      "HelloWorld.txt": "Hello {{title}}!",
+    },
+    model: {
+      title: spec.info.title,
+    },
+  };
+};
+```
