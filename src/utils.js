@@ -98,6 +98,8 @@ exports.generateExample = (schema) => {
     } else {
       example = [exports.generateExample(schema.items)];
     }
+  } else if (schema.examples !== undefined) {
+    example = schema.default === undefined ? schema.examples[0] : schema.default;
   } else {
     example = schema.default === undefined ? schema.example : schema.default;
   }
