@@ -114,10 +114,17 @@ exports.parsePropertyList = (name, schema) => {
 
   let entries = [];
 
+  var fullDescription = schema.description || "";
+  if (schema.type === "array") {
+    var min = schema.minItems === undefined ? "0" : schema.minItems;
+    var max = schema.maxItems === undefined ? "N" : schema.maxItems;
+    fullDescription += " (" + min + ".." + max + " items)";
+  }
+
   entries.push({
     name: name,
     type: schema.type,
-    description: schema.description || "",
+    description: fullDescription,
     schema: JSON.stringify(schema, null, 2),
   });
 
