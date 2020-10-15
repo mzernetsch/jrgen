@@ -118,7 +118,16 @@ exports.parsePropertyList = (name, schema) => {
   if (schema.type === "array") {
     var min = schema.minItems === undefined ? "0" : schema.minItems;
     var max = schema.maxItems === undefined ? "N" : schema.maxItems;
-    fullDescription += " (" + min + ".." + max + " items)";
+    if ( min === max ) {
+      fullDescription += " (only " + min;
+      if ( min === 1 ) {
+        fullDescription += " item)";
+      } else {
+        fullDescription += " items)";
+      }
+    } else {
+      fullDescription += " (" + min + ".." + max + " items)";
+    }
   }
 
   entries.push({
