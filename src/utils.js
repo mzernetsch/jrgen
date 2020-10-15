@@ -115,6 +115,10 @@ exports.parsePropertyList = (name, schema) => {
   let entries = [];
 
   var fullDescription = schema.description || "";
+  if ( fullDescription === "" ) {
+    fullDescription = schema.title || "";
+  }
+
   if (schema.type === "array") {
     var min = schema.minItems === undefined ? "0" : schema.minItems;
     var max = schema.maxItems === undefined ? "N" : schema.maxItems;
@@ -128,6 +132,8 @@ exports.parsePropertyList = (name, schema) => {
     } else {
       fullDescription += " (" + min + ".." + max + " items)";
     }
+  } else if ( schema.anyOf != undefined ) {
+    fullDescription += " - Any Of the following:";
   }
 
   entries.push({
@@ -165,6 +171,10 @@ exports.parsePropertyList = (name, schema) => {
           schema.properties[key]
         )
       );
+    });
+  } else if (schema.anyOf != undefined ) {
+    schema.anyOf.forEach((item, index) => {
+      entries = entries.concat( exports.parsePropertyList(name, item) );
     });
   }
 
