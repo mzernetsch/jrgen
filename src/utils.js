@@ -98,6 +98,10 @@ exports.generateExample = (schema) => {
     } else {
       example = [exports.generateExample(schema.items)];
     }
+  } else if (schema.anyOf !== undefined) {
+    example = exports.generateExample(schema.anyOf[0]);
+  } else if (schema.oneOf !== undefined) {
+    example = exports.generateExample(schema.oneOf[0]);
   } else if (schema.examples !== undefined) {
     example = schema.default === undefined ? schema.examples[0] : schema.default;
   } else {
@@ -140,8 +144,10 @@ exports.parsePropertyList = (name, schema) => {
     }
   } else if ( schema.anyOf != undefined ) {
     fullDescription += " - Any Of the following:";
+  } else if ( schema.oneOf != undefined ) {
+    fullDescription += " - One Of the following:";
   } else if ( schema.pattern != undefined) {
-    fullDescription += " pattern: " + schema.pattern;
+    fullDescription += ", pattern: " + schema.pattern;
   }
 
   entries.push({
@@ -182,6 +188,10 @@ exports.parsePropertyList = (name, schema) => {
     });
   } else if (schema.anyOf != undefined ) {
     schema.anyOf.forEach((item, index) => {
+      entries = entries.concat( exports.parsePropertyList(name, item) );
+    });
+  } else if (schema.oneOf != undefined ) {
+    schema.oneOf.forEach((item, index) => {
       entries = entries.concat( exports.parsePropertyList(name, item) );
     });
   }
