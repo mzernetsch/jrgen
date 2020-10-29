@@ -122,6 +122,7 @@ exports.parsePropertyList = (name, schema) => {
   if (schema.type === "array") {
     var min = schema.minItems === undefined ? "0" : schema.minItems;
     var max = schema.maxItems === undefined ? "N" : schema.maxItems;
+    var uniqueness = schema.uniqueItems === undefined ? "false" : schema.uniqueItems;
     if ( min === max ) {
       fullDescription += " (only " + min;
       if ( min === 1 ) {
@@ -130,7 +131,12 @@ exports.parsePropertyList = (name, schema) => {
         fullDescription += " items)";
       }
     } else {
-      fullDescription += " (" + min + ".." + max + " items)";
+      if ( uniqueness === true ) {
+        uniqueness = " unique"
+      } else {
+        uniqueness = " not unique"
+      }
+      fullDescription += " (" + min + ".." + max + uniqueness + " items)";
     }
   } else if ( schema.anyOf != undefined ) {
     fullDescription += " - Any Of the following:";
