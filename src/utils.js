@@ -140,6 +140,8 @@ exports.parsePropertyList = (name, schema) => {
     }
   } else if ( schema.anyOf != undefined ) {
     fullDescription += " - Any Of the following:";
+  } else if ( schema.pattern != undefined) {
+    fullDescription += " pattern: " + schema.pattern;
   }
 
   entries.push({
