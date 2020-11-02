@@ -102,6 +102,8 @@ exports.generateExample = (schema) => {
     example = exports.generateExample(schema.anyOf[0]);
   } else if (schema.oneOf !== undefined) {
     example = exports.generateExample(schema.oneOf[0]);
+  } else if (schema.enum !== undefined) {
+    example = schema.default === undefined ? schema.enum[0] : schema.default;
   } else if (schema.examples !== undefined) {
     example = schema.default === undefined ? schema.examples[0] : schema.default;
   } else {
@@ -146,6 +148,8 @@ exports.parsePropertyList = (name, schema) => {
     fullDescription += " - Any Of the following:";
   } else if ( schema.oneOf != undefined ) {
     fullDescription += " - One Of the following:";
+  } else if ( schema.format != undefined) {
+    fullDescription += ", format: " + schema.format;
   } else if ( schema.pattern != undefined) {
     fullDescription += ", pattern: " + schema.pattern;
   }
