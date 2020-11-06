@@ -152,6 +152,19 @@ exports.parsePropertyList = (name, schema) => {
     fullDescription += ", format: " + schema.format;
   } else if ( schema.pattern != undefined) {
     fullDescription += ", pattern: " + schema.pattern;
+  } else {
+    if ( schema.minLength != undefined ) {
+      fullDescription += ", minLength=" + schema.minLength;
+    }
+    if ( schema.maxLength != undefined ) {
+      fullDescription += ", maxLength=" + schema.maxLength;
+    }
+    if ( schema.minimum != undefined ) {
+      fullDescription += ", minimum=" + schema.minimum;
+    }
+    if ( schema.maximum != undefined ) {
+      fullDescription += ", maximum=" + schema.maximum;
+    }
   }
 
   entries.push({
@@ -174,7 +187,7 @@ exports.parsePropertyList = (name, schema) => {
       });
     } else {
       entries = entries.concat(
-        exports.parsePropertyList(name + "[]", schema.items)
+        exports.parsePropertyList(name + "[#]", schema.items)
       );
     }
   } else if (schema.type === "object") {
