@@ -22,7 +22,7 @@
   "scripts": {
     "build:examples": "npm run clear:examples && node ./scripts/create-examples.js",
     "clear:examples": "node ./scripts/clear-examples.js",
-    "format": "prettier --write './generators/**/!(templates)/*.{js,ts,css,scss,json,md}'"
+    "format": "prettier --write src/**/*.{js,ts,css,scss,json,md}"
   },
   "dependencies": {
     "commander": "^5.1.0",

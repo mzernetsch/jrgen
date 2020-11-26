@@ -2,7 +2,6 @@
   "$schema": "https://rawgit.com/mzernetsch/jrgen/master/jrgen-spec.schema.json",
   "jrgen": "1.1",
   "jsonrpc": "2.0",
-
   "info": {
     "title": "Example API",
     "description": [
@@ -11,7 +10,6 @@
     ],
     "version": "1.0"
   },
-
   "definitions": {
     "session": {
       "type": "object",
@@ -19,169 +17,134 @@
         "session_token": {
           "description": "Bearer token of the created session.",
           "default": "123456890",
-
           "type": "string",
           "minLength": 1
         },
         "validity": {
           "description": "Validity of the session token in seconds.",
           "default": 3600,
-
           "type": "number",
           "multipleOf": 1
         }
       },
-
       "required": ["session_token"]
     }
   },
-
   "methods": {
     "Session.Login": {
       "summary": "Creates a new session.",
       "description": "Authenticates the user using the provided credentials and creates a new session.",
-
       "tags": ["Session"],
-
       "params": {
         "type": "object",
         "properties": {
           "name": {
             "description": "Name of the user to create a session for.",
             "default": "admin",
-
             "type": "string",
             "minLength": 1
           },
           "password": {
             "description": "Password of the user to create a session for.",
             "default": "123456",
-
             "type": "string",
             "minLength": 1
           }
         },
-
         "required": ["name", "password"]
       },
-
       "result": {
         "$ref": "#/definitions/session"
       },
-
       "errors": [
         {
           "description": "The provided credentials are invalid.",
-
           "code": 1,
           "message": "InvalidCredentials"
         }
       ]
     },
-
     "Session.Logout": {
       "summary": "Destroys an existing session.",
       "description": "Logs the user out and destroys his active session.",
-
       "tags": ["Session"],
-
       "result": {
         "description": "Always 0.",
         "default": 0,
-
         "type": "number",
         "minimum": 0,
         "maximum": 0
       },
-
       "errors": [
         {
           "description": "Session could not be found.",
-
           "code": 2,
           "message": "NotFound"
         }
       ]
     },
-
     "Session.KeepAlive": {
       "summary": "Refreshs an existing session.",
       "description": "Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.",
-
       "tags": ["Session"],
-
       "result": {
         "description": "Always 0.",
         "default": 0,
-
         "type": "number",
         "minimum": 0,
         "maximum": 0
       },
-
       "errors": [
         {
           "description": "Session could not be found.",
-
           "code": 2,
           "message": "NotFound"
         }
       ]
     },
-
     "User.Add": {
       "summary": "Adds a new user.",
-
       "tags": ["User"],
-
       "params": {
         "type": "object",
-
         "properties": {
           "name": {
             "description": "Name of the user to add.",
             "default": "user",
-
             "type": "string",
             "minLength": 1
           },
           "email": {
             "description": "Email of the user to add.",
             "default": "user@example.org",
-
             "type": "string",
             "format": "email"
           },
           "address": {
             "description": "Address of the user to add.",
-
             "type": "array",
             "items": [
               {
                 "description": "Address number.",
                 "default": 1600,
-
                 "type": "number",
                 "minimum": 1
               },
               {
                 "description": "Name of the street.",
                 "default": "Pennsylvania",
-
                 "type": "string",
                 "minLength": 1
               },
               {
                 "description": "Type of the street.",
                 "default": "Avenue",
-
                 "type": "string",
                 "enum": ["Street", "Avenue", "Boulevard"]
               },
               {
                 "description": "City quadrant of the address",
                 "default": "NW",
-
                 "type": "string",
                 "enum": ["NW", "NE", "SW", "SE"]
               }
@@ -190,42 +153,32 @@
           "password": {
             "description": "Password of the user to add.",
             "default": "1234567890",
-
             "type": "string",
             "minLength": 1
           }
         },
-
         "required": ["name", "email", "password"]
       },
-
       "result": {
         "description": "Always 0.",
         "default": 0,
-
         "type": "number",
         "minimum": 0,
         "maximum": 0
       },
-
       "errors": [
         {
           "description": "A user with that name already exists.",
-
           "code": 3,
           "message": "Already exists"
         }
       ]
     },
-
     "User.Delete": {
       "summary": "Deletes an existing user.",
-
       "tags": ["User"],
-
       "params": {
         "type": "object",
-
         "properties": {
           "name": {
             "description": "Name of the user to add.",
@@ -235,56 +188,43 @@
             "minLength": 1
           }
         },
-
         "required": ["name"]
       },
-
       "result": {
         "description": "Always 0.",
         "default": 0,
-
         "type": "number",
         "minimum": 0,
         "maximum": 0
       },
-
       "errors": [
         {
           "description": "A user with that name could not be found.",
-
           "code": 2,
           "message": "Not found"
         }
       ]
     },
-
     "User.GetAll": {
       "summary": "Returns all users.",
       "description": "This method returns an array with information about all existing users.",
-
       "tags": ["User"],
-
       "result": {
         "description": "List of all existing users.",
-
         "type": "array",
         "items": {
           "description": "Information about a user.",
-
           "type": "object",
-
           "properties": {
             "name": {
               "description": "Name of the user.",
               "default": "user",
-
               "type": "string",
               "minLength": 1
             },
             "email": {
               "description": "Email of the user.",
               "default": "user@example.org",
-
               "type": "string",
               "format": "email"
             },
@@ -296,7 +236,6 @@
                   "name": "number",
                   "description": "Address number.",
                   "default": 1600,
-
                   "type": "number",
                   "minimum": 1
                 },
@@ -304,7 +243,6 @@
                   "name": "street_name",
                   "description": "Name of the street.",
                   "default": "Pennsylvania",
-
                   "type": "string",
                   "minLength": 1
                 },
@@ -325,7 +263,6 @@
               ]
             }
           },
-
           "required": ["name", "email", "address"]
         }
       }
