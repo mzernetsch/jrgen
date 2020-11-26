@@ -98,6 +98,14 @@ exports.generateExample = (schema) => {
     } else {
       example = [exports.generateExample(schema.items)];
     }
+  } else if (schema.anyOf !== undefined) {
+    example = exports.generateExample(schema.anyOf[0]);
+  } else if (schema.oneOf !== undefined) {
+    example = exports.generateExample(schema.oneOf[0]);
+  } else if (schema.enum !== undefined) {
+    example = schema.default === undefined ? schema.enum[0] : schema.default;
+  } else if (schema.examples !== undefined) {
+    example = schema.default === undefined ? schema.examples[0] : schema.default;
   } else {
     example = schema.default === undefined ? schema.example : schema.default;
   }
@@ -112,10 +120,57 @@ exports.parsePropertyList = (name, schema) => {
 
   let entries = [];
 
+  var fullDescription = schema.description || "";
+  if ( fullDescription === "" ) {
+    fullDescription = schema.title || "";
+  }
+
+  if (schema.type === "array") {
+    var min = schema.minItems === undefined ? "0" : schema.minItems;
+    var max = schema.maxItems === undefined ? "N" : schema.maxItems;
+    var uniqueness = schema.uniqueItems === undefined ? "false" : schema.uniqueItems;
+    if ( min === max ) {
+      fullDescription += " (only " + min;
+      if ( min === 1 ) {
+        fullDescription += " item)";
+      } else {
+        fullDescription += " items)";
+      }
+    } else {
+      if ( uniqueness === true ) {
+        uniqueness = " unique"
+      } else {
+        uniqueness = " not unique"
+      }
+      fullDescription += " (" + min + ".." + max + uniqueness + " items)";
+    }
+  } else if ( schema.anyOf != undefined ) {
+    fullDescription += " - Any Of the following:";
+  } else if ( schema.oneOf != undefined ) {
+    fullDescription += " - One Of the following:";
+  } else if ( schema.format != undefined) {
+    fullDescription += ", format: " + schema.format;
+  } else if ( schema.pattern != undefined) {
+    fullDescription += ", pattern: " + schema.pattern;
+  } else {
+    if ( schema.minLength != undefined ) {
+      fullDescription += ", minLength=" + schema.minLength;
+    }
+    if ( schema.maxLength != undefined ) {
+      fullDescription += ", maxLength=" + schema.maxLength;
+    }
+    if ( schema.minimum != undefined ) {
+      fullDescription += ", minimum=" + schema.minimum;
+    }
+    if ( schema.maximum != undefined ) {
+      fullDescription += ", maximum=" + schema.maximum;
+    }
+  }
+
   entries.push({
     name: name,
     type: schema.type,
-    description: schema.description || "",
+    description: fullDescription,
     schema: JSON.stringify(schema, null, 2),
   });
 
@@ -132,7 +187,7 @@ exports.parsePropertyList = (name, schema) => {
       });
     } else {
       entries = entries.concat(
-        exports.parsePropertyList(name + "[]", schema.items)
+        exports.parsePropertyList(name + "[#]", schema.items)
       );
     }
   } else if (schema.type === "object") {
@@ -147,6 +202,14 @@ exports.parsePropertyList = (name, schema) => {
           schema.properties[key]
         )
       );
+    });
+  } else if (schema.anyOf != undefined ) {
+    schema.anyOf.forEach((item, index) => {
+      entries = entries.concat( exports.parsePropertyList(name, item) );
+    });
+  } else if (schema.oneOf != undefined ) {
+    schema.oneOf.forEach((item, index) => {
+      entries = entries.concat( exports.parsePropertyList(name, item) );
     });
   }
 
