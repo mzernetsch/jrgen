@@ -66,7 +66,6 @@
     },
     "Session.Logout": {
       "summary": "Destroys an existing session.",
-      "description": "Logs the user out and destroys his active session.",
       "tags": ["Session"],
       "result": {
         "description": "Always 0.",

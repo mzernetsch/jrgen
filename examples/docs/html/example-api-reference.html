@@ -8,1296 +8,764 @@
 
     <link
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-      integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
       crossorigin="anonymous"
     />
     <script
-      src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-      integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
       crossorigin="anonymous"
     ></script>
     <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-      integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-      integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
       crossorigin="anonymous"
     ></script>
 
     <style>
-      .summary-container {
-        word-wrap: break-word;
-      }
-
-      .description-container {
-        word-wrap: break-word;
-      }
-
-      .container {
-        margin: 25px;
-      }
-
-      .card-header > h3 {
+      h4 {
         display: inline;
       }
 
-      .card-header[data-toggle] {
-        cursor: pointer;
+      p {
+        word-wrap: break-word;
       }
 
-      .card-header .badge {
-        margin-top: 0.35rem;
+      .sidenav,
+      .content {
+        overflow-y: auto;
+        height: calc(100vh - 57px);
+        max-height: calc(100vh - 57px);
       }
 
-      textarea {
-        word-wrap: normal !important;
-        white-space: nowrap;
-        height: 200px;
-      }
-
-      .textarea-success {
-        background-color: #dff0d8 !important;
-        border-color: #d0e9c6 !important;
-        color: #3c763d !important;
-      }
-
-      .textarea-danger {
-        background-color: #f2dede !important;
-        border-color: #ebcccc !important;
-        color: #a94442 !important;
+      .sidenav {
+        padding: 0;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: start;
+        align-items: stretch;
+        align-content: start
       }
 
       #toc {
-        position: sticky;
-        top: 25px;
-        height: calc(100vh - 50px);
-        overflow: auto;
-        font-size: 0.75em;
+        overflow-y: auto;
       }
 
-      .main-col {
-        border-left: 1px solid rgba(0, 0, 0, 0.1);
+      .card {
+        margin-bottom: 15px;
+      }
+
+      .card-header {
+        cursor: pointer;
+      }
+
+      .content,
+      .card-block,
+      .search-form {
+        padding: 15px;
       }
 
       .nav-link {
-        text-overflow: ellipsis;
-        overflow: hidden;
+        color: #343a40 !important;
       }
 
-      h3 {
-        font-size: 1.5rem;
+      .nav-pills .nav-link.active,
+      .nav-pills .show > .nav-link {
+        color: #f8f9fa !important;
+        background-color: #343a40 !important;
       }
 
-      h4 {
-        font-size: 1.25rem;
-      }
-
-      .schema-preview {
-        max-height: 500px;
-        margin-bottom: 0px;
-      }
-
-      @media (max-width: 992px) {
-        #toc {
-          display: none;
-        }
-        .main-col {
-          border-left: none;
-          padding-left: 0;
-          padding-right: 0;
-        }
+      .card.disabled, .nav-link.disabled {
+        opacity: 0.5;
       }
     </style>
-
-    <script>
-      var methodsCollapsed = true;
-      var toggleMethods = function () {
-        methodsCollapsed = !methodsCollapsed;
-        if (methodsCollapsed) {
-          $(".collapse").collapse("hide");
-        } else {
-          $(".collapse").collapse("show");
-        }
-      };
-
-      var showSendRequestModal = function (request) {
-        $("#send-request-request").val(
-          JSON.stringify(JSON.parse(request), null, 4)
-        );
-        $("#send-request-response").val("");
-        $("#send-request-response").removeClass(
-          "textarea-danger textarea-success"
-        );
-        $("#send-request-modal").modal("show");
-      };
-
-      var showExampleModal = function (request, response) {
-        $("#show-example-request").val(
-          JSON.stringify(JSON.parse(request), null, 4)
-        );
-        $("#show-example-response").val(
-          JSON.stringify(JSON.parse(response), null, 4)
-        );
-        $("#show-example-modal").modal("show");
-      };
-
-      var sendRequest = function () {
-        var url = $("#send-request-url").val();
-        var request = $("#send-request-request").val();
-        fetch(url, {
-          method: "post",
-          body: request,
-        })
-          .then(function (response) {
-            if (response.ok) {
-              response.json().then((rpcResponse) => {
-                $("#send-request-response").val(
-                  JSON.stringify(rpcResponse, null, 4)
-                );
-                $("#send-request-response")
-                  .removeClass("textarea-danger")
-                  .addClass("textarea-success");
-              });
-            } else {
-              $("#send-request-response").val(
-                response.status + " - " + response.statusText
-              );
-              $("#send-request-response")
-                .removeClass("textarea-success")
-                .addClass("textarea-danger");
-            }
-          })
-          .catch(function (error) {
-            $("#send-request-response").val(error);
-            $("#send-request-response")
-              .removeClass("textarea-success")
-              .addClass("textarea-danger");
-          });
-      };
-
-      $(function () {
-        $('[data-toggle="popover"]').popover();
-        $("#send-request-url").val("http://127.0.0.1:8080");
-      });
-    </script>
   </head>
 
-  <body data-spy="scroll" data-target="#toc">
-    <div class="container">
+  <body class="bg-light">
+    <nav
+      class="navbar navbar-dark bg-dark justify-content-between sticky-top border-bottom"
+    >
+      <a class="navbar-brand">Example API 1.0</a>
+    </nav>
+
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-3">
-          <nav id="toc" data-spy="affix" class="affix" data-toggle="toc">
+        <div class="sidenav col-2 bg-white border-right">
+          <form class="search-form border-bottom" onsubmit="return false">
+            <input class="form-control search-input" type="search" placeholder="Search" />
+          </form>
+
+          <nav id="toc">
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="#Session_Login">Session.Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#Session_Logout">Session.Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#Session_KeepAlive">Session.KeepAlive</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#User_Add">User.Add</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#User_Delete">User.Delete</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#User_GetAll">User.GetAll</a>
-                </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#Session_Login">Session.Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#Session_Logout">Session.Logout</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#Session_KeepAlive">Session.KeepAlive</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#User_Add">User.Add</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#User_Delete">User.Delete</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#User_GetAll">User.GetAll</a>
+              </li>
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9 main-col">
-          <h1>Example API</h1>
-          <div class="introduction">
-            <p>An example api which handles various rpc requests.<br/>This api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification.</p>
-            <strong>Version: 1.0</strong>
+
+        <div class="content col-10" data-spy="scroll" data-target="#toc">
+          <div class="card border">
+            <div class="card-block">An example api which handles various rpc requests.<br/>This api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification.</div>
           </div>
-          <hr />
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            onclick="toggleMethods()"
-          >
-            Toggle all
-          </button>
-          <br />
-          <hr />
-          <div class="method" id="Session_Login">
-            <div class="card">
-                <div class="card-header" data-toggle="collapse" href="#Session_Login-content">
-                <h3>Session.Login</h3>
+
+          <div class="card method" id="Session_Login">
+            <div
+              class="card-header text-light bg-dark"
+              data-toggle="collapse"
+              href="#Session_Login-content"
+            >
+              <h4>
+                <span>Session.Login</span>
+
                 <div class="float-right">
-                    <span class="badge badge-primary">Session</span>
+                  <span class="badge badge-light">Session</span>
                 </div>
-                </div>
-                <div class="card-block collapse" id="Session_Login-content">
+              </h4>
+            </div>
 
-                <div class="summary-container">
-                    <div class="float-right">
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"Session.Login\",\n  \"params\": {\n    \"name\": \"admin\",\n    \"password\": \"123456\"\n  }\n}", "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"result\": {\n    \"session_token\": \"123456890\",\n    \"validity\": 3600\n  }\n}")'>
-                        Show Example
-                    </button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"Session.Login\",\n  \"params\": {\n    \"name\": \"admin\",\n    \"password\": \"123456\"\n  }\n}")'>
-                        Send Request
-                    </button>
-                    </div>
-                    <p>Creates a new session.</p>
-                </div>
+            <div class="card-block collapse show" id="Session_Login-content">
+              <p>Creates a new session.</p>
+              
+              <p>Authenticates the user using the provided credentials and creates a new session.</p>
 
-                <br>
-                <h4>Description</h4>
-                <p class="description-container">Authenticates the user using the provided credentials and creates a new session.</p>
+              <hr />
 
-                <br>
-                <h4>Parameters</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover table-sm">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-8 border-right">
+
+                    <h5>Parameters</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
                         <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Description</th>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
                         </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "type": "object",
-  "properties": {
-    "name": {
-      "description": "Name of the user to create a session for.",
-      "default": "admin",
-      "type": "string",
-      "minLength": 1
-    },
-    "password": {
-      "description": "Password of the user to create a session for.",
-      "default": "123456",
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "name",
-    "password"
-  ]
-}</pre>' data-html="true">
-                            <td>params</td>
-                            <td>object</td>
-                            <td></td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Name of the user to create a session for.",
-  "default": "admin",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                            <td>params.name</td>
-                            <td>string</td>
-                            <td>Name of the user to create a session for.</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Password of the user to create a session for.",
-  "default": "123456",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                            <td>params.password</td>
-                            <td>string</td>
-                            <td>Password of the user to create a session for.</td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <br>
-                <h4>Result</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "type": "object",
-  "properties": {
-    "session_token": {
-      "description": "Bearer token of the created session.",
-      "default": "123456890",
-      "type": "string",
-      "minLength": 1
-    },
-    "validity": {
-      "description": "Validity of the session token in seconds.",
-      "default": 3600,
-      "type": "number",
-      "multipleOf": 1
-    }
-  },
-  "required": [
-    "session_token"
-  ]
-}</pre>' data-html="true">
-                        <td>result</td>
-                        <td>object</td>
-                        <td></td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Bearer token of the created session.",
-  "default": "123456890",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                        <td>result.session_token</td>
-                        <td>string</td>
-                        <td>Bearer token of the created session.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Validity of the session token in seconds.",
-  "default": 3600,
-  "type": "number",
-  "multipleOf": 1
-}</pre>' data-html="true">
-                        <td>result?.validity</td>
-                        <td>number</td>
-                        <td>Validity of the session token in seconds.</td>
-                    </tr>
-                </table>
-                </div>
-
-                <br>
-                <h4>Errors</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Code</th>
-                    <th>Message</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre></pre>' data-html="true">
-                        <td>1</td>
-                        <td>InvalidCredentials</td>
-                        <td>The provided credentials are invalid.</td>
-                    </tr>
-                </table>
-                </div>
-                
-                </div>
-            </div>
-            </div>
-            <br>
-          <div class="method" id="Session_Logout">
-            <div class="card">
-                <div class="card-header" data-toggle="collapse" href="#Session_Logout-content">
-                <h3>Session.Logout</h3>
-                <div class="float-right">
-                    <span class="badge badge-primary">Session</span>
-                </div>
-                </div>
-                <div class="card-block collapse" id="Session_Logout-content">
-
-                <div class="summary-container">
-                    <div class="float-right">
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"Session.Logout\"\n}", "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"result\": 0\n}")'>
-                        Show Example
-                    </button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"Session.Logout\"\n}")'>
-                        Send Request
-                    </button>
-                    </div>
-                    <p>Destroys an existing session.</p>
-                </div>
-
-                <br>
-                <h4>Description</h4>
-                <p class="description-container">Logs the user out and destroys his active session.</p>
-
-                
-                <br>
-                <h4>Result</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Always 0.",
-  "default": 0,
-  "type": "number",
-  "minimum": 0,
-  "maximum": 0
-}</pre>' data-html="true">
-                        <td>result</td>
-                        <td>number</td>
-                        <td>Always 0.</td>
-                    </tr>
-                </table>
-                </div>
-
-                <br>
-                <h4>Errors</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Code</th>
-                    <th>Message</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre></pre>' data-html="true">
-                        <td>2</td>
-                        <td>NotFound</td>
-                        <td>Session could not be found.</td>
-                    </tr>
-                </table>
-                </div>
-                
-                </div>
-            </div>
-            </div>
-            <br>
-          <div class="method" id="Session_KeepAlive">
-            <div class="card">
-                <div class="card-header" data-toggle="collapse" href="#Session_KeepAlive-content">
-                <h3>Session.KeepAlive</h3>
-                <div class="float-right">
-                    <span class="badge badge-primary">Session</span>
-                </div>
-                </div>
-                <div class="card-block collapse" id="Session_KeepAlive-content">
-
-                <div class="summary-container">
-                    <div class="float-right">
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"Session.KeepAlive\"\n}", "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"result\": 0\n}")'>
-                        Show Example
-                    </button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"Session.KeepAlive\"\n}")'>
-                        Send Request
-                    </button>
-                    </div>
-                    <p>Refreshs an existing session.</p>
-                </div>
-
-                <br>
-                <h4>Description</h4>
-                <p class="description-container">Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.</p>
-
-                
-                <br>
-                <h4>Result</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Always 0.",
-  "default": 0,
-  "type": "number",
-  "minimum": 0,
-  "maximum": 0
-}</pre>' data-html="true">
-                        <td>result</td>
-                        <td>number</td>
-                        <td>Always 0.</td>
-                    </tr>
-                </table>
-                </div>
-
-                <br>
-                <h4>Errors</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Code</th>
-                    <th>Message</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre></pre>' data-html="true">
-                        <td>2</td>
-                        <td>NotFound</td>
-                        <td>Session could not be found.</td>
-                    </tr>
-                </table>
-                </div>
-                
-                </div>
-            </div>
-            </div>
-            <br>
-          <div class="method" id="User_Add">
-            <div class="card">
-                <div class="card-header" data-toggle="collapse" href="#User_Add-content">
-                <h3>User.Add</h3>
-                <div class="float-right">
-                    <span class="badge badge-primary">User</span>
-                </div>
-                </div>
-                <div class="card-block collapse" id="User_Add-content">
-
-                <div class="summary-container">
-                    <div class="float-right">
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"User.Add\",\n  \"params\": {\n    \"name\": \"user\",\n    \"email\": \"user@example.org\",\n    \"address\": [\n      1600,\n      \"Pennsylvania\",\n      \"Avenue\",\n      \"NW\"\n    ],\n    \"password\": \"1234567890\"\n  }\n}", "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"result\": 0\n}")'>
-                        Show Example
-                    </button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"User.Add\",\n  \"params\": {\n    \"name\": \"user\",\n    \"email\": \"user@example.org\",\n    \"address\": [\n      1600,\n      \"Pennsylvania\",\n      \"Avenue\",\n      \"NW\"\n    ],\n    \"password\": \"1234567890\"\n  }\n}")'>
-                        Send Request
-                    </button>
-                    </div>
-                    <p>Adds a new user.</p>
-                </div>
-
-
-                <br>
-                <h4>Parameters</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover table-sm">
                         <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Description</th>
+                          <td>params</td>
+                          <td>object</td>
+                          <td></td>
                         </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "type": "object",
-  "properties": {
-    "name": {
-      "description": "Name of the user to add.",
-      "default": "user",
-      "type": "string",
-      "minLength": 1
-    },
-    "email": {
-      "description": "Email of the user to add.",
-      "default": "user@example.org",
-      "type": "string",
-      "format": "email"
-    },
-    "address": {
-      "description": "Address of the user to add.",
-      "type": "array",
-      "items": [
-        {
-          "description": "Address number.",
-          "default": 1600,
-          "type": "number",
-          "minimum": 1
-        },
-        {
-          "description": "Name of the street.",
-          "default": "Pennsylvania",
-          "type": "string",
-          "minLength": 1
-        },
-        {
-          "description": "Type of the street.",
-          "default": "Avenue",
-          "type": "string",
-          "enum": [
-            "Street",
-            "Avenue",
-            "Boulevard"
-          ]
-        },
-        {
-          "description": "City quadrant of the address",
-          "default": "NW",
-          "type": "string",
-          "enum": [
-            "NW",
-            "NE",
-            "SW",
-            "SE"
-          ]
-        }
-      ]
-    },
-    "password": {
-      "description": "Password of the user to add.",
-      "default": "1234567890",
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "name",
-    "email",
-    "password"
-  ]
-}</pre>' data-html="true">
-                            <td>params</td>
-                            <td>object</td>
-                            <td></td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Name of the user to add.",
-  "default": "user",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                            <td>params.name</td>
-                            <td>string</td>
-                            <td>Name of the user to add.</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Email of the user to add.",
-  "default": "user@example.org",
-  "type": "string",
-  "format": "email"
-}</pre>' data-html="true">
-                            <td>params.email</td>
-                            <td>string</td>
-                            <td>Email of the user to add.</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Address of the user to add.",
-  "type": "array",
-  "items": [
-    {
-      "description": "Address number.",
-      "default": 1600,
-      "type": "number",
-      "minimum": 1
-    },
-    {
-      "description": "Name of the street.",
-      "default": "Pennsylvania",
-      "type": "string",
-      "minLength": 1
-    },
-    {
-      "description": "Type of the street.",
-      "default": "Avenue",
-      "type": "string",
-      "enum": [
-        "Street",
-        "Avenue",
-        "Boulevard"
-      ]
-    },
-    {
-      "description": "City quadrant of the address",
-      "default": "NW",
-      "type": "string",
-      "enum": [
-        "NW",
-        "NE",
-        "SW",
-        "SE"
-      ]
-    }
-  ]
-}</pre>' data-html="true">
-                            <td>params?.address</td>
-                            <td>array</td>
-                            <td>Address of the user to add.</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Address number.",
-  "default": 1600,
-  "type": "number",
-  "minimum": 1
-}</pre>' data-html="true">
-                            <td>params?.address[0]</td>
-                            <td>number</td>
-                            <td>Address number.</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Name of the street.",
-  "default": "Pennsylvania",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                            <td>params?.address[1]</td>
-                            <td>string</td>
-                            <td>Name of the street.</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Type of the street.",
-  "default": "Avenue",
-  "type": "string",
-  "enum": [
-    "Street",
-    "Avenue",
-    "Boulevard"
-  ]
-}</pre>' data-html="true">
-                            <td>params?.address[2]</td>
-                            <td>string</td>
-                            <td>Type of the street.</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "City quadrant of the address",
-  "default": "NW",
-  "type": "string",
-  "enum": [
-    "NW",
-    "NE",
-    "SW",
-    "SE"
-  ]
-}</pre>' data-html="true">
-                            <td>params?.address[3]</td>
-                            <td>string</td>
-                            <td>City quadrant of the address</td>
-                        </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Password of the user to add.",
-  "default": "1234567890",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                            <td>params.password</td>
-                            <td>string</td>
-                            <td>Password of the user to add.</td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <br>
-                <h4>Result</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Always 0.",
-  "default": 0,
-  "type": "number",
-  "minimum": 0,
-  "maximum": 0
-}</pre>' data-html="true">
-                        <td>result</td>
-                        <td>number</td>
-                        <td>Always 0.</td>
-                    </tr>
-                </table>
-                </div>
-
-                <br>
-                <h4>Errors</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Code</th>
-                    <th>Message</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre></pre>' data-html="true">
-                        <td>3</td>
-                        <td>Already exists</td>
-                        <td>A user with that name already exists.</td>
-                    </tr>
-                </table>
-                </div>
-                
-                </div>
-            </div>
-            </div>
-            <br>
-          <div class="method" id="User_Delete">
-            <div class="card">
-                <div class="card-header" data-toggle="collapse" href="#User_Delete-content">
-                <h3>User.Delete</h3>
-                <div class="float-right">
-                    <span class="badge badge-primary">User</span>
-                </div>
-                </div>
-                <div class="card-block collapse" id="User_Delete-content">
-
-                <div class="summary-container">
-                    <div class="float-right">
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"User.Delete\",\n  \"params\": {\n    \"name\": \"user\"\n  }\n}", "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"result\": 0\n}")'>
-                        Show Example
-                    </button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"User.Delete\",\n  \"params\": {\n    \"name\": \"user\"\n  }\n}")'>
-                        Send Request
-                    </button>
-                    </div>
-                    <p>Deletes an existing user.</p>
-                </div>
-
-
-                <br>
-                <h4>Parameters</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover table-sm">
                         <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Description</th>
+                          <td>params.name</td>
+                          <td>string</td>
+                          <td>Name of the user to create a session for.</td>
                         </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "type": "object",
-  "properties": {
-    "name": {
-      "description": "Name of the user to add.",
-      "default": "user",
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "name"
-  ]
-}</pre>' data-html="true">
-                            <td>params</td>
-                            <td>object</td>
-                            <td></td>
+                        <tr>
+                          <td>params.password</td>
+                          <td>string</td>
+                          <td>Password of the user to create a session for.</td>
                         </tr>
-                        <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Name of the user to add.",
-  "default": "user",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                            <td>params.name</td>
-                            <td>string</td>
-                            <td>Name of the user to add.</td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <br>
-                <h4>Result</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Always 0.",
-  "default": 0,
-  "type": "number",
-  "minimum": 0,
-  "maximum": 0
-}</pre>' data-html="true">
-                        <td>result</td>
-                        <td>number</td>
-                        <td>Always 0.</td>
-                    </tr>
-                </table>
-                </div>
-
-                <br>
-                <h4>Errors</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Code</th>
-                    <th>Message</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre></pre>' data-html="true">
-                        <td>2</td>
-                        <td>Not found</td>
-                        <td>A user with that name could not be found.</td>
-                    </tr>
-                </table>
-                </div>
-                
-                </div>
-            </div>
-            </div>
-            <br>
-          <div class="method" id="User_GetAll">
-            <div class="card">
-                <div class="card-header" data-toggle="collapse" href="#User_GetAll-content">
-                <h3>User.GetAll</h3>
-                <div class="float-right">
-                    <span class="badge badge-primary">User</span>
-                </div>
-                </div>
-                <div class="card-block collapse" id="User_GetAll-content">
-
-                <div class="summary-container">
-                    <div class="float-right">
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showExampleModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"User.GetAll\"\n}", "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"result\": [\n    {\n      \"name\": \"user\",\n      \"email\": \"user@example.org\",\n      \"address\": [\n        1600,\n        \"Pennsylvania\",\n        \"Avenue\",\n        \"NW\"\n      ]\n    }\n  ]\n}")'>
-                        Show Example
-                    </button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick='showSendRequestModal("{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"User.GetAll\"\n}")'>
-                        Send Request
-                    </button>
+                      </table>
                     </div>
-                    <p>Returns all users.</p>
-                </div>
+                    
+                    <h5>Result</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>result</td>
+                          <td>object</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>result.session_token</td>
+                          <td>string</td>
+                          <td>Bearer token of the created session.</td>
+                        </tr>
+                        <tr>
+                          <td>result?.validity</td>
+                          <td>number</td>
+                          <td>Validity of the session token in seconds.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <h5>Errors</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Code</th>
+                          <th>Message</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>InvalidCredentials</td>
+                          <td>The provided credentials are invalid.</td>
+                        </tr>
+                      </table>
+                    </div>
 
-                <br>
-                <h4>Description</h4>
-                <p class="description-container">This method returns an array with information about all existing users.</p>
+                  </div>
 
-                
-                <br>
-                <h4>Result</h4>
-                <div class="table-responsive">
-                <table class="table table-striped table-hover table-sm">
-                    <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "List of all existing users.",
-  "type": "array",
-  "items": {
-    "description": "Information about a user.",
-    "type": "object",
-    "properties": {
-      "name": {
-        "description": "Name of the user.",
-        "default": "user",
-        "type": "string",
-        "minLength": 1
-      },
-      "email": {
-        "description": "Email of the user.",
-        "default": "user@example.org",
-        "type": "string",
-        "format": "email"
-      },
-      "address": {
-        "description": "Address of the user to add.",
-        "type": "array",
-        "items": [
-          {
-            "name": "number",
-            "description": "Address number.",
-            "default": 1600,
-            "type": "number",
-            "minimum": 1
-          },
-          {
-            "name": "street_name",
-            "description": "Name of the street.",
-            "default": "Pennsylvania",
-            "type": "string",
-            "minLength": 1
-          },
-          {
-            "name": "street_type",
-            "description": "Type of the street.",
-            "default": "Avenue",
-            "type": "string",
-            "enum": [
-              "Street",
-              "Avenue",
-              "Boulevard"
-            ]
-          },
-          {
-            "name": "direction",
-            "description": "City quadrant of the address",
-            "default": "NW",
-            "type": "string",
-            "enum": [
-              "NW",
-              "NE",
-              "SW",
-              "SE"
-            ]
-          }
-        ]
-      }
-    },
-    "required": [
-      "name",
-      "email",
-      "address"
-    ]
+                  <div class="col">
+                    <h5>Request example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "method": "Session.Login",
+  "params": {
+    "name": "admin",
+    "password": "123456"
   }
-}</pre>' data-html="true">
-                        <td>result</td>
-                        <td>array</td>
-                        <td>List of all existing users.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Information about a user.",
-  "type": "object",
-  "properties": {
-    "name": {
-      "description": "Name of the user.",
-      "default": "user",
-      "type": "string",
-      "minLength": 1
-    },
-    "email": {
-      "description": "Email of the user.",
-      "default": "user@example.org",
-      "type": "string",
-      "format": "email"
-    },
-    "address": {
-      "description": "Address of the user to add.",
-      "type": "array",
-      "items": [
-        {
-          "name": "number",
-          "description": "Address number.",
-          "default": 1600,
-          "type": "number",
-          "minimum": 1
-        },
-        {
-          "name": "street_name",
-          "description": "Name of the street.",
-          "default": "Pennsylvania",
-          "type": "string",
-          "minLength": 1
-        },
-        {
-          "name": "street_type",
-          "description": "Type of the street.",
-          "default": "Avenue",
-          "type": "string",
-          "enum": [
-            "Street",
-            "Avenue",
-            "Boulevard"
-          ]
-        },
-        {
-          "name": "direction",
-          "description": "City quadrant of the address",
-          "default": "NW",
-          "type": "string",
-          "enum": [
-            "NW",
-            "NE",
-            "SW",
-            "SE"
-          ]
-        }
-      ]
-    }
-  },
-  "required": [
-    "name",
-    "email",
-    "address"
-  ]
-}</pre>' data-html="true">
-                        <td>result[]</td>
-                        <td>object</td>
-                        <td>Information about a user.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Name of the user.",
-  "default": "user",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                        <td>result[].name</td>
-                        <td>string</td>
-                        <td>Name of the user.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Email of the user.",
-  "default": "user@example.org",
-  "type": "string",
-  "format": "email"
-}</pre>' data-html="true">
-                        <td>result[].email</td>
-                        <td>string</td>
-                        <td>Email of the user.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "description": "Address of the user to add.",
-  "type": "array",
-  "items": [
+}</pre>
+
+                    <h5>Response example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "result": {
+    "session_token": "123456890",
+    "validity": 3600
+  }
+}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card method" id="Session_Logout">
+            <div
+              class="card-header text-light bg-dark"
+              data-toggle="collapse"
+              href="#Session_Logout-content"
+            >
+              <h4>
+                <span>Session.Logout</span>
+
+                <div class="float-right">
+                  <span class="badge badge-light">Session</span>
+                </div>
+              </h4>
+            </div>
+
+            <div class="card-block collapse show" id="Session_Logout-content">
+              <p>Destroys an existing session.</p>
+              
+
+              <hr />
+
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-8 border-right">
+
+                    
+                    <h5>Result</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>result</td>
+                          <td>number</td>
+                          <td>Always 0.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <h5>Errors</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Code</th>
+                          <th>Message</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>NotFound</td>
+                          <td>Session could not be found.</td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div>
+
+                  <div class="col">
+                    <h5>Request example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "method": "Session.Logout"
+}</pre>
+
+                    <h5>Response example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "result": 0
+}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card method" id="Session_KeepAlive">
+            <div
+              class="card-header text-light bg-dark"
+              data-toggle="collapse"
+              href="#Session_KeepAlive-content"
+            >
+              <h4>
+                <span>Session.KeepAlive</span>
+
+                <div class="float-right">
+                  <span class="badge badge-light">Session</span>
+                </div>
+              </h4>
+            </div>
+
+            <div class="card-block collapse show" id="Session_KeepAlive-content">
+              <p>Refreshs an existing session.</p>
+              
+              <p>Refreshs an existing session so that it keeps alive and doesn't time out. This method does nothing but refreshing the timeout.</p>
+
+              <hr />
+
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-8 border-right">
+
+                    
+                    <h5>Result</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>result</td>
+                          <td>number</td>
+                          <td>Always 0.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <h5>Errors</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Code</th>
+                          <th>Message</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>NotFound</td>
+                          <td>Session could not be found.</td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div>
+
+                  <div class="col">
+                    <h5>Request example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "method": "Session.KeepAlive"
+}</pre>
+
+                    <h5>Response example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "result": 0
+}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card method" id="User_Add">
+            <div
+              class="card-header text-light bg-dark"
+              data-toggle="collapse"
+              href="#User_Add-content"
+            >
+              <h4>
+                <span>User.Add</span>
+
+                <div class="float-right">
+                  <span class="badge badge-light">User</span>
+                </div>
+              </h4>
+            </div>
+
+            <div class="card-block collapse show" id="User_Add-content">
+              <p>Adds a new user.</p>
+              
+
+              <hr />
+
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-8 border-right">
+
+                    <h5>Parameters</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>params</td>
+                          <td>object</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>params.name</td>
+                          <td>string</td>
+                          <td>Name of the user to add.</td>
+                        </tr>
+                        <tr>
+                          <td>params.email</td>
+                          <td>string</td>
+                          <td>Email of the user to add.</td>
+                        </tr>
+                        <tr>
+                          <td>params?.address</td>
+                          <td>array</td>
+                          <td>Address of the user to add.</td>
+                        </tr>
+                        <tr>
+                          <td>params?.address[0]</td>
+                          <td>number</td>
+                          <td>Address number.</td>
+                        </tr>
+                        <tr>
+                          <td>params?.address[1]</td>
+                          <td>string</td>
+                          <td>Name of the street.</td>
+                        </tr>
+                        <tr>
+                          <td>params?.address[2]</td>
+                          <td>string</td>
+                          <td>Type of the street.</td>
+                        </tr>
+                        <tr>
+                          <td>params?.address[3]</td>
+                          <td>string</td>
+                          <td>City quadrant of the address</td>
+                        </tr>
+                        <tr>
+                          <td>params.password</td>
+                          <td>string</td>
+                          <td>Password of the user to add.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <h5>Result</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>result</td>
+                          <td>number</td>
+                          <td>Always 0.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <h5>Errors</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Code</th>
+                          <th>Message</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>Already exists</td>
+                          <td>A user with that name already exists.</td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div>
+
+                  <div class="col">
+                    <h5>Request example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "method": "User.Add",
+  "params": {
+    "name": "user",
+    "email": "user@example.org",
+    "address": [
+      1600,
+      "Pennsylvania",
+      "Avenue",
+      "NW"
+    ],
+    "password": "1234567890"
+  }
+}</pre>
+
+                    <h5>Response example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "result": 0
+}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card method" id="User_Delete">
+            <div
+              class="card-header text-light bg-dark"
+              data-toggle="collapse"
+              href="#User_Delete-content"
+            >
+              <h4>
+                <span>User.Delete</span>
+
+                <div class="float-right">
+                  <span class="badge badge-light">User</span>
+                </div>
+              </h4>
+            </div>
+
+            <div class="card-block collapse show" id="User_Delete-content">
+              <p>Deletes an existing user.</p>
+              
+
+              <hr />
+
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-8 border-right">
+
+                    <h5>Parameters</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>params</td>
+                          <td>object</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>params.name</td>
+                          <td>string</td>
+                          <td>Name of the user to add.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <h5>Result</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>result</td>
+                          <td>number</td>
+                          <td>Always 0.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <h5>Errors</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Code</th>
+                          <th>Message</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>Not found</td>
+                          <td>A user with that name could not be found.</td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div>
+
+                  <div class="col">
+                    <h5>Request example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "method": "User.Delete",
+  "params": {
+    "name": "user"
+  }
+}</pre>
+
+                    <h5>Response example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "result": 0
+}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card method" id="User_GetAll">
+            <div
+              class="card-header text-light bg-dark"
+              data-toggle="collapse"
+              href="#User_GetAll-content"
+            >
+              <h4>
+                <span>User.GetAll</span>
+
+                <div class="float-right">
+                  <span class="badge badge-light">User</span>
+                </div>
+              </h4>
+            </div>
+
+            <div class="card-block collapse show" id="User_GetAll-content">
+              <p>Returns all users.</p>
+              
+              <p>This method returns an array with information about all existing users.</p>
+
+              <hr />
+
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-8 border-right">
+
+                    
+                    <h5>Result</h5>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                        </tr>
+                        <tr>
+                          <td>result</td>
+                          <td>array</td>
+                          <td>List of all existing users.</td>
+                        </tr>
+                        <tr>
+                          <td>result[]</td>
+                          <td>object</td>
+                          <td>Information about a user.</td>
+                        </tr>
+                        <tr>
+                          <td>result[].name</td>
+                          <td>string</td>
+                          <td>Name of the user.</td>
+                        </tr>
+                        <tr>
+                          <td>result[].email</td>
+                          <td>string</td>
+                          <td>Email of the user.</td>
+                        </tr>
+                        <tr>
+                          <td>result[].address</td>
+                          <td>array</td>
+                          <td>Address of the user to add.</td>
+                        </tr>
+                        <tr>
+                          <td>result[].address[0:number]</td>
+                          <td>number</td>
+                          <td>Address number.</td>
+                        </tr>
+                        <tr>
+                          <td>result[].address[1:street_name]</td>
+                          <td>string</td>
+                          <td>Name of the street.</td>
+                        </tr>
+                        <tr>
+                          <td>result[].address[2:street_type]</td>
+                          <td>string</td>
+                          <td>Type of the street.</td>
+                        </tr>
+                        <tr>
+                          <td>result[].address[3:direction]</td>
+                          <td>string</td>
+                          <td>City quadrant of the address</td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+
+                  </div>
+
+                  <div class="col">
+                    <h5>Request example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "method": "User.GetAll"
+}</pre>
+
+                    <h5>Response example</h5>
+                    <pre class="bg-light">{
+  "jsonrpc": "2.0",
+  "id": "1234567890",
+  "result": [
     {
-      "name": "number",
-      "description": "Address number.",
-      "default": 1600,
-      "type": "number",
-      "minimum": 1
-    },
-    {
-      "name": "street_name",
-      "description": "Name of the street.",
-      "default": "Pennsylvania",
-      "type": "string",
-      "minLength": 1
-    },
-    {
-      "name": "street_type",
-      "description": "Type of the street.",
-      "default": "Avenue",
-      "type": "string",
-      "enum": [
-        "Street",
+      "name": "user",
+      "email": "user@example.org",
+      "address": [
+        1600,
+        "Pennsylvania",
         "Avenue",
-        "Boulevard"
-      ]
-    },
-    {
-      "name": "direction",
-      "description": "City quadrant of the address",
-      "default": "NW",
-      "type": "string",
-      "enum": [
-        "NW",
-        "NE",
-        "SW",
-        "SE"
+        "NW"
       ]
     }
   ]
-}</pre>' data-html="true">
-                        <td>result[].address</td>
-                        <td>array</td>
-                        <td>Address of the user to add.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "name": "number",
-  "description": "Address number.",
-  "default": 1600,
-  "type": "number",
-  "minimum": 1
-}</pre>' data-html="true">
-                        <td>result[].address[0:number]</td>
-                        <td>number</td>
-                        <td>Address number.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "name": "street_name",
-  "description": "Name of the street.",
-  "default": "Pennsylvania",
-  "type": "string",
-  "minLength": 1
-}</pre>' data-html="true">
-                        <td>result[].address[1:street_name]</td>
-                        <td>string</td>
-                        <td>Name of the street.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "name": "street_type",
-  "description": "Type of the street.",
-  "default": "Avenue",
-  "type": "string",
-  "enum": [
-    "Street",
-    "Avenue",
-    "Boulevard"
-  ]
-}</pre>' data-html="true">
-                        <td>result[].address[2:street_type]</td>
-                        <td>string</td>
-                        <td>Type of the street.</td>
-                    </tr>
-                    <tr tabindex="1" data-trigger="hover focus" data-toggle="popover" data-content='<pre class="schema-preview">{
-  "name": "direction",
-  "description": "City quadrant of the address",
-  "default": "NW",
-  "type": "string",
-  "enum": [
-    "NW",
-    "NE",
-    "SW",
-    "SE"
-  ]
-}</pre>' data-html="true">
-                        <td>result[].address[3:direction]</td>
-                        <td>string</td>
-                        <td>City quadrant of the address</td>
-                    </tr>
-                </table>
-                </div>
-
-                
-                </div>
-            </div>
-            </div>
-            <br>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fade"
-      id="send-request-modal"
-      tabindex="-1"
-      role="dialog"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Send request</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="container-fluid">
-              <div class="form-group row">
-                <label
-                  for="send-request-url"
-                  class="col-md-2 col-sm-12 col-form-label"
-                  >URL</label
-                >
-                <div class="col-md-10 col-sm-12">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="send-request-url"
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label
-                  for="send-request-request"
-                  class="col-md-2 col-sm-12 col-form-label"
-                  >Request</label
-                >
-                <div class="col-md-10 col-sm-12">
-                  <textarea
-                    class="form-control"
-                    id="send-request-request"
-                    wrap="soft"
-                  ></textarea>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label
-                  for="url"
-                  class="col-md-2 col-sm-12 col-form-label"
-                ></label>
-                <div class="col-md-10 col-sm-12">
-                  <button
-                    type="button"
-                    class="btn btn-primary btn-block"
-                    onclick="sendRequest()"
-                  >
-                    Send
-                  </button>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label
-                  for="send-request-response"
-                  class="col-md-2 col-sm-12 col-form-label"
-                  >Response</label
-                >
-                <div class="col-md-10 col-sm-12">
-                  <textarea
-                    class="form-control"
-                    id="send-request-response"
-                  ></textarea>
+}</pre>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1306,58 +774,34 @@
       </div>
     </div>
 
-    <div
-      class="modal fade"
-      id="show-example-modal"
-      tabindex="-1"
-      role="dialog"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Show example</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="container-fluid">
-              <div class="form-group row">
-                <label
-                  for="show-example-request"
-                  class="col-md-2 col-sm-12 col-form-label"
-                  >Request</label
-                >
-                <div class="col-md-10 col-sm-12">
-                  <textarea
-                    class="form-control"
-                    id="show-example-request"
-                  ></textarea>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label
-                  for="show-example-response"
-                  class="col-md-2 col-sm-12 col-form-label"
-                  >Response</label
-                >
-                <div class="col-md-10 col-sm-12">
-                  <textarea
-                    class="form-control"
-                    id="show-example-response"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <script>
+      $.expr[":"].contains = $.expr.createPseudo(function(arg) {
+        return function(elem) {
+          return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        };
+      });
+
+      $(".search-input").on("paste keyup search", (event) => {
+        const inputValue = event.target.value;
+        
+        $(`a`).removeClass("disabled");
+
+        if(inputValue) {
+          $(`.card.method:contains("${inputValue}")`).removeClass("disabled");
+          $(`.card.method:contains("${inputValue}") .collapse`).collapse("show");
+          $(`.card.method:not(:contains("${inputValue}"))`).addClass("disabled");
+          $(`.card.method:not(:contains("${inputValue}")) .collapse`).collapse("hide");
+          $(`.card.method:not(:contains("${inputValue}"))`).each((index, element) => {
+           $(`a[href='#${element.id}']`).addClass("disabled");
+          });
+
+          document.querySelector('.card.method:not(.disabled)').scrollIntoView();
+        }
+        else {
+          $(".card.method").removeClass("disabled");
+          $(".card.method .collapse").collapse("show");
+        }
+      });
+    </script>
   </body>
 </html>

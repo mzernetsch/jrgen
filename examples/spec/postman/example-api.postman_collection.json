@@ -76,7 +76,7 @@
           "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1234567890\",\n  \"method\": \"Session.Logout\"\n}"
         },
         "url": { "raw": "{{url}}", "host": ["{{url}}"] },
-        "description": "Logs the user out and destroys his active session."
+        "description": "Destroys an existing session."
       },
       "response": []
     },

@@ -21,7 +21,6 @@ module.exports = (schema) => {
         schema.info.description,
         "<br/>"
       ),
-
       methods: Object.keys(schema.methods).map((key) => {
         const methodSchema = schema.methods[key];
         return {
@@ -36,12 +35,11 @@ module.exports = (schema) => {
           params: utils.parsePropertyList("params", methodSchema.params),
           result: utils.parsePropertyList("result", methodSchema.result),
           errors: methodSchema.errors,
-          requestExample: JSON.stringify(
-            utils.generateRequestExample(key, methodSchema.params)
+          requestExample: utils.generateRequestExample(
+            key,
+            methodSchema.params
           ),
-          responseExample: JSON.stringify(
-            utils.generateResponseExample(methodSchema.result)
-          ),
+          responseExample: utils.generateResponseExample(methodSchema.result),
         };
       }),
     },

@@ -83,10 +83,6 @@ Authenticates the user using the provided credentials and creates a new session.
 
 Destroys an existing session.
 
-### Description
-
-Logs the user out and destroys his active session.
-
 ### Result
 
 | Name   | Type   | Description |
