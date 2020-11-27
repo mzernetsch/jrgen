@@ -31,6 +31,7 @@ module.exports = (schema) => {
             methodSchema.description,
             "<br/>"
           ),
+          constraints: methodSchema.constraints,
           tags: methodSchema.tags,
           params: utils.parsePropertyList("params", methodSchema.params),
           result: utils.parsePropertyList("result", methodSchema.result),

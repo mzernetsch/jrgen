@@ -128,6 +128,35 @@ exports.parsePropertyList = (name, schema) => {
     name: name,
     type: schema.type,
     description: schema.description || "",
+    constraints: Object.entries({
+      minLength: schema.minLength,
+      maxLength: schema.maxLength,
+      pattern: schema.pattern,
+      format: schema.format,
+      enum: schema.enum,
+      multipleOf: schema.multipleOf,
+      minimum: schema.minimum,
+      maximum: schema.maximum,
+      exclusiveMaximum: schema.exclusiveMaximum,
+      exclusiveMinimum: schema.exclusiveMinimum,
+      minItems: schema.minItems,
+      maxItems: schema.maxItems,
+      uniqueItems: schema.uniqueItems,
+      minProperties: schema.minProperties,
+      maxProperties: schema.maxProperties,
+      additionalProperties: schema.additionalProperties,
+      propertyNames: schema.propertyNames,
+      patternProperties: schema.propertyNames,
+      dependencies: schema.dependencies,
+    })
+      .filter(
+        ([constraintName, constraintValue]) => constraintValue !== undefined
+      )
+      .reduce((accumulator, [constraintName, constraintValue]) => {
+        accumulator.push(`${constraintName}="${constraintValue}"`);
+        return accumulator;
+      }, [])
+      .join(", "),
     schema: JSON.stringify(schema, null, 2),
   });
 

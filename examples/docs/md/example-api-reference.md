@@ -28,19 +28,19 @@ Authenticates the user using the provided credentials and creates a new session.
 
 ### Parameters
 
-| Name            | Type   | Description                                   |
-| --------------- | ------ | --------------------------------------------- |
-| params          | object |                                               |
-| params.name     | string | Name of the user to create a session for.     |
-| params.password | string | Password of the user to create a session for. |
+| Name            | Type   | Constraints   | Description                                   |
+| --------------- | ------ | ------------- | --------------------------------------------- |
+| params          | object |               |                                               |
+| params.name     | string | minLength="1" | Name of the user to create a session for.     |
+| params.password | string | minLength="1" | Password of the user to create a session for. |
 
 ### Result
 
-| Name                 | Type   | Description                               |
-| -------------------- | ------ | ----------------------------------------- |
-| result               | object |                                           |
-| result.session_token | string | Bearer token of the created session.      |
-| result?.validity     | number | Validity of the session token in seconds. |
+| Name                 | Type   | Constraints    | Description                               |
+| -------------------- | ------ | -------------- | ----------------------------------------- |
+| result               | object |                |                                           |
+| result.session_token | string | minLength="1"  | Bearer token of the created session.      |
+| result?.validity     | number | multipleOf="1" | Validity of the session token in seconds. |
 
 ### Errors
 
@@ -85,9 +85,9 @@ Destroys an existing session.
 
 ### Result
 
-| Name   | Type   | Description |
-| ------ | ------ | ----------- |
-| result | number | Always 0.   |
+| Name   | Type   | Constraints              | Description |
+| ------ | ------ | ------------------------ | ----------- |
+| result | number | minimum="0", maximum="0" | Always 0.   |
 
 ### Errors
 
@@ -129,9 +129,9 @@ Refreshs an existing session so that it keeps alive and doesn't time out. This m
 
 ### Result
 
-| Name   | Type   | Description |
-| ------ | ------ | ----------- |
-| result | number | Always 0.   |
+| Name   | Type   | Constraints              | Description |
+| ------ | ------ | ------------------------ | ----------- |
+| result | number | minimum="0", maximum="0" | Always 0.   |
 
 ### Errors
 
@@ -169,23 +169,23 @@ Adds a new user.
 
 ### Parameters
 
-| Name               | Type   | Description                  |
-| ------------------ | ------ | ---------------------------- |
-| params             | object |                              |
-| params.name        | string | Name of the user to add.     |
-| params.email       | string | Email of the user to add.    |
-| params?.address    | array  | Address of the user to add.  |
-| params?.address[0] | number | Address number.              |
-| params?.address[1] | string | Name of the street.          |
-| params?.address[2] | string | Type of the street.          |
-| params?.address[3] | string | City quadrant of the address |
-| params.password    | string | Password of the user to add. |
+| Name               | Type   | Constraints                    | Description                  |
+| ------------------ | ------ | ------------------------------ | ---------------------------- |
+| params             | object |                                |                              |
+| params.name        | string | minLength="1"                  | Name of the user to add.     |
+| params.email       | string | format="email"                 | Email of the user to add.    |
+| params?.address    | array  |                                | Address of the user to add.  |
+| params?.address[0] | number | minimum="1"                    | Address number.              |
+| params?.address[1] | string | minLength="1"                  | Name of the street.          |
+| params?.address[2] | string | enum="Street,Avenue,Boulevard" | Type of the street.          |
+| params?.address[3] | string | enum="NW,NE,SW,SE"             | City quadrant of the address |
+| params.password    | string | minLength="1"                  | Password of the user to add. |
 
 ### Result
 
-| Name   | Type   | Description |
-| ------ | ------ | ----------- |
-| result | number | Always 0.   |
+| Name   | Type   | Constraints              | Description |
+| ------ | ------ | ------------------------ | ----------- |
+| result | number | minimum="0", maximum="0" | Always 0.   |
 
 ### Errors
 
@@ -229,16 +229,16 @@ Deletes an existing user.
 
 ### Parameters
 
-| Name        | Type   | Description              |
-| ----------- | ------ | ------------------------ |
-| params      | object |                          |
-| params.name | string | Name of the user to add. |
+| Name        | Type   | Constraints   | Description              |
+| ----------- | ------ | ------------- | ------------------------ |
+| params      | object |               |                          |
+| params.name | string | minLength="1" | Name of the user to add. |
 
 ### Result
 
-| Name   | Type   | Description |
-| ------ | ------ | ----------- |
-| result | number | Always 0.   |
+| Name   | Type   | Constraints              | Description |
+| ------ | ------ | ------------------------ | ----------- |
+| result | number | minimum="0", maximum="0" | Always 0.   |
 
 ### Errors
 
@@ -283,17 +283,17 @@ This method returns an array with information about all existing users.
 
 ### Result
 
-| Name                            | Type   | Description                  |
-| ------------------------------- | ------ | ---------------------------- |
-| result                          | array  | List of all existing users.  |
-| result[]                        | object | Information about a user.    |
-| result[].name                   | string | Name of the user.            |
-| result[].email                  | string | Email of the user.           |
-| result[].address                | array  | Address of the user to add.  |
-| result[].address[0:number]      | number | Address number.              |
-| result[].address[1:street_name] | string | Name of the street.          |
-| result[].address[2:street_type] | string | Type of the street.          |
-| result[].address[3:direction]   | string | City quadrant of the address |
+| Name                            | Type   | Constraints                    | Description                  |
+| ------------------------------- | ------ | ------------------------------ | ---------------------------- |
+| result                          | array  |                                | List of all existing users.  |
+| result[]                        | object |                                | Information about a user.    |
+| result[].name                   | string | minLength="1"                  | Name of the user.            |
+| result[].email                  | string | format="email"                 | Email of the user.           |
+| result[].address                | array  |                                | Address of the user to add.  |
+| result[].address[0:number]      | number | minimum="1"                    | Address number.              |
+| result[].address[1:street_name] | string | minLength="1"                  | Name of the street.          |
+| result[].address[2:street_type] | string | enum="Street,Avenue,Boulevard" | Type of the street.          |
+| result[].address[3:direction]   | string | enum="NW,NE,SW,SE"             | City quadrant of the address |
 
 ### Examples
 

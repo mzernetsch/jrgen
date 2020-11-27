@@ -27,21 +27,21 @@
 {{#params.length}}
 ### Parameters
 
-| Name  | Type | Description |
-| --- | --- | --- |
+| Name | Type | Constraints | Description |
+| --- | --- | --- | --- |
 {{/params.length}}
 {{#params}}
-| {{name}} | {{type}} | {{{description}}} |
+| {{name}} | {{{type}}} | {{{constraints}}} | {{{description}}} |
 {{/params}}
 
 {{#result.length}}
 ### Result
 
-| Name  | Type | Description |
-| --- | --- | --- |
+| Name | Type | Constraints | Description |
+| --- | --- | --- | --- |
 {{/result.length}}
 {{#result}}
-| {{name}} | {{type}} | {{{description}}} |
+| {{name}} | {{type}} | {{{constraints}}} | {{{description}}} |
 {{/result}}
 
 {{#errors.length}}

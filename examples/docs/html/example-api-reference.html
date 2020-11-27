@@ -158,21 +158,25 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>params</td>
                           <td>object</td>
                           <td></td>
+                          <td></td>
                         </tr>
                         <tr>
                           <td>params.name</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Name of the user to create a session for.</td>
                         </tr>
                         <tr>
                           <td>params.password</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Password of the user to create a session for.</td>
                         </tr>
                       </table>
@@ -184,21 +188,25 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>result</td>
                           <td>object</td>
                           <td></td>
+                          <td></td>
                         </tr>
                         <tr>
                           <td>result.session_token</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Bearer token of the created session.</td>
                         </tr>
                         <tr>
                           <td>result?.validity</td>
                           <td>number</td>
+                          <td>multipleOf="1"</td>
                           <td>Validity of the session token in seconds.</td>
                         </tr>
                       </table>
@@ -280,11 +288,13 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>result</td>
                           <td>number</td>
+                          <td>minimum="0", maximum="0"</td>
                           <td>Always 0.</td>
                         </tr>
                       </table>
@@ -360,11 +370,13 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>result</td>
                           <td>number</td>
+                          <td>minimum="0", maximum="0"</td>
                           <td>Always 0.</td>
                         </tr>
                       </table>
@@ -438,51 +450,61 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>params</td>
                           <td>object</td>
                           <td></td>
+                          <td></td>
                         </tr>
                         <tr>
                           <td>params.name</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Name of the user to add.</td>
                         </tr>
                         <tr>
                           <td>params.email</td>
                           <td>string</td>
+                          <td>format="email"</td>
                           <td>Email of the user to add.</td>
                         </tr>
                         <tr>
                           <td>params?.address</td>
                           <td>array</td>
+                          <td></td>
                           <td>Address of the user to add.</td>
                         </tr>
                         <tr>
                           <td>params?.address[0]</td>
                           <td>number</td>
+                          <td>minimum="1"</td>
                           <td>Address number.</td>
                         </tr>
                         <tr>
                           <td>params?.address[1]</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Name of the street.</td>
                         </tr>
                         <tr>
                           <td>params?.address[2]</td>
                           <td>string</td>
+                          <td>enum="Street,Avenue,Boulevard"</td>
                           <td>Type of the street.</td>
                         </tr>
                         <tr>
                           <td>params?.address[3]</td>
                           <td>string</td>
+                          <td>enum="NW,NE,SW,SE"</td>
                           <td>City quadrant of the address</td>
                         </tr>
                         <tr>
                           <td>params.password</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Password of the user to add.</td>
                         </tr>
                       </table>
@@ -494,11 +516,13 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>result</td>
                           <td>number</td>
+                          <td>minimum="0", maximum="0"</td>
                           <td>Always 0.</td>
                         </tr>
                       </table>
@@ -583,16 +607,19 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>params</td>
                           <td>object</td>
                           <td></td>
+                          <td></td>
                         </tr>
                         <tr>
                           <td>params.name</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Name of the user to add.</td>
                         </tr>
                       </table>
@@ -604,11 +631,13 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>result</td>
                           <td>number</td>
+                          <td>minimum="0", maximum="0"</td>
                           <td>Always 0.</td>
                         </tr>
                       </table>
@@ -687,51 +716,61 @@
                         <tr>
                           <th>Name</th>
                           <th>Type</th>
+                          <th>Constraints</th>
                           <th>Description</th>
                         </tr>
                         <tr>
                           <td>result</td>
                           <td>array</td>
+                          <td></td>
                           <td>List of all existing users.</td>
                         </tr>
                         <tr>
                           <td>result[]</td>
                           <td>object</td>
+                          <td></td>
                           <td>Information about a user.</td>
                         </tr>
                         <tr>
                           <td>result[].name</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Name of the user.</td>
                         </tr>
                         <tr>
                           <td>result[].email</td>
                           <td>string</td>
+                          <td>format="email"</td>
                           <td>Email of the user.</td>
                         </tr>
                         <tr>
                           <td>result[].address</td>
                           <td>array</td>
+                          <td></td>
                           <td>Address of the user to add.</td>
                         </tr>
                         <tr>
                           <td>result[].address[0:number]</td>
                           <td>number</td>
+                          <td>minimum="1"</td>
                           <td>Address number.</td>
                         </tr>
                         <tr>
                           <td>result[].address[1:street_name]</td>
                           <td>string</td>
+                          <td>minLength="1"</td>
                           <td>Name of the street.</td>
                         </tr>
                         <tr>
                           <td>result[].address[2:street_type]</td>
                           <td>string</td>
+                          <td>enum="Street,Avenue,Boulevard"</td>
                           <td>Type of the street.</td>
                         </tr>
                         <tr>
                           <td>result[].address[3:direction]</td>
                           <td>string</td>
+                          <td>enum="NW,NE,SW,SE"</td>
                           <td>City quadrant of the address</td>
                         </tr>
                       </table>
