@@ -14,7 +14,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"type\":\"object\",\"properties\":{\"session_token\":{\"description\":\"Bearer token of the created session.\",\"default\":\"123456890\",\"type\":\"string\",\"minLength\":1},\"validity\":{\"description\":\"Validity of the session token in seconds.\",\"default\":3600,\"type\":\"number\",\"multipleOf\":1}},\"required\":[\"session_token\"]}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"type\":\"object\",\"properties\":{\"session_token\":{\"description\":\"Bearer token of the created session.\",\"examples\":[\"123456890\"],\"type\":\"string\",\"minLength\":1},\"validity\":{\"description\":\"Validity of the session token in seconds.\",\"examples\":[3600],\"type\":\"number\",\"multipleOf\":1}},\"required\":[\"session_token\"]}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",
@@ -51,7 +51,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"examples\":[0],\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",
@@ -88,7 +88,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"examples\":[0],\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",
@@ -125,7 +125,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"examples\":[0],\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",
@@ -162,7 +162,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"default\":0,\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"Always 0.\",\"examples\":[0],\"type\":\"number\",\"minimum\":0,\"maximum\":0}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",
@@ -199,7 +199,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"List of all existing users.\",\"type\":\"array\",\"items\":{\"description\":\"Information about a user.\",\"type\":\"object\",\"properties\":{\"name\":{\"description\":\"Name of the user.\",\"default\":\"user\",\"type\":\"string\",\"minLength\":1},\"email\":{\"description\":\"Email of the user.\",\"default\":\"user@example.org\",\"type\":\"string\",\"format\":\"email\"},\"address\":{\"description\":\"Address of the user to add.\",\"type\":\"array\",\"items\":[{\"name\":\"number\",\"description\":\"Address number.\",\"default\":1600,\"type\":\"number\",\"minimum\":1},{\"name\":\"street_name\",\"description\":\"Name of the street.\",\"default\":\"Pennsylvania\",\"type\":\"string\",\"minLength\":1},{\"name\":\"street_type\",\"description\":\"Type of the street.\",\"default\":\"Avenue\",\"type\":\"string\",\"enum\":[\"Street\",\"Avenue\",\"Boulevard\"]},{\"name\":\"direction\",\"description\":\"City quadrant of the address\",\"default\":\"NW\",\"type\":\"string\",\"enum\":[\"NW\",\"NE\",\"SW\",\"SE\"]}]}},\"required\":[\"name\",\"email\",\"address\"]}}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
+              "var schema = {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"jsonrpc\":{\"type\":\"string\",\"enum\":[\"2.0\"]},\"result\":{\"description\":\"List of all existing users.\",\"type\":\"array\",\"items\":{\"description\":\"Information about a user.\",\"type\":\"object\",\"properties\":{\"name\":{\"description\":\"Name of the user.\",\"examples\":[\"user\"],\"type\":\"string\",\"minLength\":1},\"email\":{\"description\":\"Email of the user.\",\"examples\":[\"user@example.org\"],\"type\":\"string\",\"format\":\"email\"},\"address\":{\"description\":\"Address of the user to add.\",\"type\":\"array\",\"items\":[{\"name\":\"number\",\"description\":\"Address number.\",\"examples\":[1600],\"type\":\"number\",\"minimum\":1},{\"name\":\"street_name\",\"description\":\"Name of the street.\",\"examples\":[\"Pennsylvania\"],\"type\":\"string\",\"minLength\":1},{\"name\":\"street_type\",\"description\":\"Type of the street.\",\"examples\":[\"Avenue\"],\"type\":\"string\",\"enum\":[\"Street\",\"Avenue\",\"Boulevard\"]},{\"name\":\"direction\",\"description\":\"City quadrant of the address\",\"examples\":[\"NW\"],\"type\":\"string\",\"enum\":[\"NW\",\"NE\",\"SW\",\"SE\"]}]}},\"required\":[\"name\",\"email\",\"address\"]}}},\"required\":[\"id\",\"jsonrpc\",\"result\"]};",
               "",
               "pm.test('Schema is valid', function() {",
               "  var jsonData = pm.response.json();",

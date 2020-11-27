@@ -82,27 +82,39 @@ exports.generateExample = (schema) => {
     return;
   }
 
-  let example;
-
-  if (schema.type === "object") {
-    example = {};
-
-    Object.keys(schema.properties).forEach((key) => {
-      example[key] = exports.generateExample(schema.properties[key]);
-    });
-  } else if (schema.type === "array") {
-    if (schema.default !== undefined || schema.example !== undefined) {
-      example = schema.default === undefined ? schema.example : schema.default;
-    } else if (Array.isArray(schema.items)) {
-      example = schema.items.map((item) => exports.generateExample(item));
-    } else {
-      example = [exports.generateExample(schema.items)];
-    }
-  } else {
-    example = schema.default === undefined ? schema.example : schema.default;
+  if (schema.default !== undefined) {
+    return schema.default;
   }
 
-  return example;
+  if (schema.example !== undefined) {
+    return schema.example;
+  }
+
+  if (schema.examples !== undefined) {
+    return schema.examples[0];
+  }
+
+  if (schema.enum !== undefined) {
+    return schema.enum;
+  }
+
+  if (schema.type === "object") {
+    return Object.entries(schema.properties).reduce(
+      (accumulator, [propertyKey, propertyValue]) => {
+        accumulator[propertyKey] = exports.generateExample(propertyValue);
+        return accumulator;
+      },
+      {}
+    );
+  }
+
+  if (schema.type === "array") {
+    if (Array.isArray(schema.items)) {
+      return schema.items.map((item) => exports.generateExample(item));
+    } else {
+      return [exports.generateExample(schema.items)];
+    }
+  }
 };
 
 exports.parsePropertyList = (name, schema) => {

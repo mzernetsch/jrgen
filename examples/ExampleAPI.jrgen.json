@@ -16,13 +16,13 @@
       "properties": {
         "session_token": {
           "description": "Bearer token of the created session.",
-          "default": "123456890",
+          "examples": ["123456890"],
           "type": "string",
           "minLength": 1
         },
         "validity": {
           "description": "Validity of the session token in seconds.",
-          "default": 3600,
+          "examples": [3600],
           "type": "number",
           "multipleOf": 1
         }
@@ -40,13 +40,13 @@
         "properties": {
           "name": {
             "description": "Name of the user to create a session for.",
-            "default": "admin",
+            "examples": ["admin"],
             "type": "string",
             "minLength": 1
           },
           "password": {
             "description": "Password of the user to create a session for.",
-            "default": "123456",
+            "examples": ["123456"],
             "type": "string",
             "minLength": 1
           }
@@ -69,7 +69,7 @@
       "tags": ["Session"],
       "result": {
         "description": "Always 0.",
-        "default": 0,
+        "examples": [0],
         "type": "number",
         "minimum": 0,
         "maximum": 0
@@ -88,7 +88,7 @@
       "tags": ["Session"],
       "result": {
         "description": "Always 0.",
-        "default": 0,
+        "examples": [0],
         "type": "number",
         "minimum": 0,
         "maximum": 0
@@ -109,13 +109,13 @@
         "properties": {
           "name": {
             "description": "Name of the user to add.",
-            "default": "user",
+            "examples": ["user"],
             "type": "string",
             "minLength": 1
           },
           "email": {
             "description": "Email of the user to add.",
-            "default": "user@example.org",
+            "examples": ["user@example.org"],
             "type": "string",
             "format": "email"
           },
@@ -125,25 +125,25 @@
             "items": [
               {
                 "description": "Address number.",
-                "default": 1600,
+                "examples": [1600],
                 "type": "number",
                 "minimum": 1
               },
               {
                 "description": "Name of the street.",
-                "default": "Pennsylvania",
+                "examples": ["Pennsylvania"],
                 "type": "string",
                 "minLength": 1
               },
               {
                 "description": "Type of the street.",
-                "default": "Avenue",
+                "examples": ["Avenue"],
                 "type": "string",
                 "enum": ["Street", "Avenue", "Boulevard"]
               },
               {
                 "description": "City quadrant of the address",
-                "default": "NW",
+                "examples": ["NW"],
                 "type": "string",
                 "enum": ["NW", "NE", "SW", "SE"]
               }
@@ -151,7 +151,7 @@
           },
           "password": {
             "description": "Password of the user to add.",
-            "default": "1234567890",
+            "examples": ["1234567890"],
             "type": "string",
             "minLength": 1
           }
@@ -160,7 +160,7 @@
       },
       "result": {
         "description": "Always 0.",
-        "default": 0,
+        "examples": [0],
         "type": "number",
         "minimum": 0,
         "maximum": 0
@@ -181,7 +181,7 @@
         "properties": {
           "name": {
             "description": "Name of the user to add.",
-            "default": "user",
+            "examples": ["user"],
 
             "type": "string",
             "minLength": 1
@@ -191,7 +191,7 @@
       },
       "result": {
         "description": "Always 0.",
-        "default": 0,
+        "examples": [0],
         "type": "number",
         "minimum": 0,
         "maximum": 0
@@ -217,13 +217,13 @@
           "properties": {
             "name": {
               "description": "Name of the user.",
-              "default": "user",
+              "examples": ["user"],
               "type": "string",
               "minLength": 1
             },
             "email": {
               "description": "Email of the user.",
-              "default": "user@example.org",
+              "examples": ["user@example.org"],
               "type": "string",
               "format": "email"
             },
@@ -234,28 +234,28 @@
                 {
                   "name": "number",
                   "description": "Address number.",
-                  "default": 1600,
+                  "examples": [1600],
                   "type": "number",
                   "minimum": 1
                 },
                 {
                   "name": "street_name",
                   "description": "Name of the street.",
-                  "default": "Pennsylvania",
+                  "examples": ["Pennsylvania"],
                   "type": "string",
                   "minLength": 1
                 },
                 {
                   "name": "street_type",
                   "description": "Type of the street.",
-                  "default": "Avenue",
+                  "examples": ["Avenue"],
                   "type": "string",
                   "enum": ["Street", "Avenue", "Boulevard"]
                 },
                 {
                   "name": "direction",
                   "description": "City quadrant of the address",
-                  "default": "NW",
+                  "examples": ["NW"],
                   "type": "string",
                   "enum": ["NW", "NE", "SW", "SE"]
                 }
