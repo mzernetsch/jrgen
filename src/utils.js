@@ -44,7 +44,7 @@ exports.normalizeMultiLineString = (multiLineString, separator) => {
 
 exports.gatherBlueprints = () => {
   return glob
-    .sync(__dirname + "/../../jrgen*/**/*.jrgen.blueprint.js")
+    .sync(__dirname + "/../../{@**/,}jrgen*/**/*.jrgen.blueprint.js")
     .reduce((acc, blueprintPath) => {
       const blueprintId = path.basename(blueprintPath, ".jrgen.blueprint.js");
       acc[blueprintId] = blueprintPath;
