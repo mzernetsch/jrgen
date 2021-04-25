@@ -173,7 +173,7 @@ A `BlueprintFactory` is a file ending with `.jrgen.blueprint.js`. It exports a f
 module.exports = async (spec) => {
   return {
     templates: {
-      "HelloWorld.txt": "Hello {{title}}!",
+      "HelloWorld.txt.mustache": "Hello {{title}}!",
     },
     model: {
       title: spec.info.title,
