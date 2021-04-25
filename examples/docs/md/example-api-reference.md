@@ -87,7 +87,7 @@ Destroys an existing session.
 
 | Name   | Type   | Constraints              | Description |
 | ------ | ------ | ------------------------ | ----------- |
-| result | number | minimum="0", maximum="0" | Always 0.   |
+| result | number | minimum="0", maximum="0" | Always '0'. |
 
 ### Errors
 
@@ -131,7 +131,7 @@ Refreshs an existing session so that it keeps alive and doesn't time out. This m
 
 | Name   | Type   | Constraints              | Description |
 | ------ | ------ | ------------------------ | ----------- |
-| result | number | minimum="0", maximum="0" | Always 0.   |
+| result | number | minimum="0", maximum="0" | Always '0'. |
 
 ### Errors
 
@@ -185,7 +185,7 @@ Adds a new user.
 
 | Name   | Type   | Constraints              | Description |
 | ------ | ------ | ------------------------ | ----------- |
-| result | number | minimum="0", maximum="0" | Always 0.   |
+| result | number | minimum="0", maximum="0" | Always '0'. |
 
 ### Errors
 
@@ -238,7 +238,7 @@ Deletes an existing user.
 
 | Name   | Type   | Constraints              | Description |
 | ------ | ------ | ------------------------ | ----------- |
-| result | number | minimum="0", maximum="0" | Always 0.   |
+| result | number | minimum="0", maximum="0" | Always '0'. |
 
 ### Errors
 

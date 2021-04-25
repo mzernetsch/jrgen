@@ -55,12 +55,12 @@ export interface SessionLoginRpcResult {
 }
 
 /**
- * Always 0.
+ * Always '0'.
  */
 export type SessionLogoutRpcResult = number;
 
 /**
- * Always 0.
+ * Always '0'.
  */
 export type SessionKeepAliveRpcResult = number;
 
@@ -95,7 +95,7 @@ export interface UserAddRpcParams {
 }
 
 /**
- * Always 0.
+ * Always '0'.
  */
 export type UserAddRpcResult = number;
 
@@ -108,7 +108,7 @@ export interface UserDeleteRpcParams {
 }
 
 /**
- * Always 0.
+ * Always '0'.
  */
 export type UserDeleteRpcResult = number;
 

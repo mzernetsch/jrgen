@@ -39,7 +39,7 @@ module.exports = (schema) => {
               result: methodSchema.result,
             },
             required: ["id", "jsonrpc", "result"],
-          }),
+          }).replace(/"/g, `\\"`),
           requestExample: JSON.stringify(
             utils.generateRequestExample(key, methodSchema.params)
           ),

@@ -16,12 +16,12 @@
             script: {
                 type: "text/javascript",
                 exec: [
-                'var schema = {{{responseSchema}}};',
+                "var schema = {{{responseSchema}}};",
                 "",
-                "pm.test('Schema is valid', function() {",
+                "pm.test(\"Schema is valid\", function() {",
                 "  var jsonData = pm.response.json();",
                 "  tv4.validate(jsonData, schema);",
-                "  pm.expect(JSON.stringify(tv4.error)).to.eql('null');",
+                "  pm.expect(JSON.stringify(tv4.error)).to.eql(\"null\");",
                 "});",
                 "",
                 ],
