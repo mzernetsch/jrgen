@@ -153,6 +153,9 @@ exports.parsePropertyList = (name, schema) => {
         ([constraintName, constraintValue]) => constraintValue !== undefined
       )
       .reduce((accumulator, [constraintName, constraintValue]) => {
+        if (constraintName == "pattern") {
+          constraintValue = constraintValue.replace(/\|/g, "\\|");
+        }
         accumulator.push(`${constraintName}="${constraintValue}"`);
         return accumulator;
       }, [])
