@@ -122,11 +122,33 @@ exports.parsePropertyList = (name, schema) => {
     return [];
   }
 
+  let type = schema.type;
+  if (type === undefined) {
+    if (schema.anyOf != undefined) {
+      type = "anyOf(";
+      schema.anyOf.forEach((item, index) => {
+        if (index != 0) {
+          type = type + ", ";
+        }
+        type = type + item.type + "(" + index + ")";
+      });
+      type = type + ")";
+    } else if (schema.oneOf != undefined) {
+      type = "oneOf(";
+      schema.oneOf.forEach((item, index) => {
+        if (index != 0) {
+          type = type + ", ";
+        }
+        type = type + item.type + "(" + index + ")";
+      });
+      type = type + ")";
+    }
+  }
   let entries = [];
 
   entries.push({
     name: name,
-    type: schema.type,
+    type: type,
     description: schema.description || "",
     constraints: Object.entries({
       minLength: schema.minLength,
@@ -163,7 +185,27 @@ exports.parsePropertyList = (name, schema) => {
     schema: JSON.stringify(schema, null, 2),
   });
 
-  if (schema.type === "array") {
+  if (schema.anyOf != undefined) {
+    schema.anyOf.forEach((item, index) => {
+      let selector = "";
+      if (item.type) {
+        selector = item.type + "(" + index + ")";
+      }
+      entries = entries.concat(
+        exports.parsePropertyList(name + "[" + selector + "]", item)
+      );
+    });
+  } else if (schema.oneOf != undefined) {
+    schema.oneOf.forEach((item, index) => {
+      let selector = "";
+      if (item.type) {
+        selector = item.type + "(" + index + ")";
+      }
+      entries = entries.concat(
+        exports.parsePropertyList(name + "[" + selector + "]", item)
+      );
+    });
+  } else if (schema.type === "array") {
     if (Array.isArray(schema.items)) {
       schema.items.forEach((item, index) => {
         let selector = index;
