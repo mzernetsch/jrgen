@@ -41,7 +41,10 @@ module.exports = (schema) => {
             required: ["id", "jsonrpc", "result"],
           }).replace(/"/g, `\\"`),
           requestExample: JSON.stringify(
-            utils.generateRequestExample(key, methodSchema.params)
+            utils.generateRequestExample(
+              methodSchema.type,
+              key,
+              methodSchema.params)
           ),
         };
       }),

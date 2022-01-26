@@ -60,7 +60,7 @@ Commands:
 
 ## Specification
 
-jrgen uses special [specification files](https://github.com/mzernetsch/jrgen/blob/master/examples/ExampleAPI.jrgen.json) which describe all available methods, the parameters and the expected result or error responses of an api. A specification file contains valid json and mostly consists of [JSON-Schema](https://spacetelescope.github.io/understanding-json-schema/). A JSON-Schema describing a jrgen specification can be found [here](https://github.com/mzernetsch/jrgen/blob/master/jrgen-spec.schema.json).  
+jrgen uses special [specification files](https://github.com/mzernetsch/jrgen/blob/master/examples/ExampleAPI.jrgen.json) which describe all available methods, the parameters and the expected result or error responses of an api. A specification file contains valid json and mostly consists of [JSON-Schema](https://spacetelescope.github.io/understanding-json-schema/). A JSON-Schema describing a jrgen specification can be found [here](https://github.com/mzernetsch/jrgen/blob/master/jrgen-spec.schema.json).
 If the api is really large you may consider splitting the specification into multiple files and create references using [JSON-Pointer](https://spacetelescope.github.io/understanding-json-schema/structuring.html#reuse).
 
 ```js
@@ -98,6 +98,7 @@ If the api is really large you may consider splitting the specification into mul
       summary: "Creates a new session.", //Short summary of what the method does.
       description: "Authenticates the user using the provided credentials and creates a new session.", //Longer description of what the method does.
       tags: ["Session"], //Tags for grouping similar methods.
+      type: "request", //Default type is "request", if it set to "notify", the generated example will not contain the request id and the entire response body.
 
       params: { //json-schema of the params object within a json-rpc request. Can be omitted if not used.
         type: "object",

@@ -135,7 +135,7 @@
               {{#summary}}
               <p>{{summary}}</p>
               {{/summary}}
-              
+
               {{#description}}
               <p>{{{description}}}</p>
               {{/description}}
@@ -167,7 +167,7 @@
                       </table>
                     </div>
                     {{/params.length}}
-                    
+
                     {{#result.length}}
                     <h5>Result</h5>
                     <div class="table-responsive">
@@ -189,7 +189,7 @@
                       </table>
                     </div>
                     {{/result.length}}
-                    
+
                     {{#errors.length}}
                     <h5>Errors</h5>
                     <div class="table-responsive">
@@ -216,8 +216,10 @@
                     <h5>Request example</h5>
                     <pre class="bg-light">{{{requestExample}}}</pre>
 
+                    {{#responseExample}}
                     <h5>Response example</h5>
                     <pre class="bg-light">{{{responseExample}}}</pre>
+                    {{/responseExample}}
                   </div>
                 </div>
               </div>
@@ -237,7 +239,7 @@
 
       $(".search-input").on("paste keyup search", (event) => {
         const inputValue = event.target.value;
-        
+
         $(`a`).removeClass("disabled");
 
         if(inputValue) {

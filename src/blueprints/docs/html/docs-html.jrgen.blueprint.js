@@ -23,7 +23,7 @@ module.exports = (schema) => {
       ),
       methods: Object.keys(schema.methods).map((key) => {
         const methodSchema = schema.methods[key];
-        return {
+        let example = {
           id: key.replace(/\./g, "_"),
           name: key,
           summary: methodSchema.summary,
@@ -37,11 +37,18 @@ module.exports = (schema) => {
           result: utils.parsePropertyList("result", methodSchema.result),
           errors: methodSchema.errors,
           requestExample: utils.generateRequestExample(
+            methodSchema.type,
             key,
             methodSchema.params
           ),
-          responseExample: utils.generateResponseExample(methodSchema.result),
         };
+
+        if (methodSchema.type !== "notify") {
+          example["responseExample"] =
+            utils.generateResponseExample(methodSchema.result);
+        }
+
+        return example;
       }),
     },
   };

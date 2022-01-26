@@ -52,17 +52,18 @@ exports.gatherBlueprints = () => {
     }, {});
 };
 
-exports.generateRequestExample = (methodName, paramsSchema) => {
-  return JSON.stringify(
-    {
-      jsonrpc: "2.0",
-      id: "1234567890",
-      method: methodName,
-      params: exports.generateExample(paramsSchema),
-    },
-    null,
-    2
-  );
+exports.generateRequestExample = (methodType, methodName, paramsSchema) => {
+  let example = {
+    jsonrpc: "2.0",
+    method: methodName,
+    params: exports.generateExample(paramsSchema),
+  };
+
+  if (methodType !== "notify") {
+    example["id"] = "1234567890";
+  }
+
+  return JSON.stringify(example, null, 2);
 };
 
 exports.generateResponseExample = (resultSchema) => {
