@@ -1,7 +1,6 @@
 const fs = require("fs-extra");
 const path = require("path");
 const $RefParser = require("json-schema-ref-parser");
-const jsonlint = require("jsonlint");
 const prettier = require("prettier");
 const glob = require("glob");
 const mustache = require("mustache");
@@ -210,15 +209,7 @@ exports.loadSchema = (schemaPath) => {
     schemaPath = path.join(process.cwd(), schemaPath);
   }
 
-  const jsonString = fs.readFileSync(schemaPath, {
-    encoding: "utf8",
-  });
-
-  const schema = jsonlint.parse(jsonString);
-
-  const resolvedSchema = exports.resolveSchemaRefs(schema);
-
-  return resolvedSchema;
+  return exports.resolveSchemaRefs(schemaPath);
 };
 
 exports.prettifyFileTree = (fileTree) => {
