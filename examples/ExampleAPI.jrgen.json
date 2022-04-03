@@ -110,14 +110,16 @@
           "name": {
             "description": "Name of the user to add.",
             "examples": ["user"],
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              { "type": "string", "minLength": 1 },
+              { "type": "number", "multipleOf": 1 }
+            ]
           },
           "email": {
             "description": "Email of the user to add.",
             "examples": ["user@example.org"],
             "type": "string",
-            "format": "email"
+            "allOf": [{ "type": "string", "format": "email" }]
           },
           "address": {
             "description": "Address of the user to add.",
@@ -177,17 +179,32 @@
       "summary": "Deletes an existing user.",
       "tags": ["User"],
       "params": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name of the user to add.",
-            "examples": ["user"],
-
-            "type": "string",
-            "minLength": 1
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Name of the user to delete.",
+                "examples": ["user"],
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["name"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Id of the user to delete.",
+                "examples": ["1"],
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["id"]
           }
-        },
-        "required": ["name"]
+        ]
       },
       "result": {
         "description": "Always '0'.",

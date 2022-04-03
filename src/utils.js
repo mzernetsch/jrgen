@@ -114,11 +114,28 @@ exports.generateExample = (schema) => {
       return [exports.generateExample(schema.items)];
     }
   }
+
+  for (const item of [schema.anyOf, schema.oneOf, schema.allOf]
+    .filter((item) => !!item)
+    .flat()) {
+    const example = exports.generateExample(item);
+    if (example) {
+      return example;
+    }
+  }
 };
 
 exports.parsePropertyList = (name, schema) => {
   if (!schema) {
     return [];
+  }
+
+  if (schema.allOf) {
+    for (const item of schema.allOf) {
+      for (const key of Object.keys(item)) {
+        schema[key] = item.key;
+      }
+    }
   }
 
   let entries = [];
@@ -147,12 +164,18 @@ exports.parsePropertyList = (name, schema) => {
       propertyNames: schema.propertyNames,
       patternProperties: schema.propertyNames,
       dependencies: schema.dependencies,
+      exclusive: schema.exclusive,
     })
       .filter(
         ([constraintName, constraintValue]) => constraintValue !== undefined
       )
       .reduce((accumulator, [constraintName, constraintValue]) => {
-        accumulator.push(`${constraintName}="${constraintValue}"`);
+        if (typeof constraintValue === "boolean") {
+          accumulator.push(constraintName);
+        } else {
+          accumulator.push(`${constraintName}="${constraintValue}"`);
+        }
+
         return accumulator;
       }, [])
       .join(", "),
@@ -186,6 +209,23 @@ exports.parsePropertyList = (name, schema) => {
           name + connector + key,
           schema.properties[key]
         )
+      );
+    });
+  }
+
+  if (schema.anyOf) {
+    schema.anyOf.forEach((item, index) => {
+      entries = entries.concat(
+        exports.parsePropertyList(`${name}(${index})`, item)
+      );
+    });
+  }
+
+  if (schema.oneOf) {
+    schema.oneOf.forEach((item, index) => {
+      item.exclusive = true;
+      entries = entries.concat(
+        exports.parsePropertyList(`${name}(${index})`, item)
       );
     });
   }

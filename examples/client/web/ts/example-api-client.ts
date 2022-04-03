@@ -68,7 +68,7 @@ export interface UserAddRpcParams {
   /**
    * Name of the user to add.
    */
-  name: string;
+  name: string | number;
   /**
    * Email of the user to add.
    */
@@ -99,13 +99,21 @@ export interface UserAddRpcParams {
  */
 export type UserAddRpcResult = number;
 
-export interface UserDeleteRpcParams {
-  /**
-   * Name of the user to add.
-   */
-  name: string;
-  [k: string]: unknown;
-}
+export type UserDeleteRpcParams =
+  | {
+      /**
+       * Name of the user to delete.
+       */
+      name: string;
+      [k: string]: unknown;
+    }
+  | {
+      /**
+       * Id of the user to delete.
+       */
+      id: string;
+      [k: string]: unknown;
+    };
 
 /**
  * Always '0'.

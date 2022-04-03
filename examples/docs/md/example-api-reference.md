@@ -172,8 +172,10 @@ Adds a new user.
 | Name               | Type   | Constraints                    | Description                  |
 | ------------------ | ------ | ------------------------------ | ---------------------------- |
 | params             | object |                                |                              |
-| params.name        | string | minLength="1"                  | Name of the user to add.     |
-| params.email       | string | format="email"                 | Email of the user to add.    |
+| params.name        |        |                                | Name of the user to add.     |
+| params.name(0)     | string | minLength="1"                  |                              |
+| params.name(1)     | number | multipleOf="1"                 |                              |
+| params.email       |        |                                | Email of the user to add.    |
 | params?.address    | array  |                                | Address of the user to add.  |
 | params?.address[0] | number | minimum="1"                    | Address number.              |
 | params?.address[1] | string | minLength="1"                  | Name of the street.          |
@@ -229,10 +231,13 @@ Deletes an existing user.
 
 ### Parameters
 
-| Name        | Type   | Constraints   | Description              |
-| ----------- | ------ | ------------- | ------------------------ |
-| params      | object |               |                          |
-| params.name | string | minLength="1" | Name of the user to add. |
+| Name           | Type   | Constraints   | Description                 |
+| -------------- | ------ | ------------- | --------------------------- |
+| params         |        |               |                             |
+| params(0)      | object | exclusive     |                             |
+| params(0).name | string | minLength="1" | Name of the user to delete. |
+| params(1)      | object | exclusive     |                             |
+| params(1).id   | string | minLength="1" | Id of the user to delete.   |
 
 ### Result
 
