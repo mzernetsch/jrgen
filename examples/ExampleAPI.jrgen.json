@@ -187,7 +187,8 @@
                 "description": "Name of the user to delete.",
                 "examples": ["user"],
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "pattern": "^(A|B)\\-.*$"
               }
             },
             "required": ["name"]

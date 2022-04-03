@@ -24,7 +24,12 @@ module.exports = (schema) => {
           name: key,
           summary: methodSchema.summary,
           description: utils.normalizeMultiLineString(methodSchema.description),
-          params: utils.parsePropertyList("params", methodSchema.params),
+          params: utils
+            .parsePropertyList("params", methodSchema.params)
+            .map((item) => {
+              item.constraints = item.constraints.replace(/\|/g, "\\|");
+              return item;
+            }),
           result: utils.parsePropertyList("result", methodSchema.result),
           errors: methodSchema.errors,
           requestExample: utils.generateRequestExample(

@@ -231,13 +231,13 @@ Deletes an existing user.
 
 ### Parameters
 
-| Name           | Type   | Constraints   | Description                 |
-| -------------- | ------ | ------------- | --------------------------- |
-| params         |        |               |                             |
-| params(0)      | object | exclusive     |                             |
-| params(0).name | string | minLength="1" | Name of the user to delete. |
-| params(1)      | object | exclusive     |                             |
-| params(1).id   | string | minLength="1" | Id of the user to delete.   |
+| Name           | Type   | Constraints                            | Description                 |
+| -------------- | ------ | -------------------------------------- | --------------------------- |
+| params         |        |                                        |                             |
+| params(0)      | object | exclusive                              |                             |
+| params(0).name | string | minLength="1", pattern="^(A\|B)\-.\*$" | Name of the user to delete. |
+| params(1)      | object | exclusive                              |                             |
+| params(1).id   | string | minLength="1"                          | Id of the user to delete.   |
 
 ### Result
 
