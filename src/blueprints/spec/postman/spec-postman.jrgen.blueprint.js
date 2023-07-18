@@ -21,6 +21,7 @@ module.exports = (schema) => {
       description: JSON.stringify(
         utils.normalizeMultiLineString(schema.info.description)
       ),
+      servers: schema.info.servers,
       methods: Object.keys(schema.methods).map((key) => {
         const methodSchema = schema.methods[key];
         return {

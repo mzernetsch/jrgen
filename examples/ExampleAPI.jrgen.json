@@ -1,6 +1,6 @@
 {
   "$schema": "https://rawgit.com/mzernetsch/jrgen/master/jrgen-spec.schema.json",
-  "jrgen": "1.1",
+  "jrgen": "1.2",
   "jsonrpc": "2.0",
   "info": {
     "title": "Example API",
@@ -8,7 +8,17 @@
       "An example api which handles various rpc requests.",
       "This api follows the json-rpc 2.0 specification. More information available at http://www.jsonrpc.org/specification."
     ],
-    "version": "1.0"
+    "version": "1.0",
+    "servers": [
+      {
+        "url": "https://www.example.org",
+        "description": "Production environment"
+      },
+      {
+        "url": "https://www.test.example.org",
+        "description": "Test environment"
+      }
+    ]
   },
   "definitions": {
     "session": {

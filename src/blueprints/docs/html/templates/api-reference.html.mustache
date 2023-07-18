@@ -111,6 +111,24 @@
         <div class="content col-10" data-spy="scroll" data-target="#toc">
           <div class="card border">
             <div class="card-block">{{{description}}}</div>
+
+            {{#servers.length}}
+            <div class="card-block table-responsive">
+              <h5>Servers</h5>
+              <table class="table table-striped table-hover table-sm">
+                <tr>
+                  <th>URL</th>
+                  <th>Description</th>
+                </tr>
+                {{#servers}}
+                <tr>
+                  <td>{{{url}}}</td>
+                  <td>{{{description}}}</td>
+                </tr>
+                {{/servers}}
+              </table>
+            </div>
+            {{/servers.length}}
           </div>
 
           {{#methods}}

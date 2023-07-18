@@ -228,5 +228,15 @@
       },
       "response": []
     }
+  ],
+  "variable": [
+    {
+      "key": "url",
+      "value": "https://www.example.org"
+    },
+    {
+      "key": "url",
+      "value": "https://www.test.example.org"
+    }
   ]
 }

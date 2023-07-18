@@ -5,7 +5,7 @@
     "jrgen": {
       "description": "Version of the jrgen spec.",
       "type": "string",
-      "enum": ["1.0", "1.1"]
+      "enum": ["1.0", "1.1", "1.2"]
     },
     "jsonrpc": {
       "description": "Version of the json-rpc protocol.",
@@ -39,6 +39,25 @@
           "description": "Current version of the api.",
           "type": "string",
           "minLength": 3
+        },
+        "servers": {
+          "description": "Server endpoints that implement this api.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "description": "URL to a server endpoint.",
+                "type": "string",
+                "format": "uri"
+              },
+              "description": {
+                "description": "Description about the server.",
+                "type": "string"
+              }
+            },
+            "required": ["url"]
+          }
         }
       },
       "required": ["title", "version"]

@@ -4,6 +4,14 @@
 
 <strong>Version {{version}}</strong>
 
+{{#servers.length}}
+| URL | Description |
+| --- | --- |
+{{/servers.length}}
+{{#servers}}
+| {{{url}}} | {{{description}}} |
+{{/servers}}
+
 ---
 {{#methods}}
 - [{{name}}](#{{name}})

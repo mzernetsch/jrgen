@@ -5,6 +5,11 @@ This api follows the json-rpc 2.0 specification. More information available at h
 
 <strong>Version 1.0</strong>
 
+| URL                          | Description            |
+| ---------------------------- | ---------------------- |
+| https://www.example.org      | Production environment |
+| https://www.test.example.org | Test environment       |
+
 ---
 
 - [Session.Login](#Session.Login)
