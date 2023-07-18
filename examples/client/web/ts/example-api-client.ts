@@ -2,7 +2,7 @@ import { RpcClient } from "./rpc-client";
 
 export class ExampleAPIClient extends RpcClient {
   async Session_Login(
-    params: SessionLoginRpcParams
+    params: SessionLoginRpcParams,
   ): Promise<SessionLoginRpcResult> {
     return await this.request("Session.Login", params);
   }
@@ -12,7 +12,7 @@ export class ExampleAPIClient extends RpcClient {
   }
 
   async Session_KeepAlive(
-    params?: undefined
+    params?: undefined,
   ): Promise<SessionKeepAliveRpcResult> {
     return await this.request("Session.KeepAlive", params);
   }
@@ -85,7 +85,7 @@ export interface UserAddRpcParams {
         number,
         string,
         "Street" | "Avenue" | "Boulevard",
-        "NW" | "NE" | "SW" | "SE"
+        "NW" | "NE" | "SW" | "SE",
       ];
   /**
    * Password of the user to add.
@@ -144,7 +144,7 @@ export type UserGetAllRpcResult = {
         number,
         string,
         "Street" | "Avenue" | "Boulevard",
-        "NW" | "NE" | "SW" | "SE"
+        "NW" | "NE" | "SW" | "SE",
       ];
   [k: string]: unknown;
 }[];

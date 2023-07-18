@@ -252,33 +252,17 @@ exports.loadSchema = (schemaPath) => {
   return exports.resolveSchemaRefs(schemaPath);
 };
 
-exports.prettifyFileTree = (fileTree) => {
-  Object.keys(fileTree).forEach((key) => {
-    let parser;
-    if (key.endsWith(".js")) {
-      parser = "babel";
-    }
-    if (key.endsWith(".ts")) {
-      parser = "typescript";
-    }
-    if (key.endsWith(".css") || key.endsWith(".scss")) {
-      parser = "postcss";
-    }
-    if (key.endsWith(".json")) {
-      parser = "json";
-    }
-    if (key.endsWith(".md")) {
-      parser = "markdown";
-    }
-    if (parser) {
+exports.prettifyFileTree = async (fileTree) => {
+  return Promise.all(
+    Object.keys(fileTree).map(async (key) => {
       fileTree[key] = Buffer.from(
-        prettier.format(fileTree[key].toString(), {
-          parser,
+        await prettier.format(fileTree[key].toString(), {
+          filepath: key,
         }),
         "utf-8"
       );
-    }
-  });
+    })
+  );
 };
 
 exports.buildArtifacts = (artifactsBlueprint) => {

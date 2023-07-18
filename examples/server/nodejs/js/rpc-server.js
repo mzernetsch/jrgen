@@ -37,7 +37,7 @@ module.exports = class RpcServer {
                     id: rpc.id,
                     jsonrpc: "2.0",
                     result: result,
-                  })
+                  }),
                 );
               })
               .catch((error) => {
@@ -46,7 +46,7 @@ module.exports = class RpcServer {
                     id: rpc.id,
                     jsonrpc: "2.0",
                     error: error,
-                  })
+                  }),
                 );
               });
           })
@@ -56,7 +56,7 @@ module.exports = class RpcServer {
                 id: null,
                 jsonrpc: "2.0",
                 error: error,
-              })
+              }),
             );
           });
       })
@@ -66,7 +66,7 @@ module.exports = class RpcServer {
             id: null,
             jsonrpc: "2.0",
             error: error,
-          })
+          }),
         );
       });
   }

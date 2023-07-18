@@ -25,16 +25,16 @@
     "format": "prettier --write src/**/*.{js,ts,css,scss,json,md}"
   },
   "dependencies": {
-    "commander": "^9.1.0",
-    "fs-extra": "^10.0.1",
-    "glob": "^7.2.0",
+    "commander": "^11.0.0",
+    "fs-extra": "^11.1.1",
+    "glob": "^10.3.3",
     "json-schema-ref-parser": "^9.0.9",
-    "json-schema-to-typescript": "^9.0.0",
+    "json-schema-to-typescript": "^13.0.2",
     "mustache": "^4.2.0",
-    "prettier": "^2.6.2",
-    "uuid": "^8.3.2"
+    "prettier": "^3.0.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "semantic-release": "^19.0.2"
+    "semantic-release": "^21.0.7"
   }
 }

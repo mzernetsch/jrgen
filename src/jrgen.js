@@ -44,7 +44,7 @@ Object.keys(blueprints).forEach((key) => {
 
       const artifacts = utils.buildArtifacts(blueprint);
 
-      utils.prettifyFileTree(artifacts);
+      await utils.prettifyFileTree(artifacts);
 
       utils.saveFileTreeTo(artifacts, options.outdir);
     });
