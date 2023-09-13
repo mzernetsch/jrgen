@@ -1,33 +1,69 @@
-import { RpcClient } from "./rpc-client";
+export type ExampleAPIRpcMethod =
+  | "Session.Login"
+  | "Session.Logout"
+  | "Session.KeepAlive"
+  | "User.Add"
+  | "User.Delete"
+  | "User.GetAll";
 
-export class ExampleAPIClient extends RpcClient {
-  async Session_Login(
+export class RpcError extends Error {
+  constructor(
+    public readonly message: string,
+    public readonly code: number,
+    public readonly data: any,
+  ) {
+    super(message);
+    Object.setPrototypeOf(this, RpcError.prototype);
+    this.name = "RpcError";
+  }
+}
+
+export class ExampleAPIClient {
+  async send(
+    method: "Session.Login",
     params: SessionLoginRpcParams,
-  ): Promise<SessionLoginRpcResult> {
-    return await this.request("Session.Login", params);
+  ): Promise<SessionLoginRpcResult>;
+  async send(method: "Session.Logout"): Promise<SessionLogoutRpcResult>;
+  async send(method: "Session.KeepAlive"): Promise<SessionKeepAliveRpcResult>;
+  async send(
+    method: "User.Add",
+    params: UserAddRpcParams,
+  ): Promise<UserAddRpcResult>;
+  async send(
+    method: "User.Delete",
+    params: UserDeleteRpcParams,
+  ): Promise<UserDeleteRpcResult>;
+  async send(method: "User.GetAll"): Promise<UserGetAllRpcResult>;
+
+  async send(method: string, params?: unknown): Promise<unknown> {
+    const response = await fetch(this.url, {
+      method: "post",
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: Math.random().toString(16).slice(2),
+        method,
+        params,
+      }),
+    });
+
+    if (response.ok) {
+      const rpcResponse = await response.json();
+
+      if ("error" in rpcResponse) {
+        throw new RpcError(
+          rpcResponse.error.message,
+          rpcResponse.error.code,
+          rpcResponse.error.data,
+        );
+      } else {
+        return rpcResponse.result;
+      }
+    } else {
+      throw new Error(response.statusText);
+    }
   }
 
-  async Session_Logout(params?: undefined): Promise<SessionLogoutRpcResult> {
-    return await this.request("Session.Logout", params);
-  }
-
-  async Session_KeepAlive(
-    params?: undefined,
-  ): Promise<SessionKeepAliveRpcResult> {
-    return await this.request("Session.KeepAlive", params);
-  }
-
-  async User_Add(params: UserAddRpcParams): Promise<UserAddRpcResult> {
-    return await this.request("User.Add", params);
-  }
-
-  async User_Delete(params: UserDeleteRpcParams): Promise<UserDeleteRpcResult> {
-    return await this.request("User.Delete", params);
-  }
-
-  async User_GetAll(params?: undefined): Promise<UserGetAllRpcResult> {
-    return await this.request("User.GetAll", params);
-  }
+  constructor(public url: string) {}
 }
 
 export interface SessionLoginRpcParams {

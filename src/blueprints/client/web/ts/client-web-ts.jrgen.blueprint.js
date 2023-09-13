@@ -62,14 +62,13 @@ module.exports = async (schema) => {
       methods: Object.keys(schema.methods).map((key) => {
         const methodSchema = schema.methods[key];
         return {
-          functionName: key.replace(/\./g, "_"),
           rpcName: key,
-          paramsType: methodSchema.params
-            ? ":" + key.replace(/\./g, "") + "RpcParams"
-            : "?:undefined",
-          resultType: methodSchema.result
+          params: methodSchema.params
+            ? ", params:" + key.replace(/\./g, "") + "RpcParams"
+            : "",
+          result: methodSchema.result
             ? key.replace(/\./g, "") + "RpcResult"
-            : "undefined",
+            : "void",
         };
       }),
       types: await buildTypes(schema),

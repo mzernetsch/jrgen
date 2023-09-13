@@ -1,13 +1,47 @@
-import { RpcClient } from './rpc-client';
-
-export class {{title}}Client extends RpcClient {
-
+export type {{title}}RpcMethod =
   {{#methods}}
-  async {{functionName}} (params{{{paramsType}}}): Promise<{{{resultType}}}> {
-      return await this.request('{{rpcName}}', params);
-  }
-  
+  | "{{rpcName}}"
   {{/methods}}
+;
+
+export class RpcError extends Error {
+  constructor(public readonly message: string, public readonly code: number, public readonly data: any) {
+    super(message);
+    Object.setPrototypeOf(this, RpcError.prototype);
+    this.name = "RpcError";
+  }
+}
+
+export class {{title}}Client {
+  {{#methods}}
+  async send(method: "{{{rpcName}}}"{{{params}}}): Promise<{{{result}}}>;
+  {{/methods}}
+
+  async send(method: string, params?: unknown): Promise<unknown> {
+    const response = await fetch(this.url, {
+      method: "post",
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: Math.random().toString(16).slice(2),
+        method,
+        params,
+      }),
+    });
+
+    if (response.ok) {
+      const rpcResponse = await response.json();
+
+      if ("error" in rpcResponse) {
+        throw new RpcError(rpcResponse.error.message, rpcResponse.error.code, rpcResponse.error.data);
+      } else {
+        return rpcResponse.result;
+      }
+    } else {
+      throw new Error(response.statusText);
+    }
+  }
+
+  constructor(public url:string) {}
 }
 
 {{{types}}}
