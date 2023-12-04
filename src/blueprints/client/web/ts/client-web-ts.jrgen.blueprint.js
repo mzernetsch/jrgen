@@ -12,31 +12,74 @@ buildTypes = async (schema) => {
 
   let types = "";
 
-  for (const key of Object.keys(schema.methods)) {
-    if (schema.methods[key].params) {
-      types +=
-        (await json2ts.compile(
-          schema.methods[key].params,
-          key.replace(/\./g, "") + "RpcParams.json",
-          json2tsOptions
-        )) + "\n\n";
+  for (const [methodName, methodSchema] of Object.entries(schema.methods)) {
+    const methodTypeName = methodName.replace(/\./g, "");
+
+    if (methodSchema.params) {
+      types += await json2ts.compile(
+        methodSchema.params,
+        methodTypeName + "Params.json",
+        json2tsOptions
+      );
+
+      types += `
+
+        export type ${methodTypeName}Request = WithRequired<Request<"${methodName}", ${methodTypeName}Params>, "params">;
+
+      `;
+    } else {
+      types += `
+        export type ${methodTypeName}Params = void;
+
+        export type ${methodTypeName}Request = Request<"${methodName}", ${methodTypeName}Params>;
+      `;
     }
 
-    if (schema.methods[key].result) {
+    if (methodSchema.result) {
       types +=
         (await json2ts.compile(
-          schema.methods[key].result,
-          key.replace(/\./g, "") + "RpcResult.json",
+          methodSchema.result,
+          methodTypeName + "Result.json",
           json2tsOptions
         )) + "\n\n";
+    } else {
+      types += `export type ${methodTypeName}Result = void;`;
+    }
+
+    types += `
+      
+        export type ${methodTypeName}Response = Response<"${methodName}", ${methodTypeName}Result>;
+
+      `;
+
+    if (methodSchema.errors) {
+      const errorPrefix =
+        schema.info.title.charAt(0).toUpperCase() +
+        schema.info.title.replace(/\s/g, "").slice(1);
+
+      const methodErrors = methodSchema.errors
+        .map(
+          (error) =>
+            `typeof ${errorPrefix}ErrorCode.` + error.message.replace(/\s/g, "")
+        )
+        .join(" | ");
+
+      types += `
+        export type ${methodTypeName}ErrorCode = ${methodErrors};
+
+        export type ${methodTypeName}Error = RpcError<${methodTypeName}ErrorCode>;
+        
+      `;
     }
   }
 
-  for (const key of Object.keys(schema.definitions)) {
+  for (const [schemaName, schemaDefinition] of Object.entries(
+    schema.definitions
+  )) {
     types +=
       (await json2ts.compile(
-        schema.definitions[key],
-        key.replace(/\./g, "") + ".json",
+        schemaDefinition,
+        schemaName.replace(/\./g, "") + ".json",
         json2tsOptions
       )) + "\n\n";
   }
@@ -58,20 +101,30 @@ module.exports = async (schema) => {
       return acc;
     }, {}),
     model: {
-      title: schema.info.title.replace(/\s/g, ""),
-      methods: Object.keys(schema.methods).map((key) => {
-        const methodSchema = schema.methods[key];
-        return {
-          rpcName: key,
-          params: methodSchema.params
-            ? ", params:" + key.replace(/\./g, "") + "RpcParams"
-            : "",
-          result: methodSchema.result
-            ? key.replace(/\./g, "") + "RpcResult"
-            : "void",
-        };
-      }),
-      types: await buildTypes(schema),
+      title:
+        schema.info.title.charAt(0).toUpperCase() +
+        schema.info.title.replace(/\s/g, "").slice(1),
+      methods: Object.keys(schema.methods).map((key) => key),
+      methodTypes: Object.keys(schema.methods).map((key) =>
+        key.replace(/\./g, "")
+      ),
+      methodTypesMap: Object.keys(schema.methods).map((key) => ({
+        method: key,
+        type: key.replace(/\./g, ""),
+      })),
+      additionalTypes: await buildTypes(schema),
+      errors: Object.entries(
+        Object.values(schema.methods).reduce((accumulator, methodSchema) => {
+          methodSchema.errors?.forEach((error) => {
+            accumulator[error.message.replace(/\s/g, "")] = error.code;
+          });
+
+          return accumulator;
+        }, {})
+      ).map(([key, value]) => ({
+        code: value,
+        message: key,
+      })),
     },
   };
 };
