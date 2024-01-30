@@ -3,7 +3,7 @@ type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 export interface Request<MethodType = ExampleAPIMethod, ParamsType = unknown> {
   id?: string;
   method: MethodType;
-  params?: ParamsType;
+  params: ParamsType;
 }
 
 export interface Response<
@@ -21,49 +21,13 @@ export class RpcError<ErrorCodeType = ExampleAPIErrorCode> extends Error {
   constructor(
     public readonly message: string,
     public readonly code: ErrorCodeType,
-    public readonly data: unknown,
+    public readonly data?: unknown,
   ) {
     super(message);
     Object.setPrototypeOf(this, Error.prototype);
     this.name = "RpcError";
   }
 }
-
-export type ExampleAPIMethod =
-  | "Session.Login"
-  | "Session.Logout"
-  | "Session.KeepAlive"
-  | "User.Add"
-  | "User.Delete"
-  | "User.GetAll";
-
-export type ExampleAPIMethodRequestMap = {
-  "Session.Login": SessionLoginRequest;
-  "Session.Logout": SessionLogoutRequest;
-  "Session.KeepAlive": SessionKeepAliveRequest;
-  "User.Add": UserAddRequest;
-  "User.Delete": UserDeleteRequest;
-  "User.GetAll": UserGetAllRequest;
-};
-
-export type ExampleAPIMethodResponseMap = {
-  "Session.Login": SessionLoginResponse;
-  "Session.Logout": SessionLogoutResponse;
-  "Session.KeepAlive": SessionKeepAliveResponse;
-  "User.Add": UserAddResponse;
-  "User.Delete": UserDeleteResponse;
-  "User.GetAll": UserGetAllResponse;
-};
-
-export const ExampleAPIErrorCode = {
-  InvalidCredentials: 1,
-  NotFound: 2,
-  Alreadyexists: 3,
-  Notfound: 2,
-} as const;
-
-export type ExampleAPIErrorCode =
-  (typeof ExampleAPIErrorCode)[keyof typeof ExampleAPIErrorCode];
 
 export interface SessionLoginParams {
   /**
@@ -81,7 +45,6 @@ export type SessionLoginRequest = WithRequired<
   Request<"Session.Login", SessionLoginParams>,
   "params"
 >;
-
 export interface SessionLoginResult {
   /**
    * Bearer token of the created session.
@@ -96,7 +59,8 @@ export interface SessionLoginResult {
 
 export type SessionLoginResponse = Response<
   "Session.Login",
-  SessionLoginResult
+  SessionLoginResult,
+  SessionLoginErrorCode
 >;
 
 export type SessionLoginErrorCode =
@@ -117,7 +81,8 @@ export type SessionLogoutResult = number;
 
 export type SessionLogoutResponse = Response<
   "Session.Logout",
-  SessionLogoutResult
+  SessionLogoutResult,
+  SessionLogoutErrorCode
 >;
 
 export type SessionLogoutErrorCode = typeof ExampleAPIErrorCode.NotFound;
@@ -137,13 +102,13 @@ export type SessionKeepAliveResult = number;
 
 export type SessionKeepAliveResponse = Response<
   "Session.KeepAlive",
-  SessionKeepAliveResult
+  SessionKeepAliveResult,
+  SessionKeepAliveErrorCode
 >;
 
 export type SessionKeepAliveErrorCode = typeof ExampleAPIErrorCode.NotFound;
 
 export type SessionKeepAliveError = RpcError<SessionKeepAliveErrorCode>;
-
 export interface UserAddParams {
   /**
    * Name of the user to add.
@@ -178,18 +143,20 @@ export type UserAddRequest = WithRequired<
   Request<"User.Add", UserAddParams>,
   "params"
 >;
-
 /**
  * Always '0'.
  */
 export type UserAddResult = number;
 
-export type UserAddResponse = Response<"User.Add", UserAddResult>;
+export type UserAddResponse = Response<
+  "User.Add",
+  UserAddResult,
+  UserAddErrorCode
+>;
 
 export type UserAddErrorCode = typeof ExampleAPIErrorCode.Alreadyexists;
 
 export type UserAddError = RpcError<UserAddErrorCode>;
-
 export type UserDeleteParams =
   | {
       /**
@@ -210,13 +177,16 @@ export type UserDeleteRequest = WithRequired<
   Request<"User.Delete", UserDeleteParams>,
   "params"
 >;
-
 /**
  * Always '0'.
  */
 export type UserDeleteResult = number;
 
-export type UserDeleteResponse = Response<"User.Delete", UserDeleteResult>;
+export type UserDeleteResponse = Response<
+  "User.Delete",
+  UserDeleteResult,
+  UserDeleteErrorCode
+>;
 
 export type UserDeleteErrorCode = typeof ExampleAPIErrorCode.Notfound;
 
@@ -254,8 +224,13 @@ export type UserGetAllResult = {
   [k: string]: unknown;
 }[];
 
-export type UserGetAllResponse = Response<"User.GetAll", UserGetAllResult>;
+export type UserGetAllResponse = Response<
+  "User.GetAll",
+  UserGetAllResult,
+  UserGetAllErrorCode
+>;
 
+export type UserGetAllErrorCode = void;
 export interface Session {
   /**
    * Bearer token of the created session.
@@ -284,19 +259,60 @@ export type ExampleAPIResponse =
   | UserDeleteResponse
   | UserGetAllResponse;
 
+export const ExampleAPIErrorCode = {
+  InvalidCredentials: 1,
+  NotFound: 2,
+  Alreadyexists: 3,
+  Notfound: 2,
+} as const;
+
+export type ExampleAPIErrorCode =
+  (typeof ExampleAPIErrorCode)[keyof typeof ExampleAPIErrorCode];
+
+export type ExampleAPIMethodRequestResponseMap = {
+  "Session.Login": {
+    request: SessionLoginRequest;
+    response: SessionLoginResponse;
+  };
+  "Session.Logout": {
+    request: SessionLogoutRequest;
+    response: SessionLogoutResponse;
+  };
+  "Session.KeepAlive": {
+    request: SessionKeepAliveRequest;
+    response: SessionKeepAliveResponse;
+  };
+  "User.Add": {
+    request: UserAddRequest;
+    response: UserAddResponse;
+  };
+  "User.Delete": {
+    request: UserDeleteRequest;
+    response: UserDeleteResponse;
+  };
+  "User.GetAll": {
+    request: UserGetAllRequest;
+    response: UserGetAllResponse;
+  };
+};
+
+export type ExampleAPIMethod = keyof ExampleAPIMethodRequestResponseMap;
+
 export class ExampleAPIClient {
   constructor(public url: string) {}
 
-  async send<ResponseType = ExampleAPIResponse>(
-    request: ExampleAPIRequest,
-  ): Promise<ResponseType> {
+  async send<T extends ExampleAPIMethod>(
+    method: T,
+    params?: ExampleAPIMethodRequestResponseMap[T]["request"]["params"],
+    id?: string,
+  ): Promise<ExampleAPIMethodRequestResponseMap[T]["response"]> {
     const response = await fetch(this.url, {
       method: "post",
       body: JSON.stringify({
         jsonrpc: "2.0",
-        id: request.id ?? Math.random().toString(16).slice(2),
-        method: request.method,
-        params: request.params,
+        id: id ?? Math.random().toString(16).slice(2),
+        method: method,
+        params: params,
       }),
     });
 

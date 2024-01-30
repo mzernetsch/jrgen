@@ -2,7 +2,7 @@ const json2ts = require("json-schema-to-typescript");
 const path = require("path");
 const utils = require(path.join(__dirname, "../../../../", "utils.js"));
 
-buildTypes = async (schema) => {
+buildInternalMethodTypes = async (schema) => {
   const json2tsOptions = {
     bannerComment: "",
     style: {
@@ -23,9 +23,7 @@ buildTypes = async (schema) => {
       );
 
       types += `
-
         export type ${methodTypeName}Request = WithRequired<Request<"${methodName}", ${methodTypeName}Params>, "params">;
-
       `;
     } else {
       types += `
@@ -43,13 +41,13 @@ buildTypes = async (schema) => {
           json2tsOptions
         )) + "\n\n";
     } else {
-      types += `export type ${methodTypeName}Result = void;`;
+      types += `
+        export type ${methodTypeName}Result = void;
+      `;
     }
 
     types += `
-      
-        export type ${methodTypeName}Response = Response<"${methodName}", ${methodTypeName}Result>;
-
+        export type ${methodTypeName}Response = Response<"${methodName}", ${methodTypeName}Result, ${methodTypeName}ErrorCode>;
       `;
 
     if (methodSchema.errors) {
@@ -68,7 +66,10 @@ buildTypes = async (schema) => {
         export type ${methodTypeName}ErrorCode = ${methodErrors};
 
         export type ${methodTypeName}Error = RpcError<${methodTypeName}ErrorCode>;
-        
+      `;
+    } else {
+      types += `
+        export type ${methodTypeName}ErrorCode = void;
       `;
     }
   }
@@ -104,15 +105,14 @@ module.exports = async (schema) => {
       title:
         schema.info.title.charAt(0).toUpperCase() +
         schema.info.title.replace(/\s/g, "").slice(1),
-      methods: Object.keys(schema.methods).map((key) => key),
       methodTypes: Object.keys(schema.methods).map((key) =>
         key.replace(/\./g, "")
       ),
-      methodTypesMap: Object.keys(schema.methods).map((key) => ({
+      methodRequestResponseMap: Object.keys(schema.methods).map((key) => ({
         method: key,
         type: key.replace(/\./g, ""),
       })),
-      additionalTypes: await buildTypes(schema),
+      internalMethodTypes: await buildInternalMethodTypes(schema),
       errors: Object.entries(
         Object.values(schema.methods).reduce((accumulator, methodSchema) => {
           methodSchema.errors?.forEach((error) => {

@@ -6,7 +6,7 @@ export interface Request<
 > {
   id?: string;
   method: MethodType;
-  params?: ParamsType;
+  params: ParamsType;
 }
 
 export interface Response<
@@ -26,7 +26,7 @@ export class RpcError<
   constructor(
     public readonly message: string,
     public readonly code: ErrorCodeType,
-    public readonly data: unknown
+    public readonly data?: unknown
   ) {
     super(message);
     Object.setPrototypeOf(this, Error.prototype);
@@ -34,33 +34,7 @@ export class RpcError<
   }
 }
 
-export type {{title}}Method =
-  {{#methods}}
-  | "{{.}}"
-  {{/methods}}
-;
-
-export type {{title}}MethodRequestMap = {
-  {{#methodTypesMap}}
-  "{{method}}": {{type}}Request,
-  {{/methodTypesMap}}
-};
-
-export type {{title}}MethodResponseMap = {
-  {{#methodTypesMap}}
-  "{{method}}": {{type}}Response,
-  {{/methodTypesMap}}
-};
-
-export const {{title}}ErrorCode = {
-  {{#errors}}
-  {{message}}: {{code}},
-  {{/errors}}
-} as const;
-
-export type {{title}}ErrorCode = (typeof {{title}}ErrorCode)[keyof typeof {{title}}ErrorCode];
-
-{{{additionalTypes}}}
+{{{internalMethodTypes}}}
 
 export type {{title}}Request = 
   {{#methodTypes}}
@@ -74,19 +48,40 @@ export type {{title}}Response =
   {{/methodTypes}}
 ;
 
+export const {{title}}ErrorCode = {
+  {{#errors}}
+  {{message}}: {{code}},
+  {{/errors}}
+} as const;
+
+export type {{title}}ErrorCode = (typeof {{title}}ErrorCode)[keyof typeof {{title}}ErrorCode];
+
+export type {{title}}MethodRequestResponseMap = {
+  {{#methodRequestResponseMap}}
+  "{{method}}": {
+    request: {{type}}Request,
+    response: {{type}}Response
+  },
+  {{/methodRequestResponseMap}}
+};
+
+export type {{title}}Method = keyof {{title}}MethodRequestResponseMap;
+
 export class {{title}}Client {
   constructor(public url:string) {}
 
-  async send<ResponseType = {{title}}Response>(
-    request: {{title}}Request
-  ): Promise<ResponseType> {
+  async send<T extends {{title}}Method>(
+    method: T,
+    params?: {{title}}MethodRequestResponseMap[T]["request"]["params"],
+    id?: string,
+  ): Promise<{{title}}MethodRequestResponseMap[T]["response"]> {
     const response = await fetch(this.url, {
       method: "post",
       body: JSON.stringify({
         jsonrpc: "2.0",
-        id: request.id ?? Math.random().toString(16).slice(2),
-        method: request.method,
-        params: request.params,
+        id: id ?? Math.random().toString(16).slice(2),
+        method: method,
+        params: params,
       }),
     });
 
