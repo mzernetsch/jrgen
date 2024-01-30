@@ -1,36 +1,35 @@
-import { RpcClient } from "./rpc-client";
+type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
-export class ExampleAPIClient extends RpcClient {
-  async Session_Login(
-    params: SessionLoginRpcParams,
-  ): Promise<SessionLoginRpcResult> {
-    return await this.request("Session.Login", params);
-  }
+export interface Request<MethodType = ExampleAPIMethod, ParamsType = unknown> {
+  id?: string;
+  method: MethodType;
+  params: ParamsType;
+}
 
-  async Session_Logout(params?: undefined): Promise<SessionLogoutRpcResult> {
-    return await this.request("Session.Logout", params);
-  }
+export interface Response<
+  MethodType = ExampleAPIMethod,
+  ResultType = unknown,
+  ErrorCodeType = ExampleAPIErrorCode,
+> {
+  id?: string;
+  method: MethodType;
+  result?: ResultType;
+  error?: RpcError<ErrorCodeType>;
+}
 
-  async Session_KeepAlive(
-    params?: undefined,
-  ): Promise<SessionKeepAliveRpcResult> {
-    return await this.request("Session.KeepAlive", params);
-  }
-
-  async User_Add(params: UserAddRpcParams): Promise<UserAddRpcResult> {
-    return await this.request("User.Add", params);
-  }
-
-  async User_Delete(params: UserDeleteRpcParams): Promise<UserDeleteRpcResult> {
-    return await this.request("User.Delete", params);
-  }
-
-  async User_GetAll(params?: undefined): Promise<UserGetAllRpcResult> {
-    return await this.request("User.GetAll", params);
+export class RpcError<ErrorCodeType = ExampleAPIErrorCode> extends Error {
+  constructor(
+    public readonly message: string,
+    public readonly code: ErrorCodeType,
+    public readonly data?: unknown,
+  ) {
+    super(message);
+    Object.setPrototypeOf(this, Error.prototype);
+    this.name = "RpcError";
   }
 }
 
-export interface SessionLoginRpcParams {
+export interface SessionLoginParams {
   /**
    * Name of the user to create a session for.
    */
@@ -42,7 +41,11 @@ export interface SessionLoginRpcParams {
   [k: string]: unknown;
 }
 
-export interface SessionLoginRpcResult {
+export type SessionLoginRequest = WithRequired<
+  Request<"Session.Login", SessionLoginParams>,
+  "params"
+>;
+export interface SessionLoginResult {
   /**
    * Bearer token of the created session.
    */
@@ -54,17 +57,59 @@ export interface SessionLoginRpcResult {
   [k: string]: unknown;
 }
 
+export type SessionLoginResponse = Response<
+  "Session.Login",
+  SessionLoginResult,
+  SessionLoginErrorCode
+>;
+
+export type SessionLoginErrorCode =
+  typeof ExampleAPIErrorCode.InvalidCredentials;
+
+export type SessionLoginError = RpcError<SessionLoginErrorCode>;
+
+export type SessionLogoutParams = void;
+
+export type SessionLogoutRequest = Request<
+  "Session.Logout",
+  SessionLogoutParams
+>;
 /**
  * Always '0'.
  */
-export type SessionLogoutRpcResult = number;
+export type SessionLogoutResult = number;
 
+export type SessionLogoutResponse = Response<
+  "Session.Logout",
+  SessionLogoutResult,
+  SessionLogoutErrorCode
+>;
+
+export type SessionLogoutErrorCode = typeof ExampleAPIErrorCode.NotFound;
+
+export type SessionLogoutError = RpcError<SessionLogoutErrorCode>;
+
+export type SessionKeepAliveParams = void;
+
+export type SessionKeepAliveRequest = Request<
+  "Session.KeepAlive",
+  SessionKeepAliveParams
+>;
 /**
  * Always '0'.
  */
-export type SessionKeepAliveRpcResult = number;
+export type SessionKeepAliveResult = number;
 
-export interface UserAddRpcParams {
+export type SessionKeepAliveResponse = Response<
+  "Session.KeepAlive",
+  SessionKeepAliveResult,
+  SessionKeepAliveErrorCode
+>;
+
+export type SessionKeepAliveErrorCode = typeof ExampleAPIErrorCode.NotFound;
+
+export type SessionKeepAliveError = RpcError<SessionKeepAliveErrorCode>;
+export interface UserAddParams {
   /**
    * Name of the user to add.
    */
@@ -94,12 +139,25 @@ export interface UserAddRpcParams {
   [k: string]: unknown;
 }
 
+export type UserAddRequest = WithRequired<
+  Request<"User.Add", UserAddParams>,
+  "params"
+>;
 /**
  * Always '0'.
  */
-export type UserAddRpcResult = number;
+export type UserAddResult = number;
 
-export type UserDeleteRpcParams =
+export type UserAddResponse = Response<
+  "User.Add",
+  UserAddResult,
+  UserAddErrorCode
+>;
+
+export type UserAddErrorCode = typeof ExampleAPIErrorCode.Alreadyexists;
+
+export type UserAddError = RpcError<UserAddErrorCode>;
+export type UserDeleteParams =
   | {
       /**
        * Name of the user to delete.
@@ -115,15 +173,32 @@ export type UserDeleteRpcParams =
       [k: string]: unknown;
     };
 
+export type UserDeleteRequest = WithRequired<
+  Request<"User.Delete", UserDeleteParams>,
+  "params"
+>;
 /**
  * Always '0'.
  */
-export type UserDeleteRpcResult = number;
+export type UserDeleteResult = number;
 
+export type UserDeleteResponse = Response<
+  "User.Delete",
+  UserDeleteResult,
+  UserDeleteErrorCode
+>;
+
+export type UserDeleteErrorCode = typeof ExampleAPIErrorCode.Notfound;
+
+export type UserDeleteError = RpcError<UserDeleteErrorCode>;
+
+export type UserGetAllParams = void;
+
+export type UserGetAllRequest = Request<"User.GetAll", UserGetAllParams>;
 /**
  * List of all existing users.
  */
-export type UserGetAllRpcResult = {
+export type UserGetAllResult = {
   /**
    * Name of the user.
    */
@@ -149,6 +224,13 @@ export type UserGetAllRpcResult = {
   [k: string]: unknown;
 }[];
 
+export type UserGetAllResponse = Response<
+  "User.GetAll",
+  UserGetAllResult,
+  UserGetAllErrorCode
+>;
+
+export type UserGetAllErrorCode = void;
 export interface Session {
   /**
    * Bearer token of the created session.
@@ -159,4 +241,95 @@ export interface Session {
    */
   validity?: number;
   [k: string]: unknown;
+}
+
+export type ExampleAPIRequest =
+  | SessionLoginRequest
+  | SessionLogoutRequest
+  | SessionKeepAliveRequest
+  | UserAddRequest
+  | UserDeleteRequest
+  | UserGetAllRequest;
+
+export type ExampleAPIResponse =
+  | SessionLoginResponse
+  | SessionLogoutResponse
+  | SessionKeepAliveResponse
+  | UserAddResponse
+  | UserDeleteResponse
+  | UserGetAllResponse;
+
+export const ExampleAPIErrorCode = {
+  InvalidCredentials: 1,
+  NotFound: 2,
+  Alreadyexists: 3,
+  Notfound: 2,
+} as const;
+
+export type ExampleAPIErrorCode =
+  (typeof ExampleAPIErrorCode)[keyof typeof ExampleAPIErrorCode];
+
+export type ExampleAPIMethodRequestResponseMap = {
+  "Session.Login": {
+    request: SessionLoginRequest;
+    response: SessionLoginResponse;
+  };
+  "Session.Logout": {
+    request: SessionLogoutRequest;
+    response: SessionLogoutResponse;
+  };
+  "Session.KeepAlive": {
+    request: SessionKeepAliveRequest;
+    response: SessionKeepAliveResponse;
+  };
+  "User.Add": {
+    request: UserAddRequest;
+    response: UserAddResponse;
+  };
+  "User.Delete": {
+    request: UserDeleteRequest;
+    response: UserDeleteResponse;
+  };
+  "User.GetAll": {
+    request: UserGetAllRequest;
+    response: UserGetAllResponse;
+  };
+};
+
+export type ExampleAPIMethod = keyof ExampleAPIMethodRequestResponseMap;
+
+export class ExampleAPIClient {
+  constructor(public url: string) {}
+
+  async send<T extends ExampleAPIMethod>(
+    method: T,
+    params?: ExampleAPIMethodRequestResponseMap[T]["request"]["params"],
+    id?: string,
+  ): Promise<ExampleAPIMethodRequestResponseMap[T]["response"]> {
+    const response = await fetch(this.url, {
+      method: "post",
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: id ?? Math.random().toString(16).slice(2),
+        method: method,
+        params: params,
+      }),
+    });
+
+    if (response.ok) {
+      const rpcResponse = await response.json();
+
+      if ("error" in rpcResponse) {
+        throw new RpcError(
+          rpcResponse.error.message,
+          rpcResponse.error.code,
+          rpcResponse.error.data,
+        );
+      } else {
+        return rpcResponse.result;
+      }
+    } else {
+      throw new Error(response.statusText);
+    }
+  }
 }

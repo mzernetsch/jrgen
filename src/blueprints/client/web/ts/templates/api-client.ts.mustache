@@ -1,13 +1,104 @@
-import { RpcClient } from './rpc-client';
+type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
 
-export class {{title}}Client extends RpcClient {
-
-  {{#methods}}
-  async {{functionName}} (params{{{paramsType}}}): Promise<{{{resultType}}}> {
-      return await this.request('{{rpcName}}', params);
-  }
-  
-  {{/methods}}
+export interface Request<
+  MethodType = {{title}}Method,
+  ParamsType = unknown,
+> {
+  id?: string;
+  method: MethodType;
+  params: ParamsType;
 }
 
-{{{types}}}
+export interface Response<
+  MethodType = {{title}}Method,
+  ResultType = unknown,
+  ErrorCodeType = {{title}}ErrorCode,
+> {
+  id?: string;
+  method: MethodType;
+  result?: ResultType;
+  error?: RpcError<ErrorCodeType>;
+}
+
+export class RpcError<
+  ErrorCodeType = {{title}}ErrorCode,
+> extends Error {
+  constructor(
+    public readonly message: string,
+    public readonly code: ErrorCodeType,
+    public readonly data?: unknown
+  ) {
+    super(message);
+    Object.setPrototypeOf(this, Error.prototype);
+    this.name = "RpcError";
+  }
+}
+
+{{{internalMethodTypes}}}
+
+export type {{title}}Request = 
+  {{#methodTypes}}
+  | {{.}}Request
+  {{/methodTypes}}
+;
+
+export type {{title}}Response = 
+  {{#methodTypes}}
+  | {{.}}Response
+  {{/methodTypes}}
+;
+
+export const {{title}}ErrorCode = {
+  {{#errors}}
+  {{message}}: {{code}},
+  {{/errors}}
+} as const;
+
+export type {{title}}ErrorCode = (typeof {{title}}ErrorCode)[keyof typeof {{title}}ErrorCode];
+
+export type {{title}}MethodRequestResponseMap = {
+  {{#methodRequestResponseMap}}
+  "{{method}}": {
+    request: {{type}}Request,
+    response: {{type}}Response
+  },
+  {{/methodRequestResponseMap}}
+};
+
+export type {{title}}Method = keyof {{title}}MethodRequestResponseMap;
+
+export class {{title}}Client {
+  constructor(public url:string) {}
+
+  async send<T extends {{title}}Method>(
+    method: T,
+    params?: {{title}}MethodRequestResponseMap[T]["request"]["params"],
+    id?: string,
+  ): Promise<{{title}}MethodRequestResponseMap[T]["response"]> {
+    const response = await fetch(this.url, {
+      method: "post",
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: id ?? Math.random().toString(16).slice(2),
+        method: method,
+        params: params,
+      }),
+    });
+
+    if (response.ok) {
+      const rpcResponse = await response.json();
+
+      if ("error" in rpcResponse) {
+        throw new RpcError(
+          rpcResponse.error.message,
+          rpcResponse.error.code,
+          rpcResponse.error.data
+        );
+      } else {
+        return rpcResponse.result;
+      }
+    } else {
+      throw new Error(response.statusText);
+    }
+  }
+}
